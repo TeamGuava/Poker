@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Poker
+﻿namespace Poker
 {
-    static class Program
+    using System;
+    using System.Windows.Forms;
+
+    static class PokerMain
     {
         /// <summary>
         /// The main entry point for the application.
@@ -16,7 +13,7 @@ namespace Poker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new GameEngine());
         }
     }
 }
