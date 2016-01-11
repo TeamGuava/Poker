@@ -13,14 +13,19 @@ using System.Runtime.InteropServices;
 
 namespace Poker
 {
-
     public partial class Form1 : Form
     {
         #region Variables
-        ProgressBar asd = new ProgressBar();
+        ProgressBar progressBar = new ProgressBar();
         public int Nm;
-        Panel pPanel = new Panel(); Panel b1Panel = new Panel(); Panel b2Panel = new Panel(); Panel b3Panel = new Panel();
-        Panel b4Panel = new Panel(); Panel b5Panel = new Panel();
+
+        Panel pPanel = new Panel();
+        Panel b1Panel = new Panel();
+        Panel b2Panel = new Panel();
+        Panel b3Panel = new Panel();
+        Panel b4Panel = new Panel();
+        Panel b5Panel = new Panel();
+
         int call = 500, foldedPlayers = 5;
         public int Chips = 10000, bot1Chips = 10000, bot2Chips = 10000, bot3Chips = 10000, bot4Chips = 10000, bot5Chips = 10000;
         double type, rounds = 0, b1Power, b2Power, b3Power, b4Power, b5Power, pPower = 0, pType = -1, Raise = 0,
@@ -98,6 +103,7 @@ namespace Poker
             bSB.Visible = false;
             tbRaise.Text = (bb * 2).ToString();
         }
+
         async Task Shuffle()
         {
             bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
@@ -120,7 +126,6 @@ namespace Poker
             }
             for (i = 0; i < 17; i++)
             {
-
                 Deck[i] = Image.FromFile(ImgLocation[i]);
                 var charsToRemove = new string[] { "Assets\\Cards\\", ".png" };
                 foreach (var c in charsToRemove)
@@ -477,6 +482,7 @@ namespace Poker
                 bFold.Enabled = true;
             }
         }
+
         async Task Turns()
         {
             #region Rotating
@@ -751,6 +757,7 @@ namespace Poker
                 }
             }
         }
+
         private void rStraightFlush(ref double current, ref double Power, int[] st1, int[] st2, int[] st3, int[] st4)
         {
             if (current >= -1)
@@ -825,6 +832,7 @@ namespace Poker
                 }
             }
         }
+
         private void rFourOfAKind(ref double current, ref double Power, int[] Straight)
         {
             if (current >= -1)
@@ -849,6 +857,7 @@ namespace Poker
                 }
             }
         }
+
         private void rFullHouse(ref double current, ref double Power, ref bool done, int[] Straight)
         {
             if (current >= -1)
@@ -901,6 +910,7 @@ namespace Poker
                 }
             }
         }
+
         private void rFlush(ref double current, ref double Power, ref bool vf, int[] Straight1)
         {
             if (current >= -1)
@@ -1375,6 +1385,7 @@ namespace Poker
                 }
             }
         }
+
         private void rStraight(ref double current, ref double Power, int[] Straight)
         {
             if (current >= -1)
@@ -1409,6 +1420,7 @@ namespace Poker
                 }
             }
         }
+
         private void rThreeOfAKind(ref double current, ref double Power, int[] Straight)
         {
             if (current >= -1)
@@ -1436,6 +1448,7 @@ namespace Poker
                 }
             }
         }
+
         private void rTwoPair(ref double current, ref double Power)
         {
             if (current >= -1)
@@ -1489,6 +1502,7 @@ namespace Poker
                 }
             }
         }
+
         private void rPairTwoPair(ref double current, ref double Power)
         {
             if (current >= -1)
@@ -1590,6 +1604,7 @@ namespace Poker
                 }
             }
         }
+
         private void rPairFromHand(ref double current, ref double Power)
         {
             if (current >= -1)
@@ -1663,6 +1678,7 @@ namespace Poker
                 }
             }
         }
+
         private void rHighCard(ref double current, ref double Power)
         {
             if (current == -1)
@@ -1836,6 +1852,7 @@ namespace Poker
                 }
             }
         }
+
         async Task CheckRaise(int currentTurn, int raiseTurn)
         {
             if (raising)
@@ -2021,6 +2038,7 @@ namespace Poker
                 await Turns();
             }
         }
+
         void FixCall(Label status, ref int cCall, ref int cRaise, int options)
         {
             if (rounds != 4)
@@ -2062,6 +2080,7 @@ namespace Poker
                 }
             }
         }
+
         async Task AllIn()
         {
             #region All in
@@ -2199,6 +2218,7 @@ namespace Poker
 
 
         }
+
         async Task Finish(int n)
         {
             if (n == 2)
@@ -2261,6 +2281,7 @@ namespace Poker
             await Shuffle();
             //await Turns();
         }
+
         void FixWinners()
         {
             Win.Clear();
@@ -2304,6 +2325,7 @@ namespace Poker
             Winner(b4Type, b4Power, "Bot 4", bot4Chips, fixedLast);
             Winner(b5Type, b5Power, "Bot 5", bot5Chips, fixedLast);
         }
+
         void AI(int c1, int c2, ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower, double botCurrent)
         {
             if (!sFTurn)
@@ -2355,14 +2377,17 @@ namespace Poker
                 Holder[c2].Visible = false;
             }
         }
+
         private void HighCard(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower)
         {
             HP(ref sChips, ref sTurn, ref sFTurn, sStatus, botPower, 20, 25);
         }
+
         private void PairTable(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower)
         {
             HP(ref sChips, ref sTurn, ref sFTurn, sStatus, botPower, 16, 25);
         }
+
         private void PairHand(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower)
         {
             Random rPair = new Random();
@@ -2381,6 +2406,7 @@ namespace Poker
                 PH(ref sChips, ref sTurn, ref sFTurn, sStatus, rCall, 9, rRaise);
             }
         }
+
         private void TwoPair(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower)
         {
             Random rPair = new Random();
@@ -2399,6 +2425,7 @@ namespace Poker
                 PH(ref sChips, ref sTurn, ref sFTurn, sStatus, rCall, 4, rRaise);
             }
         }
+
         private void ThreeOfAKind(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random tk = new Random();
@@ -2417,6 +2444,7 @@ namespace Poker
                 Smooth(ref sChips, ref sTurn, ref sFTurn, sStatus, name, tCall, tRaise);
             }
         }
+
         private void Straight(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random str = new Random();
@@ -2435,6 +2463,7 @@ namespace Poker
                 Smooth(ref sChips, ref sTurn, ref sFTurn, sStatus, name, sCall, sRaise);
             }
         }
+
         private void Flush(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random fsh = new Random();
@@ -2442,6 +2471,7 @@ namespace Poker
             int fRaise = fsh.Next(3, 7);
             Smooth(ref sChips, ref sTurn, ref sFTurn, sStatus, name, fCall, fRaise);
         }
+
         private void FullHouse(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random flh = new Random();
@@ -2456,6 +2486,7 @@ namespace Poker
                 Smooth(ref sChips, ref sTurn, ref sFTurn, sStatus, name, fhCall, fhRaise);
             }
         }
+
         private void FourOfAKind(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random fk = new Random();
@@ -2466,6 +2497,7 @@ namespace Poker
                 Smooth(ref sChips, ref sTurn, ref sFTurn, sStatus, name, fkCall, fkRaise);
             }
         }
+
         private void StraightFlush(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int name, double botPower)
         {
             Random sf = new Random();
@@ -2484,12 +2516,14 @@ namespace Poker
             sTurn = false;
             sFTurn = true;
         }
+
         private void Check(ref bool cTurn, Label cStatus)
         {
             cStatus.Text = "Check";
             cTurn = false;
             raising = false;
         }
+
         private void Call(ref int sChips, ref bool sTurn, Label sStatus)
         {
             raising = false;
@@ -2498,6 +2532,7 @@ namespace Poker
             sStatus.Text = "Call " + call;
             tbPot.Text = (int.Parse(tbPot.Text) + call).ToString();
         }
+
         private void Raised(ref int sChips, ref bool sTurn, Label sStatus)
         {
             sChips -= Convert.ToInt32(Raise);
@@ -2507,11 +2542,13 @@ namespace Poker
             raising = true;
             sTurn = false;
         }
+
         private static double RoundN(int sChips, int n)
         {
             double a = Math.Round((sChips / n) / 100d, 0) * 100;
             return a;
         }
+
         private void HP(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower, int n, int n1)
         {
             Random rand = new Random();
@@ -2570,6 +2607,7 @@ namespace Poker
                 sFTurn = true;
             }
         }
+
         private void PH(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, int n, int n1, int r)
         {
             Random rand = new Random();
@@ -2665,6 +2703,7 @@ namespace Poker
                 sFTurn = true;
             }
         }
+
         void Smooth(ref int botChips, ref bool botTurn, ref bool botFTurn, Label botStatus, int name, int n, int r)
         {
             Random rand = new Random();
@@ -2731,6 +2770,7 @@ namespace Poker
                 pbTimer.Value = (t / 6) * 100;
             }
         }
+
         private void Update_Tick(object sender, object e)
         {
             if (Chips <= 0)
@@ -2817,6 +2857,7 @@ namespace Poker
                 bRaise.Enabled = false;
             }
         }
+
         private async void bFold_Click(object sender, EventArgs e)
         {
             pStatus.Text = "Fold";
@@ -2824,6 +2865,7 @@ namespace Poker
             PFturn = true;
             await Turns();
         }
+
         private async void bCheck_Click(object sender, EventArgs e)
         {
             if (call <= 0)
@@ -2839,6 +2881,7 @@ namespace Poker
             }
             await Turns();
         }
+
         private async void bCall_Click(object sender, EventArgs e)
         {
             Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
@@ -2870,6 +2913,7 @@ namespace Poker
             }
             await Turns();
         }
+
         private async void bRaise_Click(object sender, EventArgs e)
         {
             Rules(0, 1, "Player", ref pType, ref pPower, PFturn);
@@ -2920,6 +2964,7 @@ namespace Poker
             Pturn = false;
             await Turns();
         }
+
         private void bAdd_Click(object sender, EventArgs e)
         {
             if (tbAdd.Text == "") { }
@@ -2934,6 +2979,7 @@ namespace Poker
             }
             tbChips.Text = "Chips : " + Chips.ToString();
         }
+
         private void bOptions_Click(object sender, EventArgs e)
         {
             tbBB.Text = bb.ToString();
@@ -2953,6 +2999,7 @@ namespace Poker
                 bSB.Visible = false;
             }
         }
+
         private void bSB_Click(object sender, EventArgs e)
         {
             int parsedValue;
@@ -2983,6 +3030,7 @@ namespace Poker
                 MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
+
         private void bBB_Click(object sender, EventArgs e)
         {
             int parsedValue;
@@ -3013,6 +3061,7 @@ namespace Poker
                 MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
+
         private void Layout_Change(object sender, LayoutEventArgs e)
         {
             width = this.Width;
