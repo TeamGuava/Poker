@@ -2125,16 +2125,16 @@
 
                 if (Chips <= 0)
                 {
-                    AddChips f2 = new AddChips();
-                    f2.ShowDialog();
-                    if (f2.a != 0)
+                    AddChips addMoreChipsForm = new AddChips();
+                    addMoreChipsForm.ShowDialog();
+                    if (addMoreChipsForm.a != 0)
                     {
-                        Chips = f2.a;
-                        bot1Chips += f2.a;
-                        bot2Chips += f2.a;
-                        bot3Chips += f2.a;
-                        bot4Chips += f2.a;
-                        bot5Chips += f2.a;
+                        Chips = addMoreChipsForm.a;
+                        bot1Chips += addMoreChipsForm.a;
+                        bot2Chips += addMoreChipsForm.a;
+                        bot3Chips += addMoreChipsForm.a;
+                        bot4Chips += addMoreChipsForm.a;
+                        bot5Chips += addMoreChipsForm.a;
                         PFturn = false;
                         Pturn = true;
                         raise_Button.Enabled = true;
