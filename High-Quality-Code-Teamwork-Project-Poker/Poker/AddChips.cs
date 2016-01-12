@@ -11,8 +11,8 @@
         public AddChips()
         {
             FontFamily fontFamily = new FontFamily("Arial");
-            InitializeComponent();
-            ControlBox = false;
+            this.InitializeComponent();
+            this.ControlBox = false;
             label1.BorderStyle = BorderStyle.FixedSingle;
         }
 
@@ -22,8 +22,10 @@
             if (int.Parse(textBox1.Text) > 100000000)
             {
                 MessageBox.Show("The maximium chips you can add is 100000000");
+
                 return;
             }
+
             if (!int.TryParse(textBox1.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
@@ -31,7 +33,7 @@
             }
             else if (int.TryParse(textBox1.Text, out parsedValue) && int.Parse(textBox1.Text) <= 100000000)
             {
-                a = int.Parse(textBox1.Text);
+                a = int.Parse(this.textBox1.Text);
                 this.Close();
             }
         }
