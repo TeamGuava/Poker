@@ -32,19 +32,19 @@
         public void ButtonAddChips_Click(object sender, EventArgs e)
         {
             int parsedValue;
-            if (int.Parse(this.textBoxAddNewChips.Text) > 100000000)
+            if (!int.TryParse(this.textBoxAddNewChips.Text, out parsedValue))
+            {
+                MessageBox.Show("This is a number only field");
+
+                return;
+            }
+            else if (int.Parse(this.textBoxAddNewChips.Text) > 100000000)
             {
                 MessageBox.Show("The maximium chips you can add is 100000000");
 
                 return;
             }
-
-            if (!int.TryParse(this.textBoxAddNewChips.Text, out parsedValue))
-            {
-                MessageBox.Show("This is a number only field");
-                return;
-            }
-            else if (int.TryParse(textBoxAddNewChips.Text, out parsedValue) && int.Parse(textBoxAddNewChips.Text) <= 100000000)
+            else
             {
                 this.NewChips = int.Parse(this.textBoxAddNewChips.Text);
                 this.Close();
