@@ -39,7 +39,7 @@
         bool PFturn = false, Pturn = true, restart = false, raising = false;
         Poker.Type sorted;
         string[] ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
-        /*string[] ImgLocation ={
+        /*string[] ImgLocation ={card
                    "Assets\\Cards\\33.png","Assets\\Cards\\22.png",
                     "Assets\\Cards\\29.png","Assets\\Cards\\21.png",
                     "Assets\\Cards\\36.png","Assets\\Cards\\17.png",
@@ -55,12 +55,12 @@
         PictureBox[] Holder = new PictureBox[52];
         Timer timer = new Timer();
         Timer Updates = new Timer();
-        int t = 60, i, bb = 500, sb = 250, maxUp = 10000000, turnCount = 0;
+        int t = 60, i, bigBlind = 500500, sb = 250, maxUp = 10000000, turnCount = 0;
         #endregion
         public GameEngine()
         {
             //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
-            call = bb;
+            call = this.bigBlind;
             MaximizeBox = false;
             MinimizeBox = false;
             Updates.Start();
@@ -97,7 +97,7 @@
             smallBlind_TextBox.Visible = false;
             bigBlind_Button.Visible = false;
             smallBlind_Button.Visible = false;
-            raise_TextBox.Text = (bb * 2).ToString();
+            raise_TextBox.Text = (this.bigBlind * 2).ToString();
         }
 
         async Task Shuffle()
@@ -2165,7 +2165,7 @@
                 b4Raise = 0;
                 b5Raise = 0;
                 last = 0;
-                call = bb;
+                call = this.bigBlind;
                 Raise = 0;
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 bools.Clear();
@@ -2401,7 +2401,7 @@
             bot4Panel.Visible = false;
             bot5Panel.Visible = false;
 
-            call = bb;
+            call = this.bigBlind;
             Raise = 0;
             foldedPlayers = 5;
             type = 0;
@@ -3225,7 +3225,7 @@
 
         private void bOptions_Click(object sender, EventArgs e)
         {
-            bigBlind_TextBox.Text = bb.ToString();
+            bigBlind_TextBox.Text = this.bigBlind.ToString();
             smallBlind_TextBox.Text = sb.ToString();
             if (bigBlind_TextBox.Visible == false)
             {
@@ -3280,19 +3280,19 @@
             if (bigBlind_TextBox.Text.Contains(",") || bigBlind_TextBox.Text.Contains("."))
             {
                 MessageBox.Show("The Big Blind can be only round number !");
-                bigBlind_TextBox.Text = bb.ToString();
+                bigBlind_TextBox.Text = this.bigBlind.ToString();
                 return;
             }
             if (!int.TryParse(smallBlind_TextBox.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
-                smallBlind_TextBox.Text = bb.ToString();
+                smallBlind_TextBox.Text = this.bigBlind.ToString();
                 return;
             }
             if (int.Parse(bigBlind_TextBox.Text) > 200000)
             {
                 MessageBox.Show("The maximum of the Big Blind is 200 000");
-                bigBlind_TextBox.Text = bb.ToString();
+                bigBlind_TextBox.Text = this.bigBlind.ToString();
             }
             if (int.Parse(bigBlind_TextBox.Text) < 500)
             {
@@ -3300,7 +3300,7 @@
             }
             if (int.Parse(bigBlind_TextBox.Text) >= 500 && int.Parse(bigBlind_TextBox.Text) <= 200000)
             {
-                bb = int.Parse(bigBlind_TextBox.Text);
+                this.bigBlind = int.Parse(bigBlind_TextBox.Text);
                 MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
