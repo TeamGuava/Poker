@@ -1,4 +1,4 @@
-﻿namespace Poker.UI
+﻿namespace Poker.Contracts
 {
     public interface IChecker
     {

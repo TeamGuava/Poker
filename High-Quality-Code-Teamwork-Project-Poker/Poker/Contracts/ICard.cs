@@ -1,4 +1,4 @@
-﻿namespace Poker.UI
+﻿namespace Poker.Contracts
 {
     using System.Drawing;
 
