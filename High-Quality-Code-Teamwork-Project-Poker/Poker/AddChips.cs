@@ -6,39 +6,52 @@
 
     public partial class AddChips : Form
     {
-        public int a = 0;
+        private int chips = 0;
 
         public AddChips()
         {
             FontFamily fontFamily = new FontFamily("Arial");
             this.InitializeComponent();
             this.ControlBox = false;
-            label1.BorderStyle = BorderStyle.FixedSingle;
+            this.labelMainMessage.BorderStyle = BorderStyle.FixedSingle;
         }
 
-        public void button1_Click(object sender, EventArgs e)
+        public int NewChips
+        {
+            get
+            {
+                return this.chips;
+            }
+
+            set
+            {
+                this.chips = value;
+            }
+        }
+
+        public void ButtonAddChips_Click(object sender, EventArgs e)
         {
             int parsedValue;
-            if (int.Parse(textBox1.Text) > 100000000)
+            if (int.Parse(this.textBoxAddNewChips.Text) > 100000000)
             {
                 MessageBox.Show("The maximium chips you can add is 100000000");
 
                 return;
             }
 
-            if (!int.TryParse(textBox1.Text, out parsedValue))
+            if (!int.TryParse(this.textBoxAddNewChips.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
                 return;
             }
-            else if (int.TryParse(textBox1.Text, out parsedValue) && int.Parse(textBox1.Text) <= 100000000)
+            else if (int.TryParse(textBoxAddNewChips.Text, out parsedValue) && int.Parse(textBoxAddNewChips.Text) <= 100000000)
             {
-                a = int.Parse(this.textBox1.Text);
+                this.NewChips = int.Parse(this.textBoxAddNewChips.Text);
                 this.Close();
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonExit_Click(object sender, EventArgs e)
         {
             var message = "Are you sure?";
             var title = "Quit";

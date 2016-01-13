@@ -2135,14 +2135,14 @@
                 {
                     AddChips addMoreChipsForm = new AddChips();
                     addMoreChipsForm.ShowDialog();
-                    if (addMoreChipsForm.a != 0)
+                    if (addMoreChipsForm.NewChips != 0)
                     {
-                        playerChips = addMoreChipsForm.a;
-                        bot1Chips += addMoreChipsForm.a;
-                        bot2Chips += addMoreChipsForm.a;
-                        bot3Chips += addMoreChipsForm.a;
-                        bot4Chips += addMoreChipsForm.a;
-                        bot5Chips += addMoreChipsForm.a;
+                        playerChips = addMoreChipsForm.NewChips;
+                        bot1Chips += addMoreChipsForm.NewChips;
+                        bot2Chips += addMoreChipsForm.NewChips;
+                        bot3Chips += addMoreChipsForm.NewChips;
+                        bot4Chips += addMoreChipsForm.NewChips;
+                        bot5Chips += addMoreChipsForm.NewChips;
                         playerFoldTurn = false;
                         playerTurn = true;
                         raise_Button.Enabled = true;
@@ -2501,14 +2501,14 @@
             {
                 AddChips f2 = new AddChips();
                 f2.ShowDialog();
-                if (f2.a != 0)
+                if (f2.NewChips != 0)
                 {
-                    playerChips = f2.a;
-                    bot1Chips += f2.a;
-                    bot2Chips += f2.a;
-                    bot3Chips += f2.a;
-                    bot4Chips += f2.a;
-                    bot5Chips += f2.a;
+                    playerChips = f2.NewChips;
+                    bot1Chips += f2.NewChips;
+                    bot2Chips += f2.NewChips;
+                    bot3Chips += f2.NewChips;
+                    bot4Chips += f2.NewChips;
+                    bot5Chips += f2.NewChips;
                     playerFoldTurn = false;
                     playerTurn = true;
                     raise_Button.Enabled = true;
