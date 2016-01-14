@@ -63,6 +63,8 @@
         PictureBox[] Holder = new PictureBox[52];
         Timer timer = new Timer();
         Timer Updates = new Timer();
+
+        // GLOBAL I -> WTF ?! :D
         int t = 60, i, bigBlind = 500, sb = 250, maxUp = 10000000, turnCount = 0;
         #endregion
         public GameEngine()
@@ -76,7 +78,7 @@
             width = this.Width;
             height = this.Height;
             Shuffle();
-            pot_TextBox.Enabled = false;
+            potTextBox.Enabled = false;
             player_ChipsTextBox.Enabled = false;
             bot1_ChipsTextBox.Enabled = false;
             bot2_ChipsTextBox.Enabled = false;
@@ -105,7 +107,7 @@
             smallBlind_TextBox.Visible = false;
             bigBlind_Button.Visible = false;
             smallBlind_Button.Visible = false;
-            raise_TextBox.Text = (this.bigBlind * 2).ToString();
+            raiseTextBox.Text = (this.bigBlind * 2).ToString();
         }
 
         async Task Shuffle()
@@ -117,45 +119,45 @@
             bools.Add(bot4FoldTurn);
             bools.Add(bot5FoldTurn);
 
-            call_Button.Enabled = false;
-            raise_Button.Enabled = false;
-            fold_Button.Enabled = false;
-            check_Button.Enabled = false;
+            callButton.Enabled = false;
+            raiseButton.Enabled = false;
+            foldButton.Enabled = false;
+            checkButton.Enabled = false;
 
             MaximizeBox = false;
             MinimizeBox = false;
             bool check = false;
             Bitmap backImage = new Bitmap("Assets\\Back\\Back.png");
             int horizontal = 580, vertical = 480;
-            Random r = new Random();
-            for (i = ImgLocation.Length; i > 0; i--)
+            Random random = new Random();
+            for (int i = ImgLocation.Length; i > 0; i--)
             {
-                int j = r.Next(i);
+                int j = random.Next(i);
                 var k = ImgLocation[j];
                 ImgLocation[j] = ImgLocation[i - 1];
                 ImgLocation[i - 1] = k;
             }
 
-            for (i = 0; i < 17; i++)
+            for (int currentCard = 0; currentCard < 17; currentCard++)
             {
-                Deck[i] = Image.FromFile(ImgLocation[i]);
+                Deck[currentCard] = Image.FromFile(ImgLocation[currentCard]);
                 var charsToRemove = new string[] { "Assets\\Cards\\", ".png" };
                 foreach (var c in charsToRemove)
                 {
-                    ImgLocation[i] = ImgLocation[i].Replace(c, string.Empty);
+                    ImgLocation[currentCard] = ImgLocation[currentCard].Replace(c, string.Empty);
                 }
 
-                Reserve[i] = int.Parse(ImgLocation[i]) - 1;
-                Holder[i] = new PictureBox();
-                Holder[i].SizeMode = PictureBoxSizeMode.StretchImage;
-                Holder[i].Height = 130;
-                Holder[i].Width = 80;
-                this.Controls.Add(Holder[i]);
-                Holder[i].Name = "pb" + i.ToString();
+                Reserve[currentCard] = int.Parse(ImgLocation[currentCard]) - 1;
+                Holder[currentCard] = new PictureBox();
+                Holder[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
+                Holder[currentCard].Height = 130;
+                Holder[currentCard].Width = 80;
+                this.Controls.Add(Holder[currentCard]);
+                Holder[currentCard].Name = "pb" + currentCard.ToString();
                 await Task.Delay(200);
 
                 // Throwing Cards
-                if (i < 2)
+                if (currentCard < 2)
                 {
                     if (Holder[0].Tag != null)
                     {
@@ -163,11 +165,11 @@
                     }
 
                     Holder[0].Tag = Reserve[0];
-                    Holder[i].Image = Deck[i];
-                    Holder[i].Anchor = AnchorStyles.Bottom;
+                    Holder[currentCard].Image = Deck[currentCard];
+                    Holder[currentCard].Anchor = AnchorStyles.Bottom;
                     //Holder[i].Dock = DockStyle.Top;
-                    Holder[i].Location = new Point(horizontal, vertical);
-                    horizontal += Holder[i].Width;
+                    Holder[currentCard].Location = new Point(horizontal, vertical);
+                    horizontal += Holder[currentCard].Width;
                     this.Controls.Add(playerPanel);
                     playerPanel.Location = new Point(Holder[0].Left - 10, Holder[0].Top - 10);
                     playerPanel.BackColor = Color.DarkBlue;
@@ -179,14 +181,8 @@
                 if (bot1Chips > 0)
                 {
                     foldedPlayers--;
-                    if (i >= 2 && i < 4)
+                    if (currentCard >= 2 && currentCard < 4)
                     {
-                        if (Holder[2].Tag != null)
-                        {
-                            Holder[3].Tag = Reserve[3];
-                        }
-
-                        Holder[2].Tag = Reserve[2];
                         if (!check)
                         {
                             horizontal = 15;
@@ -194,19 +190,15 @@
                         }
 
                         check = true;
-                        Holder[i].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-                        Holder[i].Image = backImage;
-                        //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
-                        horizontal += Holder[i].Width;
-                        Holder[i].Visible = true;
-                        this.Controls.Add(bot1Panel);
-                        bot1Panel.Location = new Point(Holder[2].Left - 10, Holder[2].Top - 10);
-                        bot1Panel.BackColor = Color.DarkBlue;
-                        bot1Panel.Height = 150;
-                        bot1Panel.Width = 180;
-                        bot1Panel.Visible = false;
-                        if (i == 3)
+
+                        if (currentCard % 2 == 1)
+                        {
+                            horizontal += Holder[currentCard].Width;
+                        }
+
+                        this.SetBotCards(bot1Panel, Holder, backImage, Reserve, horizontal, vertical, currentCard);
+
+                        if (currentCard == 3)
                         {
                             check = false;
                         }
@@ -216,34 +208,22 @@
                 if (bot2Chips > 0)
                 {
                     foldedPlayers--;
-                    if (i >= 4 && i < 6)
+                    if (currentCard >= 4 && currentCard < 6)
                     {
-                        if (Holder[4].Tag != null)
-                        {
-                            Holder[5].Tag = Reserve[5];
-                        }
-
-                        Holder[4].Tag = Reserve[4];
                         if (!check)
                         {
                             horizontal = 75;
                             vertical = 65;
                         }
 
-                        check = true;
-                        Holder[i].Anchor = AnchorStyles.Top | AnchorStyles.Left;
-                        Holder[i].Image = backImage;
-                        //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
-                        horizontal += Holder[i].Width;
-                        Holder[i].Visible = true;
-                        this.Controls.Add(bot2Panel);
-                        bot2Panel.Location = new Point(Holder[4].Left - 10, Holder[4].Top - 10);
-                        bot2Panel.BackColor = Color.DarkBlue;
-                        bot2Panel.Height = 150;
-                        bot2Panel.Width = 180;
-                        bot2Panel.Visible = false;
-                        if (i == 5)
+                        if (currentCard % 2 == 1)
+                        {
+                            horizontal += Holder[currentCard].Width;
+                        }
+
+                        this.SetBotCards(bot1Panel, Holder, backImage, Reserve, horizontal, vertical, currentCard);
+
+                        if (currentCard == 5)
                         {
                             check = false;
                         }
@@ -253,14 +233,8 @@
                 if (bot3Chips > 0)
                 {
                     foldedPlayers--;
-                    if (i >= 6 && i < 8)
+                    if (currentCard >= 6 && currentCard < 8)
                     {
-                        if (Holder[6].Tag != null)
-                        {
-                            Holder[7].Tag = Reserve[7];
-                        }
-
-                        Holder[6].Tag = Reserve[6];
                         if (!check)
                         {
                             horizontal = 590;
@@ -268,19 +242,15 @@
                         }
 
                         check = true;
-                        Holder[i].Anchor = AnchorStyles.Top;
-                        Holder[i].Image = backImage;
-                        //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
-                        horizontal += Holder[i].Width;
-                        Holder[i].Visible = true;
-                        this.Controls.Add(bot3Panel);
-                        bot3Panel.Location = new Point(Holder[6].Left - 10, Holder[6].Top - 10);
-                        bot3Panel.BackColor = Color.DarkBlue;
-                        bot3Panel.Height = 150;
-                        bot3Panel.Width = 180;
-                        bot3Panel.Visible = false;
-                        if (i == 7)
+
+                        if (currentCard % 2 == 1)
+                        {
+                            horizontal += Holder[currentCard].Width;
+                        }
+
+                        this.SetBotCards(bot1Panel, Holder, backImage, Reserve, horizontal, vertical, currentCard);
+
+                        if (currentCard == 7)
                         {
                             check = false;
                         }
@@ -290,14 +260,8 @@
                 if (bot4Chips > 0)
                 {
                     foldedPlayers--;
-                    if (i >= 8 && i < 10)
+                    if (currentCard >= 8 && currentCard < 10)
                     {
-                        if (Holder[8].Tag != null)
-                        {
-                            Holder[9].Tag = Reserve[9];
-                        }
-
-                        Holder[8].Tag = Reserve[8];
                         if (!check)
                         {
                             horizontal = 1115;
@@ -305,19 +269,15 @@
                         }
 
                         check = true;
-                        Holder[i].Anchor = AnchorStyles.Top | AnchorStyles.Right;
-                        Holder[i].Image = backImage;
-                        //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
-                        horizontal += Holder[i].Width;
-                        Holder[i].Visible = true;
-                        this.Controls.Add(bot4Panel);
-                        bot4Panel.Location = new Point(Holder[8].Left - 10, Holder[8].Top - 10);
-                        bot4Panel.BackColor = Color.DarkBlue;
-                        bot4Panel.Height = 150;
-                        bot4Panel.Width = 180;
-                        bot4Panel.Visible = false;
-                        if (i == 9)
+
+                        if (currentCard % 2 == 1)
+                        {
+                            horizontal += Holder[currentCard].Width;
+                        }
+
+                        this.SetBotCards(bot1Panel, Holder, backImage, Reserve, horizontal, vertical, currentCard);
+
+                        if (currentCard == 9)
                         {
                             check = false;
                         }
@@ -327,14 +287,8 @@
                 if (bot5Chips > 0)
                 {
                     foldedPlayers--;
-                    if (i >= 10 && i < 12)
+                    if (currentCard >= 10 && currentCard < 12)
                     {
-                        if (Holder[10].Tag != null)
-                        {
-                            Holder[11].Tag = Reserve[11];
-                        }
-
-                        Holder[10].Tag = Reserve[10];
                         if (!check)
                         {
                             horizontal = 1160;
@@ -342,48 +296,25 @@
                         }
 
                         check = true;
-                        Holder[i].Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-                        Holder[i].Image = backImage;
-                        //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
-                        horizontal += Holder[i].Width;
-                        Holder[i].Visible = true;
-                        this.Controls.Add(bot5Panel);
-                        bot5Panel.Location = new Point(Holder[10].Left - 10, Holder[10].Top - 10);
-                        bot5Panel.BackColor = Color.DarkBlue;
-                        bot5Panel.Height = 150;
-                        bot5Panel.Width = 180;
-                        bot5Panel.Visible = false;
-                        if (i == 11)
+
+                        if (currentCard % 2 == 1)
+                        {
+                            horizontal += Holder[currentCard].Width;
+                        }
+
+                        this.SetBotCards(bot1Panel, Holder, backImage, Reserve, horizontal, vertical, currentCard);
+
+                        if (currentCard == 11)
                         {
                             check = false;
                         }
                     }
                 }
 
-                if (i >= 12)
+                // Printing five cards on the desk
+                if (currentCard >= 12)
                 {
-                    if (i == 12)
-                    {
-                        Holder[12].Tag = Reserve[12];
-                    }
-                    else if (i > 13)
-                    {
-                        Holder[13].Tag = Reserve[13];
-                    }
-                    else if (i > 14)
-                    {
-                        Holder[14].Tag = Reserve[14];
-                    }
-                    else if (i > 15)
-                    {
-                        Holder[15].Tag = Reserve[15];
-                    }
-                    else if (i == 16)
-                    {
-                        Holder[16].Tag = Reserve[16];
-
-                    }
+                    Holder[currentCard].Tag = Reserve[currentCard];
 
                     if (!check)
                     {
@@ -392,12 +323,12 @@
                     }
 
                     check = true;
-                    if (Holder[i] != null)
+                    if (Holder[currentCard] != null)
                     {
-                        Holder[i].Anchor = AnchorStyles.None;
-                        Holder[i].Image = backImage;
+                        Holder[currentCard].Anchor = AnchorStyles.None;
+                        Holder[currentCard].Image = backImage;
                         //Holder[i].Image = Deck[i];
-                        Holder[i].Location = new Point(horizontal, vertical);
+                        Holder[currentCard].Location = new Point(horizontal, vertical);
                         horizontal += 110;
                     }
                 }
@@ -411,7 +342,7 @@
                 else
                 {
                     bot1FoldTurn = false;
-                    if (i == 3)
+                    if (currentCard == 3)
                     {
                         if (Holder[3] != null)
                         {
@@ -430,7 +361,7 @@
                 else
                 {
                     bot2FoldTurn = false;
-                    if (i == 5)
+                    if (currentCard == 5)
                     {
                         if (Holder[5] != null)
                         {
@@ -449,7 +380,7 @@
                 else
                 {
                     bot3FoldTurn = false;
-                    if (i == 7)
+                    if (currentCard == 7)
                     {
                         if (Holder[7] != null)
                         {
@@ -468,7 +399,7 @@
                 else
                 {
                     bot4FoldTurn = false;
-                    if (i == 9)
+                    if (currentCard == 9)
                     {
                         if (Holder[9] != null)
                         {
@@ -488,7 +419,7 @@
                 else
                 {
                     bot5FoldTurn = false;
-                    if (i == 11)
+                    if (currentCard == 11)
                     {
                         if (Holder[11] != null)
                         {
@@ -498,7 +429,7 @@
                     }
                 }
 
-                if (i == 16)
+                if (currentCard == 16)
                 {
                     if (!restart)
                     {
@@ -506,6 +437,7 @@
                         MinimizeBox = true;
                     }
 
+                    this.EnableButtons();
                     timer.Start();
                 }
             }
@@ -526,15 +458,6 @@
             {
                 foldedPlayers = 5;
             }
-
-            if (i == 17)
-            {
-                raise_Button.Enabled = true;
-                call_Button.Enabled = true;
-                raise_Button.Enabled = true;
-                raise_Button.Enabled = true;
-                fold_Button.Enabled = true;
-            }
         }
 
         async Task Turns()
@@ -544,20 +467,19 @@
             {
                 if (playerTurn)
                 {
-                    FixCall(player_StatusButton, ref playerCall, ref playerRaise, 1);
+                    FixCall(playerStatusButton, ref playerCall, ref playerRaise, 1);
                     //MessageBox.Show("Player's Turn");
-                    timer_ProgressBar.Visible = true;
-                    timer_ProgressBar.Value = 1000;
+                    timerProgressBar.Visible = true;
+                    timerProgressBar.Value = 1000;
                     t = 60;
                     maxUp = 10000000;
                     timer.Start();
-                    raise_Button.Enabled = true;
-                    call_Button.Enabled = true;
-                    raise_Button.Enabled = true;
-                    raise_Button.Enabled = true;
-                    fold_Button.Enabled = true;
+
+                    raiseButton.Enabled = true;
+                    callButton.Enabled = true;
+                    foldButton.Enabled = true;
                     turnCount++;
-                    FixCall(player_StatusButton, ref playerCall, ref playerRaise, 2);
+                    FixCall(playerStatusButton, ref playerCall, ref playerRaise, 2);
                 }
             }
 
@@ -566,7 +488,7 @@
                 await AllIn();
                 if (playerFoldTurn && !playerFolded)
                 {
-                    if (call_Button.Text.Contains("All in") == false || raise_Button.Text.Contains("All in") == false)
+                    if (callButton.Text.Contains("All in") == false || raiseButton.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
@@ -576,12 +498,12 @@
                 }
 
                 await CheckRaise(0, 0);
-                timer_ProgressBar.Visible = false;
-                raise_Button.Enabled = false;
-                call_Button.Enabled = false;
-                raise_Button.Enabled = false;
-                raise_Button.Enabled = false;
-                fold_Button.Enabled = false;
+
+                timerProgressBar.Visible = false;
+                raiseButton.Enabled = false;
+                callButton.Enabled = false;
+                foldButton.Enabled = false;
+
                 timer.Stop();
                 bot1turn = true;
                 if (!bot1FoldTurn)
@@ -735,7 +657,7 @@
 
                 if (playerFoldTurn && !playerFolded)
                 {
-                    if (call_Button.Text.Contains("All in") == false || raise_Button.Text.Contains("All in") == false)
+                    if (callButton.Text.Contains("All in") == false || raiseButton.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
@@ -760,7 +682,7 @@
             {
             }
 
-            if (!foldedTurn || c1 == 0 && c2 == 1 && player_StatusButton.Text.Contains("Fold") == false)
+            if (!foldedTurn || c1 == 0 && c2 == 1 && playerStatusButton.Text.Contains("Fold") == false)
             {
                 // Variables
                 bool done = false, vf = false;
@@ -790,7 +712,7 @@
                 Array.Sort(st3);
                 Array.Sort(st4);
 
-                for (i = 0; i < 16; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     if (Reserve[i] == int.Parse(Holder[c1].Tag.ToString()) && Reserve[i + 1] == int.Parse(Holder[c2].Tag.ToString()))
                     {
@@ -1000,6 +922,7 @@
                 var f2 = Straight1.Where(o => o % 4 == 1).ToArray();
                 var f3 = Straight1.Where(o => o % 4 == 2).ToArray();
                 var f4 = Straight1.Where(o => o % 4 == 3).ToArray();
+
                 if (f1.Length == 3 || f1.Length == 4)
                 {
                     if (Reserve[i] % 4 == Reserve[i + 1] % 4 && Reserve[i] % 4 == f1[0] % 4)
@@ -1236,6 +1159,7 @@
                         }
                     }
                 }
+
                 if (f3.Length == 4)//different cards in hand
                 {
                     if (Reserve[i] % 4 != Reserve[i + 1] % 4 && Reserve[i] % 4 == f3[0] % 4)
@@ -1277,6 +1201,7 @@
                         }
                     }
                 }
+
                 if (f3.Length == 5)
                 {
                     if (Reserve[i] % 4 == f3[0] % 4 && Reserve[i] / 4 > f3.Min() / 4)
@@ -1337,6 +1262,7 @@
                         }
                     }
                 }
+
                 if (f4.Length == 4)//different cards in hand
                 {
                     if (Reserve[i] % 4 != Reserve[i + 1] % 4 && Reserve[i] % 4 == f4[0] % 4)
@@ -1408,7 +1334,8 @@
                         vf = true;
                     }
                 }
-                //ace
+
+                // ace
                 if (f1.Length > 0)
                 {
                     if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f1[0] % 4 && vf && f1.Length > 0)
@@ -1873,38 +1800,38 @@
                 {
                     if (CheckWinners.Contains("Player"))
                     {
-                        playerChips += int.Parse(pot_TextBox.Text) / winners;
+                        playerChips += int.Parse(potTextBox.Text) / winners;
                         player_ChipsTextBox.Text = playerChips.ToString();
                         //pPanel.Visible = true;
 
                     }
                     if (CheckWinners.Contains("Bot 1"))
                     {
-                        bot1Chips += int.Parse(pot_TextBox.Text) / winners;
+                        bot1Chips += int.Parse(potTextBox.Text) / winners;
                         bot1_ChipsTextBox.Text = bot1Chips.ToString();
                         //b1Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 2"))
                     {
-                        bot2Chips += int.Parse(pot_TextBox.Text) / winners;
+                        bot2Chips += int.Parse(potTextBox.Text) / winners;
                         bot2_ChipsTextBox.Text = bot2Chips.ToString();
                         //b2Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 3"))
                     {
-                        bot3Chips += int.Parse(pot_TextBox.Text) / winners;
+                        bot3Chips += int.Parse(potTextBox.Text) / winners;
                         bot3_ChipsTextBox.Text = bot3Chips.ToString();
                         //b3Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 4"))
                     {
-                        bot4Chips += int.Parse(pot_TextBox.Text) / winners;
+                        bot4Chips += int.Parse(potTextBox.Text) / winners;
                         bot4_ChipsTextBox.Text = bot4Chips.ToString();
                         //b4Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 5"))
                     {
-                        bot5Chips += int.Parse(pot_TextBox.Text) / winners;
+                        bot5Chips += int.Parse(potTextBox.Text) / winners;
                         bot5_ChipsTextBox.Text = bot5Chips.ToString();
                         //b5Panel.Visible = true;
                     }
@@ -1914,38 +1841,38 @@
                 {
                     if (CheckWinners.Contains("Player"))
                     {
-                        playerChips += int.Parse(pot_TextBox.Text);
+                        playerChips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //pPanel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 1"))
                     {
-                        bot1Chips += int.Parse(pot_TextBox.Text);
+                        bot1Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //b1Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 2"))
                     {
-                        bot2Chips += int.Parse(pot_TextBox.Text);
+                        bot2Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //b2Panel.Visible = true;
 
                     }
                     if (CheckWinners.Contains("Bot 3"))
                     {
-                        bot3Chips += int.Parse(pot_TextBox.Text);
+                        bot3Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //b3Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 4"))
                     {
-                        bot4Chips += int.Parse(pot_TextBox.Text);
+                        bot4Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //b4Panel.Visible = true;
                     }
                     if (CheckWinners.Contains("Bot 5"))
                     {
-                        bot5Chips += int.Parse(pot_TextBox.Text);
+                        bot5Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //b5Panel.Visible = true;
                     }
@@ -1976,7 +1903,7 @@
                         rounds++;
                         if (!playerFoldTurn)
                         {
-                            player_StatusButton.Text = string.Empty;
+                            playerStatusButton.Text = string.Empty;
                         }
                         else if (!bot1FoldTurn)
                         {
@@ -2079,7 +2006,7 @@
             if (rounds == End && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
-                if (!player_StatusButton.Text.Contains("Fold"))
+                if (!playerStatusButton.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
                     Rules(0, 1, "Player", ref playerType, ref playerPower, playerFoldTurn);
@@ -2145,10 +2072,10 @@
                         bot5Chips += addMoreChipsForm.NewChips;
                         playerFoldTurn = false;
                         playerTurn = true;
-                        raise_Button.Enabled = true;
-                        fold_Button.Enabled = true;
-                        check_Button.Enabled = true;
-                        raise_Button.Text = "Raise";
+                        raiseButton.Enabled = true;
+                        foldButton.Enabled = true;
+                        checkButton.Enabled = true;
+                        raiseButton.Text = "Raise";
                     }
                 }
 
@@ -2207,8 +2134,8 @@
                     Holder[os].Visible = false;
                 }
 
-                pot_TextBox.Text = "0";
-                player_StatusButton.Text = string.Empty;
+                potTextBox.Text = "0";
+                playerStatusButton.Text = string.Empty;
 
                 await Shuffle();
                 await Turns();
@@ -2252,8 +2179,8 @@
                     if (cRaise == Raise && Raise > 0)
                     {
                         call = 0;
-                        call_Button.Enabled = false;
-                        call_Button.Text = "Callisfuckedup";
+                        callButton.Enabled = false;
+                        callButton.Text = "Call button is unable.";
                     }
                 }
             }
@@ -2264,12 +2191,12 @@
             // All in
             if (playerChips <= 0 && !intsadded)
             {
-                if (player_StatusButton.Text.Contains("Raise"))
+                if (playerStatusButton.Text.Contains("Raise"))
                 {
                     ints.Add(playerChips);
                     intsadded = true;
                 }
-                else if (player_StatusButton.Text.Contains("Call"))
+                else if (playerStatusButton.Text.Contains("Call"))
                 {
                     ints.Add(playerChips);
                     intsadded = true;
@@ -2339,42 +2266,42 @@
                 int index = bools.IndexOf(false);
                 if (index == 0)
                 {
-                    playerChips += int.Parse(pot_TextBox.Text);
+                    playerChips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = playerChips.ToString();
                     playerPanel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
                 if (index == 1)
                 {
-                    bot1Chips += int.Parse(pot_TextBox.Text);
+                    bot1Chips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = bot1Chips.ToString();
                     bot1Panel.Visible = true;
                     MessageBox.Show("Bot 1 Wins");
                 }
                 if (index == 2)
                 {
-                    bot2Chips += int.Parse(pot_TextBox.Text);
+                    bot2Chips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = bot2Chips.ToString();
                     bot2Panel.Visible = true;
                     MessageBox.Show("Bot 2 Wins");
                 }
                 if (index == 3)
                 {
-                    bot3Chips += int.Parse(pot_TextBox.Text);
+                    bot3Chips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = bot3Chips.ToString();
                     bot3Panel.Visible = true;
                     MessageBox.Show("Bot 3 Wins");
                 }
                 if (index == 4)
                 {
-                    bot4Chips += int.Parse(pot_TextBox.Text);
+                    bot4Chips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = bot4Chips.ToString();
                     bot4Panel.Visible = true;
                     MessageBox.Show("Bot 4 Wins");
                 }
                 if (index == 5)
                 {
-                    bot5Chips += int.Parse(pot_TextBox.Text);
+                    bot5Chips += int.Parse(potTextBox.Text);
                     player_ChipsTextBox.Text = bot5Chips.ToString();
                     bot5Panel.Visible = true;
                     MessageBox.Show("Bot 5 Wins");
@@ -2487,11 +2414,11 @@
 
             sorted.Current = 0;
             sorted.Power = 0;
-            pot_TextBox.Text = "0";
+            potTextBox.Text = "0";
             t = 60;
             maxUp = 10000000;
             turnCount = 0;
-            player_StatusButton.Text = string.Empty;
+            playerStatusButton.Text = string.Empty;
             bot1_StatusButton.Text = string.Empty;
             bot2_StatusButton.Text = string.Empty;
             bot3_StatusButton.Text = string.Empty;
@@ -2511,10 +2438,10 @@
                     bot5Chips += f2.NewChips;
                     playerFoldTurn = false;
                     playerTurn = true;
-                    raise_Button.Enabled = true;
-                    fold_Button.Enabled = true;
-                    check_Button.Enabled = true;
-                    raise_Button.Text = "Raise";
+                    raiseButton.Enabled = true;
+                    foldButton.Enabled = true;
+                    checkButton.Enabled = true;
+                    raiseButton.Text = "Raise";
                 }
             }
             ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
@@ -2534,7 +2461,7 @@
             sorted.Current = 0;
             sorted.Power = 0;
             string fixedLast = "qwerty";
-            if (!player_StatusButton.Text.Contains("Fold"))
+            if (!playerStatusButton.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
                 Rules(0, 1, "Player", ref playerType, ref playerPower, playerFoldTurn);
@@ -2776,14 +2703,14 @@
             sTurn = false;
             sChips -= call;
             sStatus.Text = "Call " + call;
-            pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + call).ToString();
+            potTextBox.Text = (int.Parse(potTextBox.Text) + call).ToString();
         }
 
         private void Raised(ref int sChips, ref bool sTurn, Label sStatus)
         {
             sChips -= Convert.ToInt32(Raise);
             sStatus.Text = "Raise " + Raise;
-            pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + Convert.ToInt32(Raise)).ToString();
+            potTextBox.Text = (int.Parse(potTextBox.Text) + Convert.ToInt32(Raise)).ToString();
             call = Convert.ToInt32(Raise);
             raising = true;
             sTurn = false;
@@ -2972,7 +2899,7 @@
                         botTurn = false;
                         botChips = 0;
                         botStatus.Text = "Call " + botChips;
-                        pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + botChips).ToString();
+                        potTextBox.Text = (int.Parse(potTextBox.Text) + botChips).ToString();
                     }
                 }
                 else
@@ -3005,7 +2932,7 @@
         #region UI
         private async void timer_Tick(object sender, object e)
         {
-            if (timer_ProgressBar.Value <= 0)
+            if (timerProgressBar.Value <= 0)
             {
                 playerFoldTurn = true;
                 await Turns();
@@ -3013,7 +2940,7 @@
             if (t > 0)
             {
                 t--;
-                timer_ProgressBar.Value = (t / 6) * 100;
+                timerProgressBar.Value = (t / 6) * 100;
             }
         }
 
@@ -3053,10 +2980,10 @@
             {
                 playerTurn = false;
                 playerFoldTurn = true;
-                call_Button.Enabled = false;
-                raise_Button.Enabled = false;
-                fold_Button.Enabled = false;
-                check_Button.Enabled = false;
+                callButton.Enabled = false;
+                raiseButton.Enabled = false;
+                foldButton.Enabled = false;
+                checkButton.Enabled = false;
             }
             if (maxUp > 0)
             {
@@ -3064,69 +2991,69 @@
             }
             if (playerChips >= call)
             {
-                call_Button.Text = "Call " + call.ToString();
+                callButton.Text = "Call " + call.ToString();
             }
             else
             {
-                call_Button.Text = "All in";
-                raise_Button.Enabled = false;
+                callButton.Text = "All in";
+                raiseButton.Enabled = false;
             }
 
             if (call > 0)
             {
-                check_Button.Enabled = false;
+                checkButton.Enabled = false;
             }
             else if (call <= 0)
             {
-                check_Button.Enabled = true;
-                call_Button.Text = "Call";
-                call_Button.Enabled = false;
+                checkButton.Enabled = true;
+                callButton.Text = "Call";
+                callButton.Enabled = false;
             }
 
             if (playerChips <= 0)
             {
-                raise_Button.Enabled = false;
+                raiseButton.Enabled = false;
             }
 
             int parsedValue;
 
-            if (raise_TextBox.Text != string.Empty && int.TryParse(raise_TextBox.Text, out parsedValue))
+            if (raiseTextBox.Text != string.Empty && int.TryParse(raiseTextBox.Text, out parsedValue))
             {
-                if (playerChips <= int.Parse(raise_TextBox.Text))
+                if (playerChips <= int.Parse(raiseTextBox.Text))
                 {
-                    raise_Button.Text = "All in";
+                    raiseButton.Text = "All in";
                 }
                 else
                 {
-                    raise_Button.Text = "Raise";
+                    raiseButton.Text = "Raise";
                 }
             }
 
             if (playerChips < call)
             {
-                raise_Button.Enabled = false;
+                raiseButton.Enabled = false;
             }
         }
 
-        private async void bFold_Click(object sender, EventArgs e)
+        private async void botFoldOnClick(object sender, EventArgs e)
         {
-            player_StatusButton.Text = "Fold";
+            playerStatusButton.Text = "Fold";
             playerTurn = false;
             playerFoldTurn = true;
             await Turns();
         }
 
-        private async void bCheck_Click(object sender, EventArgs e)
+        private async void botCheckOnClick(object sender, EventArgs e)
         {
             if (call <= 0)
             {
                 playerTurn = false;
-                player_StatusButton.Text = "Check";
+                playerStatusButton.Text = "Check";
             }
             else
             {
                 // pStatus.Text = "All in " + Chips;
-                check_Button.Enabled = false;
+                checkButton.Enabled = false;
             }
             await Turns();
         }
@@ -3138,55 +3065,55 @@
             {
                 playerChips -= call;
                 player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
-                if (pot_TextBox.Text != string.Empty)
+                if (potTextBox.Text != string.Empty)
                 {
-                    pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + call).ToString();
+                    potTextBox.Text = (int.Parse(potTextBox.Text) + call).ToString();
                 }
                 else
                 {
-                    pot_TextBox.Text = call.ToString();
+                    potTextBox.Text = call.ToString();
                 }
                 playerTurn = false;
-                player_StatusButton.Text = "Call " + call;
+                playerStatusButton.Text = "Call " + call;
                 playerCall = call;
             }
             else if (playerChips <= call && call > 0)
             {
-                pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + playerChips).ToString();
-                player_StatusButton.Text = "All in " + playerChips;
+                potTextBox.Text = (int.Parse(potTextBox.Text) + playerChips).ToString();
+                playerStatusButton.Text = "All in " + playerChips;
                 playerChips = 0;
                 player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
                 playerTurn = false;
-                fold_Button.Enabled = false;
+                foldButton.Enabled = false;
                 playerCall = playerChips;
             }
             await Turns();
         }
 
-        private async void bRaise_Click(object sender, EventArgs e)
+        private async void botRaiseOnClick(object sender, EventArgs e)
         {
             Rules(0, 1, "Player", ref playerType, ref playerPower, playerFoldTurn);
             int parsedValue;
-            if (raise_TextBox.Text != string.Empty && int.TryParse(raise_TextBox.Text, out parsedValue))
+            if (raiseTextBox.Text != string.Empty && int.TryParse(raiseTextBox.Text, out parsedValue))
             {
                 if (playerChips > call)
                 {
-                    if (Raise * 2 > int.Parse(raise_TextBox.Text))
+                    if (Raise * 2 > int.Parse(raiseTextBox.Text))
                     {
-                        raise_TextBox.Text = (Raise * 2).ToString();
-                        MessageBox.Show("You must raise atleast twice as the current raise !");
+                        raiseTextBox.Text = (Raise * 2).ToString();
+                        MessageBox.Show("You must raise at least twice as the current raise !");
                         return;
                     }
                     else
                     {
-                        if (playerChips >= int.Parse(raise_TextBox.Text))
+                        if (playerChips >= int.Parse(raiseTextBox.Text))
                         {
-                            call = int.Parse(raise_TextBox.Text);
-                            Raise = int.Parse(raise_TextBox.Text);
-                            player_StatusButton.Text = "Raise " + call.ToString();
-                            pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + call).ToString();
-                            call_Button.Text = "Call";
-                            playerChips -= int.Parse(raise_TextBox.Text);
+                            call = int.Parse(raiseTextBox.Text);
+                            Raise = int.Parse(raiseTextBox.Text);
+                            playerStatusButton.Text = "Raise " + call.ToString();
+                            potTextBox.Text = (int.Parse(potTextBox.Text) + call).ToString();
+                            callButton.Text = "Call";
+                            playerChips -= int.Parse(raiseTextBox.Text);
                             raising = true;
                             last = 0;
                             playerRaise = Convert.ToInt32(Raise);
@@ -3195,8 +3122,8 @@
                         {
                             call = playerChips;
                             Raise = playerChips;
-                            pot_TextBox.Text = (int.Parse(pot_TextBox.Text) + playerChips).ToString();
-                            player_StatusButton.Text = "Raise " + call.ToString();
+                            potTextBox.Text = (int.Parse(potTextBox.Text) + playerChips).ToString();
+                            playerStatusButton.Text = "Raise " + call.ToString();
                             playerChips = 0;
                             raising = true;
                             last = 0;
@@ -3214,7 +3141,7 @@
             await Turns();
         }
 
-        private void bAdd_Click(object sender, EventArgs e)
+        private void botAddOnClick(object sender, EventArgs e)
         {
             if (addChips_TextBox.Text == string.Empty)
             {
@@ -3231,7 +3158,7 @@
             player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
         }
 
-        private void bOptions_Click(object sender, EventArgs e)
+        private void botOptionsOnClick(object sender, EventArgs e)
         {
             bigBlind_TextBox.Text = this.bigBlind.ToString();
             smallBlind_TextBox.Text = sb.ToString();
@@ -3319,5 +3246,35 @@
             height = this.Height;
         }
         #endregion
+
+        private void SetBotCards(Panel botPanel, PictureBox[] Holder, Bitmap backImage, int[] Reserve, int horizontal, int vertical, int currentCard)
+        {
+            Holder[currentCard].Tag = Reserve[currentCard];
+
+            Holder[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            Holder[currentCard].Image = backImage;
+            // Holder[currentCard].Image = Deck[currentCard];
+            Holder[currentCard].Location = new Point(horizontal, vertical);
+
+            if (currentCard % 2 == 0)
+            {
+                horizontal += Holder[currentCard].Width;
+            }
+
+            Holder[currentCard].Visible = true;
+            Controls.Add(botPanel);
+            botPanel.Location = new Point(Holder[currentCard].Left - 10, Holder[currentCard].Top - 10);
+            botPanel.BackColor = Color.DarkBlue;
+            botPanel.Height = 150;
+            botPanel.Width = 180;
+            botPanel.Visible = false;
+        }
+
+        private void EnableButtons()
+        {
+            raiseButton.Enabled = true;
+            callButton.Enabled = true;
+            foldButton.Enabled = true;
+        }
     }
 }
