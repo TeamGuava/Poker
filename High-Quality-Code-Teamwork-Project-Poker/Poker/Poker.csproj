@@ -58,6 +58,9 @@
     <Compile Include="GameEngine.Designer.cs">
       <DependentUpon>GameEngine.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Bot.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PokerMain.cs" />
     <Compile Include="ProgressBars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -214,9 +217,7 @@
     <Content Include="Resources\Cards\9_of_hearts.png" />
     <Content Include="Resources\Cards\9_of_spades.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
