@@ -1,6 +1,6 @@
 ﻿namespace Poker.Contracts
 {
-    public interface IBot : IPlayer
+    public interface IBot : IGameParticipant
     {
         void MakeDecision();
     }

@@ -71,7 +71,7 @@
     <Compile Include="Contracts\IChecker.cs" />
     <Compile Include="Contracts\IChip.cs" />
     <Compile Include="Contracts\IFold.cs" />
-    <Compile Include="Contracts\IPlayer.cs" />
+    <Compile Include="Contracts\IGameParticipant.cs" />
     <Compile Include="Contracts\IRaiser.cs" />
     <EmbeddedResource Include="AddChips.resx">
       <DependentUpon>AddChips.cs</DependentUpon>
