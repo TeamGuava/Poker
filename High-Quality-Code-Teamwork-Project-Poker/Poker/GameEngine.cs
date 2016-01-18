@@ -21,8 +21,11 @@
         #region Variables
         ProgressBar progressBar = new ProgressBar();
 
-        Panel playerPanel = new Panel();
         Bot[] botsPanel = new Bot[5];
+
+        // Moving playerPanel, playerChips, playerCall and playerRaise to the Player class
+        // all references to the forementioned fields updated and attached to the class
+        Player player = new Player(StartChips);
 
         private int call = 500;
         private int foldedPlayers = 5;
@@ -34,17 +37,13 @@
         private double playerPower = 0;
         private double botPower = 0;
 
-        public int playerChips = StartChips;
         private int botChips = StartChips;
         private bool botTurn = false;
         private bool botFoldTurn = false;
-        private bool playerFolded;
         private bool botFolded;
         private bool intsadded;
         bool changed;
-        private int playerCall = 0;
         private int botCall = 0;
-        private int playerRaise = 0;
         int botRaise = 0;
         int height, width, winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         private int last = 123;
@@ -91,7 +90,7 @@
             Shuffle();
             potTextBox.Enabled = false;
             player_ChipsTextBox.Enabled = false;
-            player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
+            player_ChipsTextBox.Text = "Chips : " + player.Chips.ToString();
 
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
@@ -185,12 +184,12 @@
                     //Holder[i].Dock = DockStyle.Top;
                     Holder[currentCard].Location = new Point(horizontal, vertical);
                     horizontal += Holder[currentCard].Width;
-                    this.Controls.Add(playerPanel);
-                    playerPanel.Location = new Point(Holder[0].Left - 10, Holder[0].Top - 10);
-                    playerPanel.BackColor = Color.DarkBlue;
-                    playerPanel.Height = 150;
-                    playerPanel.Width = 180;
-                    playerPanel.Visible = false;
+                    this.Controls.Add(player.PlayerPanel);
+                    player.PlayerPanel.Location = new Point(Holder[0].Left - 10, Holder[0].Top - 10);
+                    player.PlayerPanel.BackColor = Color.DarkBlue;
+                    player.PlayerPanel.Height = 150;
+                    player.PlayerPanel.Width = 180;
+                    player.PlayerPanel.Visible = false;
                 }
 
                 //for (int bot = 0; bot < NumberOfBots; bot++)
@@ -419,7 +418,7 @@
             {
                 if (playerTurn)
                 {
-                    FixCall(playerStatusButton, ref playerCall, ref playerRaise, 1);
+                    FixCallPlayer(1);
                     //MessageBox.Show("Player's Turn");
                     timerProgressBar.Visible = true;
                     timerProgressBar.Value = 1000;
@@ -431,21 +430,21 @@
                     callButton.Enabled = true;
                     foldButton.Enabled = true;
                     turnCount++;
-                    FixCall(playerStatusButton, ref playerCall, ref playerRaise, 2);
+                    FixCallPlayer(2);
                 }
             }
 
             if (playerFoldTurn || !playerTurn)
             {
                 await AllIn();
-                if (playerFoldTurn && !playerFolded)
+                if (playerFoldTurn && !player.Folded)
                 {
                     if (callButton.Text.Contains("All in") == false || raiseButton.Text.Contains("All in") == false)
                     {
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        playerFolded = true;
+                        player.Folded = true;
                     }
                 }
 
@@ -471,8 +470,8 @@
                             int firstCard = botIndex * 2;
                             int secondCard = botIndex * 2 + 1;
 
-                            FixCall(currentBot.StatusButton, ref currentBot.Call, ref currentBot.Raise, 1);
-                            FixCall(currentBot.StatusButton, ref currentBot.Call, ref currentBot.Raise, 2);
+                            FixCallBot(currentBot, 1);
+                            FixCallBot(currentBot, 2);
                             Rules(firstCard, secondCard, $"Bot {botIndex}", ref currentBot.Type, ref currentBot.Type, currentBot.FoldTurn);
 
                             // TODO: Maybe we can remove the message
@@ -504,7 +503,7 @@
                     }
                 }
 
-                if (playerFoldTurn && !playerFolded)
+                if (playerFoldTurn && !player.Folded)
                 {
                     if (!callButton.Text.Contains("All in") || !raiseButton.Text.Contains("All in"))
                     {
@@ -512,7 +511,7 @@
                         bools.RemoveAt(0);
                         bools.Insert(0, null);
                         maxLeft--;
-                        playerFolded = true;
+                        player.Folded = true;
                     }
                 }
 
@@ -1585,8 +1584,8 @@
                 {
                     if (CheckWinners.Contains("Player"))
                     {
-                        playerChips += int.Parse(potTextBox.Text) / winners;
-                        player_ChipsTextBox.Text = playerChips.ToString();
+                        player.Chips += int.Parse(potTextBox.Text) / winners;
+                        player_ChipsTextBox.Text = player.Chips.ToString();
                         //pPanel.Visible = true;
 
                     }
@@ -1608,7 +1607,7 @@
                 {
                     if (CheckWinners.Contains("Player"))
                     {
-                        playerChips += int.Parse(potTextBox.Text);
+                        player.Chips += int.Parse(potTextBox.Text);
                         //await Finish(1);
                         //pPanel.Visible = true;
                     }
@@ -1671,8 +1670,8 @@
                     {
                         Holder[j].Image = Deck[j];
 
-                        playerCall = 0;  
-                        playerRaise = 0;
+                        player.Call = 0;  
+                        player.Raise = 0;
 
                         for (int bot = 0; bot < NumberOfBots; bot++)
                         {
@@ -1691,8 +1690,8 @@
                     {
                         Holder[j].Image = Deck[j];
 
-                        playerCall = 0;
-                        playerRaise = 0;
+                        player.Call = 0;
+                        player.Raise = 0;
 
                         for (int bot = 0; bot < NumberOfBots; bot++)
                         {
@@ -1711,8 +1710,8 @@
                     {
                         Holder[j].Image = Deck[j];
 
-                        playerCall = 0;
-                        playerRaise = 0;
+                        player.Call = 0;
+                        player.Raise = 0;
 
                         for (int bot = 0; bot < NumberOfBots; bot++)
                         {
@@ -1745,7 +1744,7 @@
                     } 
                 }
                 
-                Winner(playerType, playerPower, "Player", playerChips, fixedLast);
+                Winner(playerType, playerPower, "Player", player.Chips, fixedLast);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
                     Bot currentBot = botsPanel[bot];
@@ -1757,13 +1756,13 @@
                 playerTurn = true;
                 playerFoldTurn = false;
 
-                if (playerChips <= 0)
+                if (player.Chips <= 0)
                 {
                     AddChips addMoreChipsForm = new AddChips();
                     addMoreChipsForm.ShowDialog();
                     if (addMoreChipsForm.NewChips != 0)
                     {
-                        playerChips = addMoreChipsForm.NewChips;
+                        player.Chips = addMoreChipsForm.NewChips;
                         for (int bot = 0; bot < NumberOfBots; bot++)
                         {
                             botsPanel[bot].Chips = addMoreChipsForm.NewChips;
@@ -1779,9 +1778,9 @@
                     }
                 }
 
-                playerPanel.Visible = false;
-                playerCall = 0;
-                playerRaise = 0;
+                player.PlayerPanel.Visible = false;
+                player.Call = 0;
+                player.Raise = 0;
                 playerPower = 0;
                 playerType = -1;
 
@@ -1827,41 +1826,131 @@
             }
         }
 
-        void FixCall(Label status, ref int cCall, ref int cRaise, int options)
+        //void FixCall(Label status, ref int currentCall, ref int currentRaise, int options)
+        //{
+        //    if (rounds != 4)
+        //    {
+        //        if (options == 1)
+        //        {
+        //            if (status.Text.Contains("Raise"))
+        //            {
+        //                var changeRaise = status.Text.Substring(6);
+        //                currentRaise = int.Parse(changeRaise);
+        //            }
+        //            else if (status.Text.Contains("Call"))
+        //            {
+        //                var changeCall = status.Text.Substring(5);
+        //                currentCall = int.Parse(changeCall);
+        //            }
+        //            else if (status.Text.Contains("Check"))
+        //            {
+        //                currentRaise = 0;
+        //                currentCall = 0;
+        //            }
+        //        }
+        //        if (options == 2)
+        //        {
+        //            if (currentRaise != Raise && currentRaise <= Raise)
+        //            {
+        //                call = Convert.ToInt32(Raise) - currentRaise;
+        //            }
+
+        //            if (currentCall != call || currentCall <= call)
+        //            {
+        //                call = call - currentCall;
+        //            }
+
+        //            if (currentRaise == Raise && Raise > 0)
+        //            {
+        //                call = 0;
+        //                callButton.Enabled = false;
+        //                callButton.Text = "Call button is unable.";
+        //            }
+        //        }
+        //    }
+        //}
+
+        // Temporary FixCall workaround
+        // TODO: Consolidate FixCall for player and for bot. (Process through shared interface)
+        void FixCallPlayer(int options)
         {
             if (rounds != 4)
             {
                 if (options == 1)
                 {
-                    if (status.Text.Contains("Raise"))
+                    if (playerStatusButton.Text.Contains("Raise"))
                     {
-                        var changeRaise = status.Text.Substring(6);
-                        cRaise = int.Parse(changeRaise);
+                        var changeRaise = playerStatusButton.Text.Substring(6);
+                        player.Raise = int.Parse(changeRaise);
                     }
-                    else if (status.Text.Contains("Call"))
+                    else if (playerStatusButton.Text.Contains("Call"))
                     {
-                        var changeCall = status.Text.Substring(5);
-                        cCall = int.Parse(changeCall);
+                        var changeCall = playerStatusButton.Text.Substring(5);
+                        player.Call = int.Parse(changeCall);
                     }
-                    else if (status.Text.Contains("Check"))
+                    else if (playerStatusButton.Text.Contains("Check"))
                     {
-                        cRaise = 0;
-                        cCall = 0;
+                        player.Raise = 0;
+                        player.Call = 0;
                     }
                 }
                 if (options == 2)
                 {
-                    if (cRaise != Raise && cRaise <= Raise)
+                    if (player.Raise != Raise && player.Raise <= Raise)
                     {
-                        call = Convert.ToInt32(Raise) - cRaise;
+                        call = Convert.ToInt32(Raise) - player.Raise;
                     }
 
-                    if (cCall != call || cCall <= call)
+                    if (player.Call != call || player.Call <= call)
                     {
-                        call = call - cCall;
+                        call = call - player.Call;
                     }
 
-                    if (cRaise == Raise && Raise > 0)
+                    if (player.Raise == Raise && Raise > 0)
+                    {
+                        call = 0;
+                        callButton.Enabled = false;
+                        callButton.Text = "Call button is unable.";
+                    }
+                }
+            }
+        }
+
+        void FixCallBot(Bot currentBot, int options)
+        {
+            if (rounds != 4)
+            {
+                if (options == 1)
+                {
+                    if (currentBot.StatusButton.Text.Contains("Raise"))
+                    {
+                        var changeRaise = currentBot.StatusButton.Text.Substring(6);
+                        currentBot.Raise = int.Parse(changeRaise);
+                    }
+                    else if (currentBot.StatusButton.Text.Contains("Call"))
+                    {
+                        var changeCall = currentBot.StatusButton.Text.Substring(5);
+                        currentBot.Call = int.Parse(changeCall);
+                    }
+                    else if (currentBot.StatusButton.Text.Contains("Check"))
+                    {
+                        currentBot.Raise = 0;
+                        currentBot.Call = 0;
+                    }
+                }
+                if (options == 2)
+                {
+                    if (currentBot.Raise != Raise && currentBot.Raise <= Raise)
+                    {
+                        call = Convert.ToInt32(Raise) - currentBot.Raise;
+                    }
+
+                    if (currentBot.Call != call || currentBot.Call <= call)
+                    {
+                        call = call - currentBot.Call;
+                    }
+
+                    if (currentBot.Raise == Raise && Raise > 0)
                     {
                         call = 0;
                         callButton.Enabled = false;
@@ -1874,16 +1963,16 @@
         async Task AllIn()
         {
             // All in
-            if (playerChips <= 0 && !intsadded)
+            if (player.Chips <= 0 && !intsadded)
             {
                 if (playerStatusButton.Text.Contains("Raise"))
                 {
-                    ints.Add(playerChips);
+                    ints.Add(player.Chips);
                     intsadded = true;
                 }
                 else if (playerStatusButton.Text.Contains("Call"))
                 {
-                    ints.Add(playerChips);
+                    ints.Add(player.Chips);
                     intsadded = true;
                 }
             }
@@ -1921,9 +2010,9 @@
                 int index = bools.IndexOf(false);
                 if (index == 0)
                 {
-                    playerChips += int.Parse(potTextBox.Text);
-                    player_ChipsTextBox.Text = playerChips.ToString();
-                    playerPanel.Visible = true;
+                    player.Chips += int.Parse(potTextBox.Text);
+                    player_ChipsTextBox.Text = player.Chips.ToString();
+                    player.PlayerPanel.Visible = true;
                     MessageBox.Show("Player Wins");
                 }
 
@@ -1962,7 +2051,7 @@
                 FixWinners();
             }
 
-            playerPanel.Visible = false;
+            player.PlayerPanel.Visible = false;
 
             call = this.bigBlind;
             Raise = 0;
@@ -1990,16 +2079,16 @@
             playerType = -1;
             Raise = 0;
             
-            playerFolded = false;
+            player.Folded = false;
 
             playerFoldTurn = false;
             playerTurn = true;
             restart = false;
             raising = false;
 
-            playerCall = 0;
+            player.Call = 0;
             
-            playerRaise = 0;
+            player.Raise = 0;
 
             height = 0;
             width = 0;
@@ -2030,13 +2119,13 @@
                 botsPanel[bot].StatusButton.Text = string.Empty;
             }
 
-            if (playerChips <= 0)
+            if (player.Chips <= 0)
             {
                 AddChips chipsAdder = new AddChips();
                 chipsAdder.ShowDialog();
                 if (chipsAdder.NewChips != 0)
                 {
-                    playerChips = chipsAdder.NewChips;
+                    player.Chips = chipsAdder.NewChips;
                     for (int bot = 0; bot < NumberOfBots; bot++)
                     {
                         botsPanel[bot].Chips = chipsAdder.NewChips;
@@ -2087,7 +2176,7 @@
                 }
             }
            
-            Winner(playerType, playerPower, "Player", playerChips, fixedLast);
+            Winner(playerType, playerPower, "Player", player.Chips, fixedLast);
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
                 Winner(botsPanel[bot].Type, botsPanel[bot].Power, $"Bot {bot + 1}", botsPanel[bot].Chips, fixedLast);
@@ -2541,13 +2630,13 @@
 
         private void Update_Tick(object sender, object e)
         {
-            if (playerChips <= 0)
+            if (player.Chips <= 0)
             {
                 player_ChipsTextBox.Text = "Chips : 0";
             }
             else
             {
-                player_ChipsTextBox.Text = "Chips : " + playerChips;
+                player_ChipsTextBox.Text = "Chips : " + player.Chips;
             }
 
             for (int bot = 0; bot < NumberOfBots; bot++)
@@ -2562,7 +2651,7 @@
                 }
             }
 
-            if (playerChips <= 0)
+            if (player.Chips <= 0)
             {
                 playerTurn = false;
                 playerFoldTurn = true;
@@ -2575,7 +2664,7 @@
             {
                 maxUp--;
             }
-            if (playerChips >= call)
+            if (player.Chips >= call)
             {
                 callButton.Text = "Call " + call.ToString();
             }
@@ -2596,7 +2685,7 @@
                 callButton.Enabled = false;
             }
 
-            if (playerChips <= 0)
+            if (player.Chips <= 0)
             {
                 raiseButton.Enabled = false;
             }
@@ -2605,7 +2694,7 @@
 
             if (raiseTextBox.Text != string.Empty && int.TryParse(raiseTextBox.Text, out parsedValue))
             {
-                if (playerChips <= int.Parse(raiseTextBox.Text))
+                if (player.Chips <= int.Parse(raiseTextBox.Text))
                 {
                     raiseButton.Text = "All in";
                 }
@@ -2615,7 +2704,7 @@
                 }
             }
 
-            if (playerChips < call)
+            if (player.Chips < call)
             {
                 raiseButton.Enabled = false;
             }
@@ -2647,10 +2736,10 @@
         private async void bCall_Click(object sender, EventArgs e)
         {
             Rules(0, 1, "Player", ref playerType, ref playerPower, playerFoldTurn);
-            if (playerChips >= call)
+            if (player.Chips >= call)
             {
-                playerChips -= call;
-                player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
+                player.Chips -= call;
+                player_ChipsTextBox.Text = "Chips : " + player.Chips.ToString();
                 if (potTextBox.Text != string.Empty)
                 {
                     potTextBox.Text = (int.Parse(potTextBox.Text) + call).ToString();
@@ -2661,17 +2750,17 @@
                 }
                 playerTurn = false;
                 playerStatusButton.Text = "Call " + call;
-                playerCall = call;
+                player.Call = call;
             }
-            else if (playerChips <= call && call > 0)
+            else if (player.Chips <= call && call > 0)
             {
-                potTextBox.Text = (int.Parse(potTextBox.Text) + playerChips).ToString();
-                playerStatusButton.Text = "All in " + playerChips;
-                playerChips = 0;
-                player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
+                potTextBox.Text = (int.Parse(potTextBox.Text) + player.Chips).ToString();
+                playerStatusButton.Text = "All in " + player.Chips;
+                player.Chips = 0;
+                player_ChipsTextBox.Text = "Chips : " + player.Chips.ToString();
                 playerTurn = false;
                 foldButton.Enabled = false;
-                playerCall = playerChips;
+                player.Call = player.Chips;
             }
             await Turns();
         }
@@ -2682,7 +2771,7 @@
             int parsedValue;
             if (raiseTextBox.Text != string.Empty && int.TryParse(raiseTextBox.Text, out parsedValue))
             {
-                if (playerChips > call)
+                if (player.Chips > call)
                 {
                     if (Raise * 2 > int.Parse(raiseTextBox.Text))
                     {
@@ -2692,28 +2781,28 @@
                     }
                     else
                     {
-                        if (playerChips >= int.Parse(raiseTextBox.Text))
+                        if (player.Chips >= int.Parse(raiseTextBox.Text))
                         {
                             call = int.Parse(raiseTextBox.Text);
                             Raise = int.Parse(raiseTextBox.Text);
                             playerStatusButton.Text = "Raise " + call.ToString();
                             potTextBox.Text = (int.Parse(potTextBox.Text) + call).ToString();
                             callButton.Text = "Call";
-                            playerChips -= int.Parse(raiseTextBox.Text);
+                            player.Chips -= int.Parse(raiseTextBox.Text);
                             raising = true;
                             last = 0;
-                            playerRaise = Convert.ToInt32(Raise);
+                            player.Raise = Convert.ToInt32(Raise);
                         }
                         else
                         {
-                            call = playerChips;
-                            Raise = playerChips;
-                            potTextBox.Text = (int.Parse(potTextBox.Text) + playerChips).ToString();
+                            call = player.Chips;
+                            Raise = player.Chips;
+                            potTextBox.Text = (int.Parse(potTextBox.Text) + player.Chips).ToString();
                             playerStatusButton.Text = "Raise " + call.ToString();
-                            playerChips = 0;
+                            player.Chips = 0;
                             raising = true;
                             last = 0;
-                            playerRaise = Convert.ToInt32(Raise);
+                            player.Raise = Convert.ToInt32(Raise);
                         }
                     }
                 }
@@ -2732,14 +2821,14 @@
         {
             if (addChips_TextBox.Text != string.Empty)
             {
-                playerChips += int.Parse(addChips_TextBox.Text);
+                player.Chips += int.Parse(addChips_TextBox.Text);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
                     botsPanel[bot].Chips += int.Parse(addChips_Button.Text);
                 }
             }
 
-            player_ChipsTextBox.Text = "Chips : " + playerChips.ToString();
+            player_ChipsTextBox.Text = "Chips : " + player.Chips.ToString();
         }
 
         private void botOptionsOnClick(object sender, EventArgs e)

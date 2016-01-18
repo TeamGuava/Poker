@@ -61,6 +61,7 @@
     <Compile Include="Models\Bot.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Models\Player.cs" />
     <Compile Include="PokerMain.cs" />
     <Compile Include="ProgressBars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

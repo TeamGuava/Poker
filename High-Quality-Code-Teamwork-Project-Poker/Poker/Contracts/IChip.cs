@@ -2,6 +2,6 @@
 {
     public interface IChip
     {
-        //TO DO
+        int Chips { get; }
     }
 }

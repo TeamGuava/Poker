@@ -2,6 +2,6 @@
 {
     public interface IFold
     {
-        void Fold();
+        bool Folded();
     }
 }
