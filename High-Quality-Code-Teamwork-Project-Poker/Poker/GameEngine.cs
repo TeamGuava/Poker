@@ -23,7 +23,14 @@ namespace Poker
         #region Variables
         ProgressBar progressBar = new ProgressBar();
 
-        Bot[] gameBots = new Bot[5];
+        private Bot[] gameBots = new Bot[5]
+        {
+            new Bot(),
+            new Bot(),
+            new Bot(),
+            new Bot(),
+            new Bot()
+        };
 
         // Moving playerPanel, playerChips, playerCall and playerRaise to the Player class
         // all references to the forementioned fields updated and attached to the class
@@ -106,24 +113,8 @@ namespace Poker
             Updates.Interval = 1 * 1 * 100;
             Updates.Tick += Update_Tick;
 
-            // TODO: unnecessary things
             bigBlind_TextBox.Visible = true;
             smallBlind_TextBox.Visible = true;
-
-            bigBlind_Button.Visible = true;
-            smallBlind_Button.Visible = true;
-
-            bigBlind_TextBox.Visible = true;
-            smallBlind_TextBox.Visible = true;
-
-            bigBlind_Button.Visible = true;
-            smallBlind_Button.Visible = true;
-
-            bigBlind_TextBox.Visible = false;
-            smallBlind_TextBox.Visible = false;
-
-            bigBlind_Button.Visible = false;
-            smallBlind_Button.Visible = false;
 
             raiseTextBox.Text = (this.bigBlind * 2).ToString();
         }
