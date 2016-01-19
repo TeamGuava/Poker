@@ -40,14 +40,14 @@ namespace Poker
         private double type;
         private double rounds = 0;
         private double Raise = 0;
-        private double playerType = -1;
+        //private double playerType = -1;
         //private double botType = -1;
-        private double playerPower = 0;
+        //private double playerPower = 0;
         private double botPower = 0;
 
         //private int botChips = StartChips;
         //private bool botTurn = false;
-        private bool botFoldTurn = false;
+        //private bool botFoldTurn = false;
         //private bool botFolded;
         private bool intsadded;
         bool changed;
@@ -120,10 +120,10 @@ namespace Poker
 
         async Task Shuffle()
         {
-            bools.Add(playerFoldTurn);
+            bools.Add(player.FoldTurn);
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                bools.Add(botFoldTurn);
+                bools.Add(gameBots[bot].FoldTurn);
             }
 
             callButton.Enabled = false;
@@ -524,7 +524,7 @@ namespace Poker
             {
             }
 
-            if (!currentGameParticipant.FoldTurn || firstCard == 0 && secondCard == 1 && playerStatusButton.Text.Contains("Fold") == false)
+            if (!currentGameParticipant.FoldTurn || firstCard == 0 && secondCard == 1 && player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
             {
                 // Variables
                 bool done = false, vf = false;
@@ -1575,7 +1575,7 @@ namespace Poker
                     if (CheckWinners.Contains("Player"))
                     {
                         player.Chips += int.Parse(potTextBox.Text) / winners;
-                        player_ChipsTextBox.Text = player.Chips.ToString();
+                        player.ParticipantPanel.ChipsTextBox.Text = player.Chips.ToString();
                         //pPanel.Visible = true;
 
                     }
@@ -1716,7 +1716,7 @@ namespace Poker
             if (rounds == End && maxLeft == 6)
             {
                 string fixedLast = "qwerty";
-                if (!playerStatusButton.Text.Contains("Fold"))
+                if (!player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
                     Rules(0, 1, player);
@@ -1735,7 +1735,7 @@ namespace Poker
                     } 
                 }
                 
-                Winner(playerType, playerPower, "Player", player.Chips, fixedLast);
+                Winner(player.Type, player.Power, "Player", player.Chips, fixedLast);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
                     Bot currentBot = gameBots[bot];
@@ -1772,8 +1772,8 @@ namespace Poker
                 player.ParticipantPanel.Visible = false;
                 player.Call = 0;
                 player.Raise = 0;
-                playerPower = 0;
-                playerType = -1;
+                player.Power = 0;
+                player.Type = -1;
 
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
@@ -1874,12 +1874,12 @@ namespace Poker
                         var changeRaise = player.ParticipantPanel.StatusButton.Text.Substring(6);
                         player.Raise = int.Parse(changeRaise);
                     }
-                    else if (playerStatusButton.Text.Contains("Call"))
+                    else if (player.ParticipantPanel.StatusButton.Text.Contains("Call"))
                     {
                         var changeCall = player.ParticipantPanel.StatusButton.Text.Substring(5);
                         player.Call = int.Parse(changeCall);
                     }
-                    else if (playerStatusButton.Text.Contains("Check"))
+                    else if (player.ParticipantPanel.StatusButton.Text.Contains("Check"))
                     {
                         player.Raise = 0;
                         player.Call = 0;
@@ -2107,7 +2107,7 @@ namespace Poker
             maxUp = 10000000;
             turnCount = 0;
 
-            playerStatusButton.Text = string.Empty;
+            player.ParticipantPanel.StatusButton.Text = string.Empty;
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
                 gameBots[bot].ParticipantPanel.StatusButton.Text = string.Empty;
@@ -2150,7 +2150,7 @@ namespace Poker
             winningHand.Current = 0;
             winningHand.Power = 0;
             string fixedLast = "qwerty";
-            if (!playerStatusButton.Text.Contains("Fold"))
+            if (!player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
                 Rules(0, 1, player);

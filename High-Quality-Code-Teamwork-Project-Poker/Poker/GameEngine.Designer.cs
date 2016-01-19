@@ -33,26 +33,30 @@
             this.callButton = new System.Windows.Forms.Button();
             this.raiseButton = new System.Windows.Forms.Button();
             this.timerProgressBar = new System.Windows.Forms.ProgressBar();
-            this.player_ChipsTextBox = new System.Windows.Forms.TextBox();
             this.addChips_Button = new System.Windows.Forms.Button();
             this.addChips_TextBox = new System.Windows.Forms.TextBox();
-            this.bot5_ChipsTextBox = new System.Windows.Forms.TextBox();
-            this.bot4_ChipsTextBox = new System.Windows.Forms.TextBox();
-            this.bot3_ChipsTextBox = new System.Windows.Forms.TextBox();
-            this.bot2_ChipsTextBox = new System.Windows.Forms.TextBox();
-            this.bot1_ChipsTextBox = new System.Windows.Forms.TextBox();
+
+            //this.player.ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+            //this.gameBots[0].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+            //this.gameBots[1].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+            //this.gameBots[2].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+            //this.gameBots[3].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+            //this.gameBots[4].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
+
             this.potTextBox = new System.Windows.Forms.TextBox();
             this.options_Button = new System.Windows.Forms.Button();
             this.bigBlind_Button = new System.Windows.Forms.Button();
             this.smallBlind_TextBox = new System.Windows.Forms.TextBox();
             this.smallBlind_Button = new System.Windows.Forms.Button();
             this.bigBlind_TextBox = new System.Windows.Forms.TextBox();
-            this.bot5_StatusButton = new System.Windows.Forms.Label();
-            this.bot4_StatusButton = new System.Windows.Forms.Label();
-            this.bot3_StatusButton = new System.Windows.Forms.Label();
-            this.bot1_StatusButton = new System.Windows.Forms.Label();
-            this.playerStatusButton = new System.Windows.Forms.Label();
-            this.bot2_StatusButton = new System.Windows.Forms.Label();
+
+            //this.player.ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+            //this.gameBots[0].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+            //this.gameBots[1].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+            //this.gameBots[2].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+            //this.gameBots[3].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+            //this.gameBots[4].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
+
             this.pot_Label = new System.Windows.Forms.Label();
             this.raiseTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -118,13 +122,13 @@
             // 
             // player_ChipsTextBox
             // 
-            this.player_ChipsTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.player_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.player_ChipsTextBox.Location = new System.Drawing.Point(755, 553);
-            this.player_ChipsTextBox.Name = "player_ChipsTextBox";
-            this.player_ChipsTextBox.Size = new System.Drawing.Size(163, 23);
-            this.player_ChipsTextBox.TabIndex = 6;
-            this.player_ChipsTextBox.Text = "Chips : 0";
+            this.player.ParticipantPanel.ChipsTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.player.ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.player.ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(755, 553);
+            this.player.ParticipantPanel.ChipsTextBox.Name = "player_ChipsTextBox";
+            this.player.ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(163, 23);
+            this.player.ParticipantPanel.ChipsTextBox.TabIndex = 6;
+            this.player.ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
             // 
             // addChips_Button
             // 
@@ -147,52 +151,52 @@
             // 
             // bot5_ChipsTextBox
             // 
-            this.bot5_ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot5_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bot5_ChipsTextBox.Location = new System.Drawing.Point(1012, 553);
-            this.bot5_ChipsTextBox.Name = "bot5_ChipsTextBox";
-            this.bot5_ChipsTextBox.Size = new System.Drawing.Size(152, 23);
-            this.bot5_ChipsTextBox.TabIndex = 9;
-            this.bot5_ChipsTextBox.Text = "Chips : 0";
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(1012, 553);
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Name = "bot5_ChipsTextBox";
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(152, 23);
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.TabIndex = 9;
+            this.gameBots[4].ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
             // 
             // bot4_ChipsTextBox
             // 
-            this.bot4_ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot4_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bot4_ChipsTextBox.Location = new System.Drawing.Point(970, 81);
-            this.bot4_ChipsTextBox.Name = "bot4_ChipsTextBox";
-            this.bot4_ChipsTextBox.Size = new System.Drawing.Size(123, 23);
-            this.bot4_ChipsTextBox.TabIndex = 10;
-            this.bot4_ChipsTextBox.Text = "Chips : 0";
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(970, 81);
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Name = "bot4_ChipsTextBox";
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(123, 23);
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.TabIndex = 10;
+            this.gameBots[3].ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
             // 
             // bot3_ChipsTextBox
             // 
-            this.bot3_ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot3_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bot3_ChipsTextBox.Location = new System.Drawing.Point(755, 81);
-            this.bot3_ChipsTextBox.Name = "bot3_ChipsTextBox";
-            this.bot3_ChipsTextBox.Size = new System.Drawing.Size(125, 23);
-            this.bot3_ChipsTextBox.TabIndex = 11;
-            this.bot3_ChipsTextBox.Text = "Chips : 0";
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(755, 81);
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Name = "bot3_ChipsTextBox";
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(125, 23);
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.TabIndex = 11;
+            this.gameBots[2].ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
             // 
             // bot2_ChipsTextBox
             // 
-            this.bot2_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bot2_ChipsTextBox.Location = new System.Drawing.Point(276, 81);
-            this.bot2_ChipsTextBox.Name = "bot2_ChipsTextBox";
-            this.bot2_ChipsTextBox.Size = new System.Drawing.Size(133, 23);
-            this.bot2_ChipsTextBox.TabIndex = 12;
-            this.bot2_ChipsTextBox.Text = "Chips : 0";
-            // 
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(276, 81);
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.Name = "bot2_ChipsTextBox";
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(133, 23);
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.TabIndex = 12;
+            this.gameBots[1].ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
+            //   
             // bot1_ChipsTextBox
             // 
-            this.bot1_ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bot1_ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.bot1_ChipsTextBox.Location = new System.Drawing.Point(181, 553);
-            this.bot1_ChipsTextBox.Name = "bot1_ChipsTextBox";
-            this.bot1_ChipsTextBox.Size = new System.Drawing.Size(142, 23);
-            this.bot1_ChipsTextBox.TabIndex = 13;
-            this.bot1_ChipsTextBox.Text = "Chips : 0";
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Location = new System.Drawing.Point(181, 553);
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Name = "bot1_ChipsTextBox";
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Size = new System.Drawing.Size(142, 23);
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.TabIndex = 13;
+            this.gameBots[0].ParticipantPanel.ChipsTextBox.Text = "Chips : 0";
             // 
             // pot_TextBox
             // 
@@ -253,50 +257,50 @@
             // 
             // bot5_StatusButton
             // 
-            this.bot5_StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot5_StatusButton.Location = new System.Drawing.Point(1012, 579);
-            this.bot5_StatusButton.Name = "bot5_StatusButton";
-            this.bot5_StatusButton.Size = new System.Drawing.Size(152, 32);
-            this.bot5_StatusButton.TabIndex = 26;
+            this.gameBots[4].ParticipantPanel.StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[4].ParticipantPanel.StatusButton.Location = new System.Drawing.Point(1012, 579);
+            this.gameBots[4].ParticipantPanel.StatusButton.Name = "bot5_StatusButton";
+            this.gameBots[4].ParticipantPanel.StatusButton.Size = new System.Drawing.Size(152, 32);
+            this.gameBots[4].ParticipantPanel.StatusButton.TabIndex = 26;
             // 
             // bot4_StatusButton
             // 
-            this.bot4_StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot4_StatusButton.Location = new System.Drawing.Point(970, 107);
-            this.bot4_StatusButton.Name = "bot4_StatusButton";
-            this.bot4_StatusButton.Size = new System.Drawing.Size(123, 32);
-            this.bot4_StatusButton.TabIndex = 27;
+            this.gameBots[3].ParticipantPanel.StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[3].ParticipantPanel.StatusButton.Location = new System.Drawing.Point(970, 107);
+            this.gameBots[3].ParticipantPanel.StatusButton.Name = "bot4_StatusButton";
+            this.gameBots[3].ParticipantPanel.StatusButton.Size = new System.Drawing.Size(123, 32);
+            this.gameBots[3].ParticipantPanel.StatusButton.TabIndex = 27;
             // 
             // bot3_StatusButton
             // 
-            this.bot3_StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bot3_StatusButton.Location = new System.Drawing.Point(755, 107);
-            this.bot3_StatusButton.Name = "bot3_StatusButton";
-            this.bot3_StatusButton.Size = new System.Drawing.Size(125, 32);
-            this.bot3_StatusButton.TabIndex = 28;
-            // 
-            // bot1_StatusButton
-            // 
-            this.bot1_StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bot1_StatusButton.Location = new System.Drawing.Point(181, 579);
-            this.bot1_StatusButton.Name = "bot1_StatusButton";
-            this.bot1_StatusButton.Size = new System.Drawing.Size(142, 32);
-            this.bot1_StatusButton.TabIndex = 29;
-            // 
-            // player_StatusButton
-            // 
-            this.playerStatusButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.playerStatusButton.Location = new System.Drawing.Point(755, 579);
-            this.playerStatusButton.Name = "player_StatusButton";
-            this.playerStatusButton.Size = new System.Drawing.Size(163, 32);
-            this.playerStatusButton.TabIndex = 30;
+            this.gameBots[2].ParticipantPanel.StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.gameBots[2].ParticipantPanel.StatusButton.Location = new System.Drawing.Point(755, 107);
+            this.gameBots[2].ParticipantPanel.StatusButton.Name = "bot3_StatusButton";
+            this.gameBots[2].ParticipantPanel.StatusButton.Size = new System.Drawing.Size(125, 32);
+            this.gameBots[2].ParticipantPanel.StatusButton.TabIndex = 28;
             // 
             // bot2_StatusButton
             // 
-            this.bot2_StatusButton.Location = new System.Drawing.Point(276, 107);
-            this.bot2_StatusButton.Name = "bot2_StatusButton";
-            this.bot2_StatusButton.Size = new System.Drawing.Size(133, 32);
-            this.bot2_StatusButton.TabIndex = 31;
+            this.gameBots[1].ParticipantPanel.StatusButton.Location = new System.Drawing.Point(276, 107);
+            this.gameBots[1].ParticipantPanel.StatusButton.Name = "bot2_StatusButton";
+            this.gameBots[1].ParticipantPanel.StatusButton.Size = new System.Drawing.Size(133, 32);
+            this.gameBots[1].ParticipantPanel.StatusButton.TabIndex = 31;
+            //   
+            // bot1_StatusButton
+            // 
+            this.gameBots[0].ParticipantPanel.StatusButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.gameBots[0].ParticipantPanel.StatusButton.Location = new System.Drawing.Point(181, 579);
+            this.gameBots[0].ParticipantPanel.StatusButton.Name = "bot1_StatusButton";
+            this.gameBots[0].ParticipantPanel.StatusButton.Size = new System.Drawing.Size(142, 32);
+            this.gameBots[0].ParticipantPanel.StatusButton.TabIndex = 29;
+            // 
+            // player_StatusButton
+            // 
+            this.player.ParticipantPanel.StatusButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.player.ParticipantPanel.StatusButton.Location = new System.Drawing.Point(755, 579);
+            this.player.ParticipantPanel.StatusButton.Name = "player_StatusButton";
+            this.player.ParticipantPanel.StatusButton.Size = new System.Drawing.Size(163, 32);
+            this.player.ParticipantPanel.StatusButton.TabIndex = 30;
             // 
             // pot_Label
             // 
@@ -325,26 +329,30 @@
             this.ClientSize = new System.Drawing.Size(1350, 729);
             this.Controls.Add(this.raiseTextBox);
             this.Controls.Add(this.pot_Label);
-            this.Controls.Add(this.bot2_StatusButton);
-            this.Controls.Add(this.playerStatusButton);
-            this.Controls.Add(this.bot1_StatusButton);
-            this.Controls.Add(this.bot3_StatusButton);
-            this.Controls.Add(this.bot4_StatusButton);
-            this.Controls.Add(this.bot5_StatusButton);
+
+            this.Controls.Add(this.player.ParticipantPanel.StatusButton);
+            this.Controls.Add(this.gameBots[0].ParticipantPanel.StatusButton);
+            this.Controls.Add(this.gameBots[1].ParticipantPanel.StatusButton);
+            this.Controls.Add(this.gameBots[2].ParticipantPanel.StatusButton);
+            this.Controls.Add(this.gameBots[3].ParticipantPanel.StatusButton);
+            this.Controls.Add(this.gameBots[4].ParticipantPanel.StatusButton);
+
             this.Controls.Add(this.bigBlind_TextBox);
             this.Controls.Add(this.smallBlind_Button);
             this.Controls.Add(this.smallBlind_TextBox);
             this.Controls.Add(this.bigBlind_Button);
             this.Controls.Add(this.options_Button);
             this.Controls.Add(this.potTextBox);
-            this.Controls.Add(this.bot1_ChipsTextBox);
-            this.Controls.Add(this.bot2_ChipsTextBox);
-            this.Controls.Add(this.bot3_ChipsTextBox);
-            this.Controls.Add(this.bot4_ChipsTextBox);
-            this.Controls.Add(this.bot5_ChipsTextBox);
+
+            this.Controls.Add(this.player.ParticipantPanel.ChipsTextBox);
+            this.Controls.Add(this.gameBots[0].ParticipantPanel.ChipsTextBox);
+            this.Controls.Add(this.gameBots[1].ParticipantPanel.ChipsTextBox);
+            this.Controls.Add(this.gameBots[2].ParticipantPanel.ChipsTextBox);
+            this.Controls.Add(this.gameBots[3].ParticipantPanel.ChipsTextBox);
+            this.Controls.Add(this.gameBots[4].ParticipantPanel.ChipsTextBox);
+
             this.Controls.Add(this.addChips_TextBox);
             this.Controls.Add(this.addChips_Button);
-            this.Controls.Add(this.player_ChipsTextBox);
             this.Controls.Add(this.timerProgressBar);
             this.Controls.Add(this.raiseButton);
             this.Controls.Add(this.callButton);
@@ -366,26 +374,27 @@
         private System.Windows.Forms.Button callButton;
         private System.Windows.Forms.Button raiseButton;
         private System.Windows.Forms.ProgressBar timerProgressBar;
-        private System.Windows.Forms.TextBox player_ChipsTextBox;
         private System.Windows.Forms.Button addChips_Button;
         private System.Windows.Forms.TextBox addChips_TextBox;
-        private System.Windows.Forms.TextBox bot5_ChipsTextBox;
-        private System.Windows.Forms.TextBox bot4_ChipsTextBox;
-        private System.Windows.Forms.TextBox bot3_ChipsTextBox;
-        private System.Windows.Forms.TextBox bot2_ChipsTextBox;
-        private System.Windows.Forms.TextBox bot1_ChipsTextBox;
+
+        //private System.Windows.Forms.TextBox player_ChipsTextBox;
+        //private System.Windows.Forms.TextBox bot5_ChipsTextBox;
+        //private System.Windows.Forms.TextBox bot4_ChipsTextBox;
+        //private System.Windows.Forms.TextBox bot3_ChipsTextBox;
+        //private System.Windows.Forms.TextBox bot2_ChipsTextBox;
+        //private System.Windows.Forms.TextBox bot1_ChipsTextBox;
         private System.Windows.Forms.TextBox potTextBox;
         private System.Windows.Forms.Button options_Button;
         private System.Windows.Forms.Button bigBlind_Button;
         private System.Windows.Forms.TextBox smallBlind_TextBox;
         private System.Windows.Forms.Button smallBlind_Button;
         private System.Windows.Forms.TextBox bigBlind_TextBox;
-        private System.Windows.Forms.Label bot5_StatusButton;
-        private System.Windows.Forms.Label bot4_StatusButton;
-        private System.Windows.Forms.Label bot3_StatusButton;
-        private System.Windows.Forms.Label bot1_StatusButton;
-        private System.Windows.Forms.Label playerStatusButton;
-        private System.Windows.Forms.Label bot2_StatusButton;
+        //private System.Windows.Forms.Label bot5_StatusButton;
+        //private System.Windows.Forms.Label bot4_StatusButton;
+        //private System.Windows.Forms.Label bot3_StatusButton;
+        //private System.Windows.Forms.Label bot1_StatusButton;
+        //private System.Windows.Forms.Label playerStatusButton;
+        //private System.Windows.Forms.Label bot2_StatusButton;
         private System.Windows.Forms.Label pot_Label;
         private System.Windows.Forms.TextBox raiseTextBox;
     }
