@@ -2,10 +2,12 @@
 {
     public class Player : GameParticipant
     {
-        public Player(int chips)
+        private const int StartChips = 10000;
+
+        public Player()
             : base()
         {
-            this.Chips = chips;
+            this.Chips = StartChips;
             this.Call = 0;
             this.Raise = 0;
             this.IsFolded = false;

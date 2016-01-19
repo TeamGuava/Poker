@@ -65,7 +65,7 @@
             this.foldButton.Name = "fold_Button";
             this.foldButton.Size = new System.Drawing.Size(130, 62);
             this.foldButton.TabIndex = 0;
-            this.foldButton.Text = "IsFolded";
+            this.foldButton.Text = "Fold";
             this.foldButton.UseVisualStyleBackColor = true;
             this.foldButton.Click += new System.EventHandler(this.botFoldOnClick);
             // 
