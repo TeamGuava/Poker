@@ -2,6 +2,8 @@
 {
     public interface ICaller
     {
-        void Call();
+        //void Call();
+
+        int Call { get; set; }
     }
 }

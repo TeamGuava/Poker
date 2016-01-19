@@ -1,32 +1,15 @@
 ﻿namespace Poker.Models
 {
-    using System;
-    using System.Windows.Forms;
-
-    public class Player
+    public class Player : GameParticipant
     {
-        private int chips;
-        private int call;
-
         public Player(int chips)
+            : base()
         {
             this.Chips = chips;
             this.Call = 0;
             this.Raise = 0;
-            this.Folded = false;
-            this.PlayerPanel = new Panel();
+            this.IsFolded = false;
+            this.ParticipantPanel = new GameParticipantPanel();
         }
-
-        // TODO: Validations!
-        public int Chips { get; set; }
-
-        public int Call { get; set; }
-
-        public int Raise { get; set; }
-
-        public bool Folded { get; set; }
-
-        public Panel PlayerPanel { get; set; }
-
     }
 }

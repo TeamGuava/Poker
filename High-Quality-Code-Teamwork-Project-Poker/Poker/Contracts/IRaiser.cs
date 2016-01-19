@@ -2,6 +2,8 @@
 {
     public interface IRaiser
     {
-        void Raise();
+        //void Raise();
+
+        int Raise { get; set; }
     }
 }

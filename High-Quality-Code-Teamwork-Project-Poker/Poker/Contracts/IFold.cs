@@ -2,6 +2,8 @@
 {
     public interface IFold
     {
-        bool Folded();
+        bool FoldTurn { get; set; }
+
+        bool IsFolded { get; set; }
     }
 }
