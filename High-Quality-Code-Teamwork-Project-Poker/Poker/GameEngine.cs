@@ -2027,6 +2027,7 @@
                 {
                     Holder[j].Visible = false;
                 }
+
                 await Finish(1);
             }
 
