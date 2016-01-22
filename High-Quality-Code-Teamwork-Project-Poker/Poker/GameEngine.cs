@@ -2185,7 +2185,7 @@
         {
             int botType = (int)currentGameParticipant.Type;
 
-            if (!currentGameParticipant.Turn)
+            if (!currentGameParticipant.FoldTurn)
             {
                 if (botType == -1)
                 {
