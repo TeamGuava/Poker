@@ -1,6 +1,4 @@
-﻿using Poker.Contracts;
-
-namespace Poker
+﻿namespace Poker
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +9,8 @@ namespace Poker
     using System.Threading.Tasks;
     using System.Windows.Forms;
     using Poker.Models;
+    using Poker.Contracts;
+
 
     public partial class GameEngine : Form
     {
@@ -31,8 +31,6 @@ namespace Poker
             new Bot()
         };
 
-        // Moving playerPanel, playerChips, playerCall and playerRaise to the Player class
-        // all references to the forementioned fields updated and attached to the class
         Player player = new Player();
 
         private int call = 500;
@@ -40,19 +38,10 @@ namespace Poker
         private double type;
         private double rounds = 0;
         private double Raise = 0;
-        //private double playerType = -1;
-        //private double botType = -1;
-        //private double playerPower = 0;
-        private double botPower = 0;
 
-        //private int botChips = StartChips;
-        //private bool botTurn = false;
-        //private bool botFoldTurn = false;
-        //private bool botFolded;
         private bool intsadded;
         bool changed;
-        //private int botCall = 0;
-        //int botRaise = 0;
+
         int winners = 0, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         private int last = 123;
         int raisedTurn = 1;
@@ -61,9 +50,9 @@ namespace Poker
         List<Type> Win = new List<Type>();
         List<string> CheckWinners = new List<string>();
         List<int> ints = new List<int>();
-        bool playerFoldTurn = false, playerTurn = true;
+        //bool playerFoldTurn = false, playerTurn = true;
         bool restart = false, raising = false;
-        Poker.Type winningHand;
+        Type winningHand;
         string[] ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] ImgLocation ={card
                    "Assets\\Cards\\33.png","Assets\\Cards\\22.png",
@@ -412,7 +401,7 @@ namespace Poker
                 if (player.Turn)
                 {
                     FixCallPlayer(1);
-                    //MessageBox.Show("Player's Turn");
+                    MessageBox.Show("Player's Turn");
                     timerProgressBar.Visible = true;
                     timerProgressBar.Value = 1000;
                     t = 60;
@@ -427,7 +416,7 @@ namespace Poker
                 }
             }
 
-            if (playerFoldTurn || !playerTurn)
+            if (player.FoldTurn || !player.Turn)
             {
                 await AllIn();
                 if (player.FoldTurn && !player.IsFolded)
@@ -470,7 +459,7 @@ namespace Poker
                             // TODO: Maybe we can remove the message
                             MessageBox.Show($"Bot {botIndex}'s Turn");
 
-                            AI(firstCard, secondCard, currentBot, bot);
+                            AI(firstCard, secondCard, currentBot);
                             turnCount++;
                             last = botIndex;
                             currentBot.Turn = false;
@@ -491,11 +480,15 @@ namespace Poker
                         if (currentBot.FoldTurn || !currentBot.Turn)
                         {
                             await CheckRaise(botIndex, botIndex);
-                            gameBots[bot + 1].Turn = true;
+                            if(botIndex != NumberOfBots)
+                            {
+                                gameBots[bot + 1].Turn = true;
+                            }
                         }
                     }
                 }
 
+                this.player.Turn = true;
                 if (player.FoldTurn && !player.IsFolded)
                 {
                     if (!callButton.Text.Contains("All in") || !raiseButton.Text.Contains("All in"))
@@ -1312,7 +1305,7 @@ namespace Poker
                                     msgbox = true;
                                 }
                             }
-                        }
+                       }
                     }
                 }
             }
@@ -1508,18 +1501,24 @@ namespace Poker
             }
         }
 
-        void Winner(double current, double Power, string currentText, int chips, string lastly)
+        void ValidateWinner(IGameParticipant currentGameParticipant, string currentText, string lastly)
         {
+            //TODO: needs some upgrading
+            double current = currentGameParticipant.Type;
+            int Power = currentGameParticipant.Power;
+
             if (lastly == " ")
             {
                 lastly = "Bot 5";
             }
+
             for (int j = 0; j <= 16; j++)
             {
                 //await Task.Delay(5);
                 if (Holder[j].Visible)
                     Holder[j].Image = Deck[j];
             }
+
             if (current == winningHand.Current)
             {
                 if (Power == winningHand.Power)
@@ -1568,6 +1567,7 @@ namespace Poker
                     }
                 }
             }
+
             if (currentText == lastly)//lastfixed
             {
                 if (winners > 1)
@@ -1593,6 +1593,7 @@ namespace Poker
 
                     //await Finish(1);
                 }
+
                 if (winners == 1)
                 {
                     if (CheckWinners.Contains("Player"))
@@ -1715,7 +1716,7 @@ namespace Poker
 
             if (rounds == End && maxLeft == 6)
             {
-                string fixedLast = "qwerty";
+                string fixedLast = string.Empty;
                 if (!player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
@@ -1735,17 +1736,17 @@ namespace Poker
                     } 
                 }
                 
-                Winner(player.Type, player.Power, "Player", player.Chips, fixedLast);
+                ValidateWinner(player, "Player", fixedLast);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
                     Bot currentBot = gameBots[bot];
-                    Winner(currentBot.Type, currentBot.Power, $"Bot {bot}", currentBot.Chips, fixedLast);
+                    ValidateWinner(currentBot, $"Bot {bot + 1}", fixedLast);
                     currentBot.FoldTurn = false;
                 }
                 
                 restart = true;
-                playerTurn = true;
-                playerFoldTurn = false;
+                player.Turn = true;
+                player.FoldTurn = false;
 
                 if (player.Chips <= 0)
                 {
@@ -1759,8 +1760,8 @@ namespace Poker
                             gameBots[bot].Chips = addMoreChipsForm.NewChips;
                         }
 
-                        playerFoldTurn = false;
-                        playerTurn = true;
+                        player.FoldTurn = false;
+                        player.Turn = true;
                         raiseButton.Enabled = true;
                         foldButton.Enabled = true;
                         checkButton.Enabled = true;
@@ -2133,6 +2134,7 @@ namespace Poker
                     raiseButton.Text = "Raise";
                 }
             }
+
             ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
             for (int os = 0; os < 17; os++)
             {
@@ -2140,6 +2142,7 @@ namespace Poker
                 Holder[os].Invalidate();
                 Holder[os].Visible = false;
             }
+
             await Shuffle();
             //await Turns();
         }
@@ -2170,17 +2173,15 @@ namespace Poker
                 }
             }
            
-            Winner(player.Type, player.Power, "Player", player.Chips, fixedLast);
+            ValidateWinner(player, "Player", fixedLast);
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                Winner(gameBots[bot].Type, gameBots[bot].Power, $"Bot {bot + 1}", gameBots[bot].Chips, fixedLast);
+                ValidateWinner(gameBots[bot], $"Bot {bot + 1}", fixedLast);
             }
         }
 
-        void AI(int firstCard, int secondCard, IGameParticipant currentGameParticipant, int botIndex)
+        void AI(int firstCard, int secondCard, IGameParticipant currentGameParticipant)
         {
-            Label sStatus = currentGameParticipant.ParticipantPanel.StatusButton;
-            double botPower = currentGameParticipant.Power;
             int botType = (int)currentGameParticipant.Type;
 
             if (!currentGameParticipant.Turn)
@@ -2226,7 +2227,8 @@ namespace Poker
                     StraightFlush(currentGameParticipant);
                 }
             }
-            else
+
+            if (currentGameParticipant.FoldTurn)
             {
                 Holder[firstCard].Visible = false;
                 Holder[secondCard].Visible = false;
@@ -2248,15 +2250,15 @@ namespace Poker
             Random rPair = new Random();
             int rCall = rPair.Next(10, 16);
             int rRaise = rPair.Next(10, 13);
-            if (botPower <= 199 && botPower >= 140)
+            if (currentGameParticipant.Power <= 199 && currentGameParticipant.Power >= 140)
             {
                 PH(currentGameParticipant, rCall, 6, rRaise);
             }
-            else if (botPower <= 139 && botPower >= 128)
+            else if (currentGameParticipant.Power <= 139 && currentGameParticipant.Power >= 128)
             {
                 PH(currentGameParticipant, rCall, 7, rRaise);
             }
-            else if (botPower < 128 && botPower >= 101)
+            else if (currentGameParticipant.Power < 128 && currentGameParticipant.Power >= 101)
             {
                 PH(currentGameParticipant, rCall, 9, rRaise);
             }
@@ -2267,15 +2269,15 @@ namespace Poker
             Random rPair = new Random();
             int rCall = rPair.Next(6, 11);
             int rRaise = rPair.Next(6, 11);
-            if (botPower <= 290 && botPower >= 246)
+            if (currentGameParticipant.Power <= 290 && currentGameParticipant.Power >= 246)
             {
                 PH(currentGameParticipant, rCall, 3, rRaise);
             }
-            else if (botPower <= 244 && botPower >= 234)
+            else if (currentGameParticipant.Power <= 244 && currentGameParticipant.Power >= 234)
             {
                 PH(currentGameParticipant, rCall, 4, rRaise);
             }
-            else if (botPower < 234 && botPower >= 201)
+            else if (currentGameParticipant.Power < 234 && currentGameParticipant.Power >= 201)
             {
                 PH(currentGameParticipant, rCall, 4, rRaise);
             }
@@ -2286,15 +2288,15 @@ namespace Poker
             Random tk = new Random();
             int tCall = tk.Next(3, 7);
             int tRaise = tk.Next(4, 8);
-            if (botPower <= 390 && botPower >= 330)
+            if (currentGameParticipant.Power <= 390 && currentGameParticipant.Power >= 330)
             {
                 Smooth(currentGameParticipant, tCall, tRaise);
             }
-            if (botPower <= 327 && botPower >= 321)//10  8
+            if (currentGameParticipant.Power <= 327 && currentGameParticipant.Power >= 321)//10  8
             {
                 Smooth(currentGameParticipant, tCall, tRaise);
             }
-            if (botPower < 321 && botPower >= 303)//7 2
+            if (currentGameParticipant.Power < 321 && currentGameParticipant.Power >= 303)//7 2
             {
                 Smooth(currentGameParticipant, tCall, tRaise);
             }
@@ -2305,15 +2307,15 @@ namespace Poker
             Random str = new Random();
             int sCall = str.Next(3, 6);
             int sRaise = str.Next(3, 8);
-            if (botPower <= 480 && botPower >= 410)
+            if (currentGameParticipant.Power <= 480 && currentGameParticipant.Power >= 410)
             {
                 Smooth(currentGameParticipant, sCall, sRaise);
             }
-            else if (botPower <= 409 && botPower >= 407)//10  8
+            else if (currentGameParticipant.Power <= 409 && currentGameParticipant.Power >= 407)//10  8
             {
                 Smooth(currentGameParticipant, sCall, sRaise);
             }
-            else if (botPower < 407 && botPower >= 404)
+            else if (currentGameParticipant.Power < 407 && currentGameParticipant.Power >= 404)
             {
                 Smooth(currentGameParticipant, sCall, sRaise);
             }
@@ -2332,11 +2334,11 @@ namespace Poker
             Random flh = new Random();
             int fhCall = flh.Next(1, 5);
             int fhRaise = flh.Next(2, 6);
-            if (botPower <= 626 && botPower >= 620)
+            if (currentGameParticipant.Power <= 626 && currentGameParticipant.Power >= 620)
             {
                 Smooth(currentGameParticipant, fhCall, fhRaise);
             }
-            if (botPower < 620 && botPower >= 602)
+            if (currentGameParticipant.Power < 620 && currentGameParticipant.Power >= 602)
             {
                 Smooth(currentGameParticipant, fhCall, fhRaise);
             }
@@ -2347,7 +2349,7 @@ namespace Poker
             Random fk = new Random();
             int fkCall = fk.Next(1, 4);
             int fkRaise = fk.Next(2, 5);
-            if (botPower <= 752 && botPower >= 704)
+            if (currentGameParticipant.Power <= 752 && currentGameParticipant.Power >= 704)
             {
                 Smooth(currentGameParticipant, fkCall, fkRaise);
             }
@@ -2358,7 +2360,7 @@ namespace Poker
             Random sf = new Random();
             int sfCall = sf.Next(1, 3);
             int sfRaise = sf.Next(1, 3);
-            if (botPower <= 913 && botPower >= 804)
+            if (currentGameParticipant.Power <= 913 && currentGameParticipant.Power >= 804)
             {
                 Smooth(currentGameParticipant, sfCall, sfRaise);
             }
@@ -2512,6 +2514,7 @@ namespace Poker
                     }
                 }
             }
+
             if (rounds >= 2)
             {
                 if (call > 0)
@@ -2732,10 +2735,11 @@ namespace Poker
                 // pStatus.Text = "All in " + Chips;
                 checkButton.Enabled = false;
             }
+
             await Turns();
         }
 
-        private async void bCall_Click(object sender, EventArgs e)
+        private async void botCallOnClick(object sender, EventArgs e)
         {
             Rules(0, 1, player);
             if (player.Chips >= call)

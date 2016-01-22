@@ -95,7 +95,7 @@
             this.callButton.TabIndex = 3;
             this.callButton.Text = "Call";
             this.callButton.UseVisualStyleBackColor = true;
-            this.callButton.Click += new System.EventHandler(this.bCall_Click);
+            this.callButton.Click += new System.EventHandler(this.botCallOnClick);
             // 
             // raise_Button
             // 
