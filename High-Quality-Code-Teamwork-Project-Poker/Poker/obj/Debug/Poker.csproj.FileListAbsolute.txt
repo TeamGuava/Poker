@@ -8,3 +8,6 @@ C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
+E:\Poker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
+E:\Poker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
+E:\Poker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
