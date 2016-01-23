@@ -2016,7 +2016,7 @@ namespace Poker
                     for (int bot = 0; bot < NumberOfBots; bot++)
                     {
                         int botIndex = bot + 1;
-                        if (!gameBots[bot].FoldTurn)
+                        if (!gameBots[bot].FoldTurn || !gameBots[bot].IsFolded)
                         {
                             gameBots[bot].Chips += int.Parse(potTextBox.Text);
 
