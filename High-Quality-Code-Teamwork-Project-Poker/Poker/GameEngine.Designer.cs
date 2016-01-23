@@ -134,7 +134,7 @@
             this.raiseButton.Name = "raise_Button";
             this.raiseButton.Size = new System.Drawing.Size(124, 62);
             this.raiseButton.TabIndex = 4;
-            this.raiseButton.Text = "Raise";
+            this.raiseButton.Text = "raise";
             this.raiseButton.UseVisualStyleBackColor = true;
             this.raiseButton.Click += new System.EventHandler(this.botRaiseOnClick);
             // 
@@ -390,7 +390,7 @@
             this.DoubleBuffered = true;
             this.Name = "GameEngine";
             this.Text = "GLS Texas Poker";
-            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.Layout_Change);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.ChangeLayout);
             this.ResumeLayout(false);
             this.PerformLayout();
 

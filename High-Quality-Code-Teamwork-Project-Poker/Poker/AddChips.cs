@@ -30,6 +30,11 @@
                     value = 0;
                 }
 
+                if (value > 100000000)
+                {
+                    value = 100000000;
+                }
+
                 this.chips = value;
             }
         }
