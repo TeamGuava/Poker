@@ -103,8 +103,8 @@ namespace Poker
             Updates.Interval = 1 * 1 * 100;
             Updates.Tick += Update_Tick;
 
-            bigBlind_TextBox.Visible = true;
-            smallBlind_TextBox.Visible = true;
+            this.bigBlindTextBox.Visible = true;
+            this.smallBlindTextBox.Visible = true;
 
             raiseTextBox.Text = (this.bigBlind * 2).ToString();
         }
@@ -2834,12 +2834,12 @@ namespace Poker
 
         private void botAddOnClick(object sender, EventArgs e)
         {
-            if (addChips_TextBox.Text != string.Empty)
+            if (this.addChipsTextBox.Text != string.Empty)
             {
-                player.Chips += int.Parse(addChips_TextBox.Text);
+                player.Chips += int.Parse(this.addChipsTextBox.Text);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
-                    gameBots[bot].Chips += int.Parse(addChips_Button.Text);
+                    gameBots[bot].Chips += int.Parse(this.addChipsButton.Text);
                 }
             }
 
@@ -2848,54 +2848,54 @@ namespace Poker
 
         private void botOptionsOnClick(object sender, EventArgs e)
         {
-            bigBlind_TextBox.Text = this.bigBlind.ToString();
-            smallBlind_TextBox.Text = sb.ToString();
-            if (bigBlind_TextBox.Visible == false)
+            this.bigBlindTextBox.Text = this.bigBlind.ToString();
+            this.smallBlindTextBox.Text = sb.ToString();
+            if (this.bigBlindTextBox.Visible == false)
             {
-                bigBlind_TextBox.Visible = true;
-                smallBlind_TextBox.Visible = true;
+                this.bigBlindTextBox.Visible = true;
+                this.smallBlindTextBox.Visible = true;
 
-                bigBlind_Button.Visible = true;
-                smallBlind_Button.Visible = true;
+                this.bigBlindButton.Visible = true;
+                this.smallBlindButton.Visible = true;
             }
             else
             {
-                bigBlind_TextBox.Visible = false;
-                smallBlind_TextBox.Visible = false;
+                this.bigBlindTextBox.Visible = false;
+                this.smallBlindTextBox.Visible = false;
 
-                bigBlind_Button.Visible = false;
-                smallBlind_Button.Visible = false;
+                this.bigBlindButton.Visible = false;
+                this.smallBlindButton.Visible = false;
             }
         }
 
         private void bSB_Click(object sender, EventArgs e)
         {
             int parsedValue;
-            if (smallBlind_TextBox.Text.Contains(",") || smallBlind_TextBox.Text.Contains("."))
+            if (this.smallBlindTextBox.Text.Contains(",") || this.smallBlindTextBox.Text.Contains("."))
             {
                 writer.Print("The Small Blind can be only round number !");
-                smallBlind_TextBox.Text = sb.ToString();
+                this.smallBlindTextBox.Text = sb.ToString();
                 return;
             }
-            if (!int.TryParse(smallBlind_TextBox.Text, out parsedValue))
+            if (!int.TryParse(this.smallBlindTextBox.Text, out parsedValue))
             {
                 writer.Print("This is a number only field");
-                smallBlind_TextBox.Text = sb.ToString();
+                this.smallBlindTextBox.Text = sb.ToString();
                 return;
             }
 
-            if (int.Parse(smallBlind_TextBox.Text) > 100000)
+            if (int.Parse(this.smallBlindTextBox.Text) > 100000)
             {
                 writer.Print("The maximum of the Small Blind is 100 000 $");
-                smallBlind_TextBox.Text = sb.ToString();
+                this.smallBlindTextBox.Text = sb.ToString();
             }
-            else if (int.Parse(smallBlind_TextBox.Text) < 250)
+            else if (int.Parse(this.smallBlindTextBox.Text) < 250)
             {
                 writer.Print("The minimum of the Small Blind is 250 $");
             }
             else
             {
-                sb = int.Parse(smallBlind_TextBox.Text);
+                sb = int.Parse(this.smallBlindTextBox.Text);
                 writer.Print("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
@@ -2903,31 +2903,31 @@ namespace Poker
         private void bBigBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
-            if (bigBlind_TextBox.Text.Contains(",") || bigBlind_TextBox.Text.Contains("."))
+            if (this.bigBlindTextBox.Text.Contains(",") || this.bigBlindTextBox.Text.Contains("."))
             {
                 writer.Print("The Big Blind can be only round number !");
-                bigBlind_TextBox.Text = this.bigBlind.ToString();
+                this.bigBlindTextBox.Text = this.bigBlind.ToString();
                 return;
             }
-            if (!int.TryParse(smallBlind_TextBox.Text, out parsedValue))
+            if (!int.TryParse(this.smallBlindTextBox.Text, out parsedValue))
             { 
                 writer.Print("This is a number only field");
-                smallBlind_TextBox.Text = this.bigBlind.ToString();
+                this.smallBlindTextBox.Text = this.bigBlind.ToString();
                 return;
             }
 
-            if (int.Parse(bigBlind_TextBox.Text) > 200000)
+            if (int.Parse(this.bigBlindTextBox.Text) > 200000)
             {
                 writer.Print("The maximum of the Big Blind is 200 000");
-                bigBlind_TextBox.Text = this.bigBlind.ToString();
+                this.bigBlindTextBox.Text = this.bigBlind.ToString();
             }
-            else if (int.Parse(bigBlind_TextBox.Text) < 500)
+            else if (int.Parse(this.bigBlindTextBox.Text) < 500)
             {
                 writer.Print("The minimum of the Big Blind is 500 $");
             }
             else
             {
-                this.bigBlind = int.Parse(bigBlind_TextBox.Text);
+                this.bigBlind = int.Parse(this.bigBlindTextBox.Text);
                 writer.Print("The changes have been saved ! They will become available the next hand you play. ");
             }
         }

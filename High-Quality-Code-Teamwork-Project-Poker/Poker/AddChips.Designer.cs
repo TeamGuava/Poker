@@ -59,7 +59,7 @@
             this.buttonAddChips.TabIndex = 1;
             this.buttonAddChips.Text = "Add Chips";
             this.buttonAddChips.UseVisualStyleBackColor = true;
-            this.buttonAddChips.Click += new System.EventHandler(this.ButtonAddChips_Click);
+            this.buttonAddChips.Click += new System.EventHandler(this.ClickButtonAddChips);
             // 
             // buttonExit
             // 
@@ -70,7 +70,7 @@
             this.buttonExit.TabIndex = 2;
             this.buttonExit.Text = "Exit";
             this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
+            this.buttonExit.Click += new System.EventHandler(this.ClickButtonExit);
             // 
             // textBoxAddNewChips
             // 

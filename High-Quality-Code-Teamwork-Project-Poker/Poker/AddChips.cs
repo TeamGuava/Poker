@@ -6,7 +6,7 @@
 
     public partial class AddChips : Form
     {
-        private int chips = 0;
+        private int chips;
 
         public AddChips()
         {
@@ -25,24 +25,25 @@
 
             set
             {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+
                 this.chips = value;
             }
         }
 
-        public void ButtonAddChips_Click(object sender, EventArgs e)
+        public void ClickButtonAddChips(object sender, EventArgs e)
         {
             int parsedValue;
             if (!int.TryParse(this.textBoxAddNewChips.Text, out parsedValue))
             {
                 MessageBox.Show("This is a number only field");
-
-                return;
-            }
+            } 
             else if (int.Parse(this.textBoxAddNewChips.Text) > 100000000)
             {
                 MessageBox.Show("The maximium chips you can add is 100000000");
-
-                return;
             }
             else
             {
@@ -51,7 +52,7 @@
             }
         }
 
-        private void ButtonExit_Click(object sender, EventArgs e)
+        private void ClickButtonExit(object sender, EventArgs e)
         {
             var message = "Are you sure?";
             var title = "Quit";

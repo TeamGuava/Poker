@@ -4,8 +4,8 @@
     {
         public Type(double power, double current)
         {
-            Power = power;
-            Current = current;
+            this.Power = power;
+            this.Current = current;
         }
 
         public double Power { get; set; }
