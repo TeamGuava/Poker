@@ -371,32 +371,34 @@
                         horizontal += 110;
                     }
                 }
-               
-                for (int bot = 0; bot < NumberOfBots; bot++)
-                {
-                    // This loop skips the first two cards (player's cards)
-                    for (int card = 2; card < 12; card += 2)
-                    {
-                        if (this.gameBots[bot].Chips <= 0)
-                        {
-                            this.gameBots[bot].FoldTurn = true;
-                            this.holder[card].Visible = false;
-                            this.holder[card + 1].Visible = false;
-                        }
-                        else
-                        {
-                            this.gameBots[0].FoldTurn = false;
-                            if (currentCard == card)
-                            {
-                                if (this.holder[card + 1] != null)
-                                {
-                                    this.holder[card].Visible = true;
-                                    this.holder[card + 1].Visible = true;
-                                }
-                            }
-                        }
-                    }                   
-                }
+
+                // Commented the code below as a fix for the bugged printing of cards after first game.
+                // TODO: Delete the commented code below if proved redundant.
+                //for (int bot = 0; bot < NumberOfBots; bot++)
+                //{
+                //    // This loop skips the first two cards (player's cards)
+                //    for (int card = 2; card < 12; card += 2)
+                //    {
+                //        if (this.gameBots[bot].Chips <= 0)
+                //        {
+                //            this.gameBots[bot].FoldTurn = true;
+                //            this.holder[card].Visible = false;
+                //            this.holder[card + 1].Visible = false;
+                //        }
+                //        else
+                //        {
+                //            this.gameBots[0].FoldTurn = false;
+                //            if (currentCard == card)
+                //            {
+                //                if (this.holder[card + 1] != null)
+                //                {
+                //                    this.holder[card].Visible = true;
+                //                    this.holder[card + 1].Visible = true;
+                //                }
+                //            }
+                //        }
+                //    }                   
+                //}
 
                 if (currentCard == 16)
                 {
