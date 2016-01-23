@@ -35,7 +35,7 @@
 
         #region Variables
         private int call = 500;
-        private int foldedPlayers = 5;
+       // private int foldedPlayers = 5;
         private double type;
         private double rounds;
         private double raise;
@@ -63,14 +63,14 @@
                     "Assets\\Cards\\12.png",
                     "Assets\\Cards\\8.png","Assets\\Cards\\18.png",
                     "Assets\\Cards\\15.png","Assets\\Cards\\27.png"};*/
+
         private Timer timer = new Timer();
         private Timer update = new Timer();
         private int t = 60;
         private int i;
         private int bigBlind = 500;
         private int smallBlind = 250;
-        // TODO
-        private int maxUp = 10000000;
+       // private int maxUp = 10000000;
         private int turnCount;
         #endregion
         public GameEngine()
@@ -189,7 +189,7 @@
 
                 if (this.gameBots[0].Chips > 0)
                 {
-                    this.foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 2 && currentCard < 4)
                     {
                         if (!check)
@@ -223,7 +223,7 @@
 
                 if (this.gameBots[1].Chips > 0)
                 {
-                    this.foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 4 && currentCard < 6)
                     {
                         if (!check)
@@ -254,7 +254,7 @@
 
                 if (this.gameBots[2].Chips > 0)
                 {
-                    this.foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 6 && currentCard < 8)
                     {
                         if (!check)
@@ -286,7 +286,7 @@
 
                 if (this.gameBots[3].Chips > 0)
                 {
-                    this.foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 8 && currentCard < 10)
                     {
                         if (!check)
@@ -319,7 +319,7 @@
 
                 if (this.gameBots[4].Chips > 0)
                 {
-                    this.foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 10 && currentCard < 12)
                     {
                         if (!check)
@@ -410,25 +410,22 @@
                 }
             }
 
-            if (this.foldedPlayers == 5)
-            {
-                DialogResult dialogResult = MessageBox.Show(
-                    "Would You Like To Play Again ?", 
-                    "You Won , Congratulations !", 
-                    MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Application.Restart();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    Application.Exit();
-                }
-            }
-            else
-            {
-                this.foldedPlayers = 5;
-            }
+            //if (foldedPlayers == 5)
+            //{
+            //    DialogResult dialogResult = MessageBox.Show("Would You Like To Play Again ?", "You Won , Congratulations ! ", MessageBoxButtons.YesNo);
+            //    if (dialogResult == DialogResult.Yes)
+            //    {
+            //        Application.Restart();
+            //    }
+            //    else if (dialogResult == DialogResult.No)
+            //    {
+            //        Application.Exit();
+            //    }
+            //}
+            //else
+            //{
+            //    foldedPlayers = 5;
+            //}
         }
 
         async Task Turns()
@@ -444,13 +441,12 @@
                     this.timerProgressBar.Visible = true;
                     this.timerProgressBar.Value = 1000;
                     this.t = 60;
-                    this.maxUp = 10000000;
+                    //this.maxUp = 10000000;
                     this.timer.Start();
  
                     this.raiseButton.Enabled = true;
                     this.callButton.Enabled = true;
                     this.foldButton.Enabled = true;
-
                     this.turnCount++;
                     this.FixCallPlayer(2);
                 }
@@ -570,7 +566,7 @@
             {
                 // Variables
                 bool done = false;
-                bool vf = false;
+                //bool vf = false;
 
                 int[] straight1 = new int[5];
                 int[] straight = new int[7];
@@ -622,7 +618,10 @@
                         this.rStraight(currentGameParticipant, straight);
 
                         // Flush current = 5 || 5.5
-                        this.rFlush(currentGameParticipant, ref vf, straight1);
+
+                        this.rFlush(currentGameParticipant, straight1);
+
+                        rFlush(currentGameParticipant, straight1);
 
                         // Full House current = 6
                         this.rFullHouse(currentGameParticipant, ref done, straight);
@@ -871,7 +870,7 @@
             }
         }
 
-        private void rFlush(IGameParticipant currentGameParticipant, ref bool vf, int[] straight1)
+        private void rFlush(IGameParticipant currentGameParticipant, int[] straight1)
         {
             if (currentGameParticipant.Type >= -1)
             {
@@ -908,7 +907,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -933,7 +932,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (this.reserve[i + 1] % 4 != this.reserve[i] % 4 && 
@@ -947,7 +946,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -956,8 +955,8 @@
                                 (int)(f1.Max() + currentGameParticipant.Type * 100);
                             this.AddWin(
                                 currentGameParticipant.Power, 
-                                currentGameParticipant.Type);
-                            vf = true;
+                                currentGameParticipant.Type); 
+                            //vf = true;
                         }
                     }
                 }
@@ -973,7 +972,7 @@
                         this.AddWin(
                             currentGameParticipant.Power,
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (this.reserve[i + 1] % 4 == f1[0] % 4 && 
@@ -985,7 +984,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (this.reserve[i] / 4 < f1.Min() / 4 &&
                         this.reserve[i + 1] / 4 < f1.Min())
@@ -996,7 +995,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -1013,7 +1012,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (this.reserve[i + 1] / 4 > f2.Max() / 4)
@@ -1024,15 +1023,17 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (this.reserve[i] / 4 < f2.Max() / 4 &&
                             this.reserve[i + 1] / 4 < f2.Max() / 4)
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
-                            this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            this.AddWin(
+                                currentGameParticipant.Power, 
+                                currentGameParticipant.Type);
+                            //vf = true;
                         }
                     }
                 }
@@ -1050,7 +1051,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1060,7 +1061,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -1074,7 +1075,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1084,7 +1085,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1100,7 +1101,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (this.reserve[i + 1] % 4 == f2[0] % 4 &&
@@ -1112,7 +1113,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (this.reserve[i] / 4 < f2.Min() / 4 && this.reserve[i + 1] / 4 < f2.Min())
                     {
@@ -1122,7 +1123,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -1137,7 +1138,7 @@
                             currentGameParticipant.Power = 
                                 (int)(this.reserve[i] + currentGameParticipant.Type * 100);
                             this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (this.reserve[i + 1] / 4 > f3.Max() / 4)
@@ -1148,7 +1149,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (this.reserve[i] / 4 < f3.Max() / 4 && this.reserve[i + 1] / 4 < f3.Max() / 4)
                         {
@@ -1158,7 +1159,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1176,7 +1177,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1186,7 +1187,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -1201,7 +1202,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1211,7 +1212,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1225,7 +1226,7 @@
                         currentGameParticipant.Power = 
                             (int)(this.reserve[i] + currentGameParticipant.Type * 100);
                         this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (this.reserve[i + 1] % 4 == f3[0] % 4 &&
@@ -1237,7 +1238,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (this.reserve[i] / 4 < f3.Min() / 4 &&
                         this.reserve[i + 1] / 4 < f3.Min())
@@ -1248,7 +1249,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -1265,7 +1266,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (this.reserve[i + 1] / 4 > f4.Max() / 4)
@@ -1276,7 +1277,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (this.reserve[i] / 4 < f4.Max() / 4 &&
                             this.reserve[i + 1] / 4 < f4.Max() / 4)
@@ -1287,7 +1288,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1305,7 +1306,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1315,7 +1316,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -1330,7 +1331,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
@@ -1340,7 +1341,7 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1356,7 +1357,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (this.reserve[i + 1] % 4 == f4[0] % 4 && 
@@ -1368,7 +1369,7 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (this.reserve[i] / 4 < f4.Min() / 4 &&
                         this.reserve[i + 1] / 4 < f4.Min())
@@ -1379,16 +1380,16 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
                 // ace
                 if (f1.Length > 0)
                 {
+                    // vf is removed from the if-statements
                     if (this.reserve[i] / 4 == 0 && 
-                        this.reserve[i] % 4 == f1[0] % 4 && 
-                        vf && 
+                        this.reserve[i] % 4 == f1[0] % 4 &&  
                         f1.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1400,8 +1401,7 @@
                     }
 
                     if (this.reserve[i + 1] / 4 == 0 && 
-                        this.reserve[i + 1] % 4 == f1[0] % 4
-                        && vf 
+                        this.reserve[i + 1] % 4 == f1[0] % 4 
                         && f1.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1417,7 +1417,6 @@
                 {
                     if (this.reserve[i] / 4 == 0 &&
                         this.reserve[i] % 4 == f2[0] % 4 &&
-                        vf &&
                         f2.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1427,10 +1426,9 @@
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
                     }
-
+                    
                     if (this.reserve[i + 1] / 4 == 0 && 
                         this.reserve[i + 1] % 4 == f2[0] % 4 &&
-                        vf && 
                         f2.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1446,7 +1444,6 @@
                 {
                     if (this.reserve[i] / 4 == 0 &&
                         this.reserve[i] % 4 == f3[0] % 4 &&
-                        vf &&
                         f3.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1459,7 +1456,6 @@
 
                     if (this.reserve[i + 1] / 4 == 0 && 
                         this.reserve[i + 1] % 4 == f3[0] % 4 &&
-                        vf &&
                         f3.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1474,8 +1470,7 @@
                 if (f4.Length > 0)
                 {
                     if (this.reserve[i] / 4 == 0 && 
-                        this.reserve[i] % 4 == f4[0] % 4 &&
-                        vf && 
+                        this.reserve[i] % 4 == f4[0] % 4 &&       
                         f4.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
@@ -1487,8 +1482,7 @@
                     }
 
                     if (this.reserve[i + 1] / 4 == 0 &&
-                        this.reserve[i + 1] % 4 == f4[0] % 4 &&
-                        vf)
+                        this.reserve[i + 1] % 4 == f4[0] % 4)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power =
@@ -2466,10 +2460,9 @@
             }
 
             this.player.ParticipantPanel.Visible = false;
-
             this.call = this.bigBlind;
             this.raise = 0;
-            this.foldedPlayers = 5;
+            //this.foldedPlayers = 5;
             this.type = 0;
             this.rounds = 0;
 
@@ -2522,10 +2515,10 @@
             this.winningHand.Power = 0;
             this.potTextBox.Text = "0";
             this.t = 60;
-            this.maxUp = 10000000;
+            //this.maxUp = 10000000;
             this.turnCount = 0;
-
             this.player.ParticipantPanel.StatusButton.Text = string.Empty;
+ 
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
                 this.gameBots[bot].ParticipantPanel.StatusButton.Text = string.Empty;
@@ -2672,15 +2665,18 @@
             int rCall = rPair.Next(10, 16);
             int rRaise = rPair.Next(10, 13);
 
-            if (currentGameParticipant.Power <= 199 && currentGameParticipant.Power >= 140)
+            if (currentGameParticipant.Power <= 199 && 
+                currentGameParticipant.Power >= 140)
             {
                 this.PH(currentGameParticipant, rCall, 6, rRaise);
             }
-            else if (currentGameParticipant.Power <= 139 && currentGameParticipant.Power >= 128)
+            else if (currentGameParticipant.Power <= 139 && 
+                currentGameParticipant.Power >= 128)
             {
                 this.PH(currentGameParticipant, rCall, 7, rRaise);
             }
-            else if (currentGameParticipant.Power < 128 && currentGameParticipant.Power >= 101)
+            else if (currentGameParticipant.Power < 128 && 
+                currentGameParticipant.Power >= 101)
             {
                 this.PH(currentGameParticipant, rCall, 9, rRaise);
             }
@@ -2692,15 +2688,18 @@
             int rCall = rPair.Next(6, 11);
             int rRaise = rPair.Next(6, 11);
 
-            if (currentGameParticipant.Power <= 290 && currentGameParticipant.Power >= 246)
+            if (currentGameParticipant.Power <= 290 &&
+                currentGameParticipant.Power >= 246)
             {
                 this.PH(currentGameParticipant, rCall, 3, rRaise);
             }
-            else if (currentGameParticipant.Power <= 244 && currentGameParticipant.Power >= 234)
+            else if (currentGameParticipant.Power <= 244 && 
+                currentGameParticipant.Power >= 234)
             {
                 this.PH(currentGameParticipant, rCall, 4, rRaise);
             }
-            else if (currentGameParticipant.Power < 234 && currentGameParticipant.Power >= 201)
+            else if (currentGameParticipant.Power < 234 && 
+                currentGameParticipant.Power >= 201)
             {
                 this.PH(currentGameParticipant, rCall, 4, rRaise);
             }
@@ -2712,17 +2711,20 @@
             int tCall = tk.Next(3, 7);
             int tRaise = tk.Next(4, 8);
 
-            if (currentGameParticipant.Power <= 390 && currentGameParticipant.Power >= 330)
+            if (currentGameParticipant.Power <= 390 && 
+                currentGameParticipant.Power >= 330)
             {
                 this.Smooth(currentGameParticipant, tCall, tRaise);
             }
 
-            if (currentGameParticipant.Power <= 327 && currentGameParticipant.Power >= 321)//10  8
+            if (currentGameParticipant.Power <= 327 &&
+                currentGameParticipant.Power >= 321)//10  8
             {
                 this.Smooth(currentGameParticipant, tCall, tRaise);
             }
 
-            if (currentGameParticipant.Power < 321 && currentGameParticipant.Power >= 303)//7 2
+            if (currentGameParticipant.Power < 321 && 
+                currentGameParticipant.Power >= 303)//7 2
             {
                 this.Smooth(currentGameParticipant, tCall, tRaise);
             }
@@ -2846,7 +2848,10 @@
         }
 
         // private void HP(ref int sChips, ref bool sTurn, ref bool sFTurn, Label sStatus, double botPower, int n, int n1)
-        private void HP(IGameParticipant currrentGameParticipant, int n, int n1)
+        private void HP(
+            IGameParticipant currrentGameParticipant, 
+            int n, 
+            int n1)
         {
             Random random = new Random();
             int rnd = random.Next(1, 4);
@@ -2910,7 +2915,11 @@
             }
         }
 
-        private void PH(IGameParticipant currentGameParticipant, int n, int n1, int r)
+        private void PH(
+            IGameParticipant currentGameParticipant,
+            int n,
+            int n1,
+            int r)
         {
             Random random = new Random();
             int rnd = random.Next(1, 3);
@@ -3022,7 +3031,10 @@
             }
         }
 
-        void Smooth(IGameParticipant currentGameParticipant, int call, int raise)
+        void Smooth(
+            IGameParticipant currentGameParticipant, 
+            int call, 
+            int raise)
         {
             //Random random = new Random();
             //int rnd = random.Next(1, 3);
@@ -3125,12 +3137,12 @@
                 this.checkButton.Enabled = false;
             }
 
-            if (this.maxUp > 0)
-            {
-                this.maxUp--;
-            }
+            //if (this.maxUp > 0)
+            //{
+            //    this.maxUp--;
+            //}
 
-            if (this.player.Chips >= call)
+            if (this.player.Chips >= this.call)
             {
                 this.callButton.Text = "Call " + this.call;
             }
