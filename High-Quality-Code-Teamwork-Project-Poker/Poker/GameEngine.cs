@@ -1,6 +1,4 @@
-﻿using Poker.UI;
-
-namespace Poker
+﻿namespace Poker
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +10,7 @@ namespace Poker
     using System.Windows.Forms;
     using Poker.Models;
     using Poker.Contracts;
-
+    using Poker.UI;
 
     public partial class GameEngine : Form
     {
@@ -36,7 +34,7 @@ namespace Poker
 
         Player player = new Player();
         private int call = 500;
-        private int foldedPlayers = 5;
+       // private int foldedPlayers = 5;
         private double type;
         private double rounds = 0;
         private double Raise = 0;
@@ -74,7 +72,12 @@ namespace Poker
         Timer Updates = new Timer();
 
         // GLOBAL I -> WTF ?! :D
-        int t = 60, i, bigBlind = 500, sb = 250, maxUp = 10000000, turnCount = 0;
+        private int t = 60;
+        private int i;
+        private int bigBlind = 500;
+        private int sb = 250;
+       // private int maxUp = 10000000;
+        private int turnCount = 0;
         #endregion
         public GameEngine()
         {
@@ -186,7 +189,7 @@ namespace Poker
 
                 if (gameBots[0].Chips > 0)
                 {
-                    foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 2 && currentCard < 4)
                     {
                         if (!check)
@@ -213,7 +216,7 @@ namespace Poker
 
                 if (gameBots[1].Chips > 0)
                 {
-                    foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 4 && currentCard < 6)
                     {
                         if (!check)
@@ -238,7 +241,7 @@ namespace Poker
 
                 if (gameBots[2].Chips > 0)
                 {
-                    foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 6 && currentCard < 8)
                     {
                         if (!check)
@@ -265,7 +268,7 @@ namespace Poker
 
                 if (gameBots[3].Chips > 0)
                 {
-                    foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 8 && currentCard < 10)
                     {
                         if (!check)
@@ -292,7 +295,7 @@ namespace Poker
 
                 if (gameBots[4].Chips > 0)
                 {
-                    foldedPlayers--;
+                    //foldedPlayers--;
                     if (currentCard >= 10 && currentCard < 12)
                     {
                         if (!check)
@@ -377,22 +380,22 @@ namespace Poker
                 }
             }
 
-            if (foldedPlayers == 5)
-            {
-                DialogResult dialogResult = MessageBox.Show("Would You Like To Play Again ?", "You Won , Congratulations ! ", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    Application.Restart();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    Application.Exit();
-                }
-            }
-            else
-            {
-                foldedPlayers = 5;
-            }
+            //if (foldedPlayers == 5)
+            //{
+            //    DialogResult dialogResult = MessageBox.Show("Would You Like To Play Again ?", "You Won , Congratulations ! ", MessageBoxButtons.YesNo);
+            //    if (dialogResult == DialogResult.Yes)
+            //    {
+            //        Application.Restart();
+            //    }
+            //    else if (dialogResult == DialogResult.No)
+            //    {
+            //        Application.Exit();
+            //    }
+            //}
+            //else
+            //{
+            //    foldedPlayers = 5;
+            //}
         }
 
         async Task Turns()
@@ -407,7 +410,7 @@ namespace Poker
                     timerProgressBar.Visible = true;
                     timerProgressBar.Value = 1000;
                     t = 60;
-                    maxUp = 10000000;
+                    //maxUp = 10000000;
                     timer.Start();
 
                     raiseButton.Enabled = true;
@@ -522,7 +525,8 @@ namespace Poker
             if (!currentGameParticipant.FoldTurn || firstCard == 0 && secondCard == 1 && player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
             {
                 // Variables
-                bool done = false, vf = false;
+                bool done = false;
+                //bool vf = false;
                 int[] Straight1 = new int[5];
                 int[] Straight = new int[7];
                 Straight[0] = Reserve[firstCard];
@@ -569,7 +573,7 @@ namespace Poker
                         rStraight(currentGameParticipant, Straight);
 
                         // Flush current = 5 || 5.5
-                        rFlush(currentGameParticipant, ref vf, Straight1);
+                        rFlush(currentGameParticipant, Straight1);
 
                         // Full House current = 6
                         rFullHouse(currentGameParticipant, ref done, Straight);
@@ -751,7 +755,7 @@ namespace Poker
             }
         }
 
-        private void rFlush(IGameParticipant currentGameParticipant, ref bool vf, int[] Straight1)
+        private void rFlush(IGameParticipant currentGameParticipant, int[] Straight1)
         {
             if (currentGameParticipant.Type >= -1)
             {
@@ -781,7 +785,7 @@ namespace Poker
                         }
 
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -801,7 +805,7 @@ namespace Poker
                         }
 
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (Reserve[i + 1] % 4 != Reserve[i] % 4 && Reserve[i + 1] % 4 == f1[0] % 4)
@@ -811,14 +815,14 @@ namespace Poker
                         {
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f1.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -830,7 +834,7 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (Reserve[i + 1] % 4 == f1[0] % 4 && Reserve[i + 1] / 4 > f1.Min() / 4)
@@ -838,14 +842,14 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (Reserve[i] / 4 < f1.Min() / 4 && Reserve[i + 1] / 4 < f1.Min())
                     {
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(f1.Max() + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -858,7 +862,7 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (Reserve[i + 1] / 4 > f2.Max() / 4)
@@ -866,14 +870,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (Reserve[i] / 4 < f2.Max() / 4 && Reserve[i + 1] / 4 < f2.Max() / 4)
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -887,14 +891,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -905,14 +909,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -924,7 +928,7 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (Reserve[i + 1] % 4 == f2[0] % 4 && Reserve[i + 1] / 4 > f2.Min() / 4)
@@ -932,14 +936,14 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (Reserve[i] / 4 < f2.Min() / 4 && Reserve[i + 1] / 4 < f2.Min())
                     {
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -952,7 +956,7 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (Reserve[i + 1] / 4 > f3.Max() / 4)
@@ -960,14 +964,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (Reserve[i] / 4 < f3.Max() / 4 && Reserve[i + 1] / 4 < f3.Max() / 4)
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f3.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -981,14 +985,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f3.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -999,14 +1003,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f3.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1018,7 +1022,7 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (Reserve[i + 1] % 4 == f3[0] % 4 && Reserve[i + 1] / 4 > f3.Min() / 4)
@@ -1026,14 +1030,14 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (Reserve[i] / 4 < f3.Min() / 4 && Reserve[i + 1] / 4 < f3.Min())
                     {
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(f3.Max() + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
@@ -1046,7 +1050,7 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
 
                         if (Reserve[i + 1] / 4 > f4.Max() / 4)
@@ -1054,14 +1058,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else if (Reserve[i] / 4 < f4.Max() / 4 && Reserve[i + 1] / 4 < f4.Max() / 4)
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f4.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1075,14 +1079,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f4.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
 
@@ -1093,14 +1097,14 @@ namespace Poker
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                         else
                         {
                             currentGameParticipant.Type = 5;
                             currentGameParticipant.Power = (int)(f4.Max() + currentGameParticipant.Type * 100);
                             AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            vf = true;
+                            //vf = true;
                         }
                     }
                 }
@@ -1112,7 +1116,7 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
 
                     if (Reserve[i + 1] % 4 == f4[0] % 4 && Reserve[i + 1] / 4 > f4.Min() / 4)
@@ -1120,28 +1124,29 @@ namespace Poker
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(Reserve[i + 1] + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                     else if (Reserve[i] / 4 < f4.Min() / 4 && Reserve[i + 1] / 4 < f4.Min())
                     {
                         currentGameParticipant.Type = 5;
                         currentGameParticipant.Power = (int)(f4.Max() + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        vf = true;
+                        //vf = true;
                     }
                 }
 
                 // ace
                 if (f1.Length > 0)
                 {
-                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f1[0] % 4 && vf && f1.Length > 0)
+                    // vf is removed from the if-statements
+                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f1[0] % 4 && f1.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
                     }
 
-                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f1[0] % 4 && vf && f1.Length > 0)
+                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f1[0] % 4 && f1.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
@@ -1151,14 +1156,14 @@ namespace Poker
 
                 if (f2.Length > 0)
                 {
-                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f2[0] % 4 && vf && f2.Length > 0)
+                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f2[0] % 4 && f2.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
                     }
 
-                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f2[0] % 4 && vf && f2.Length > 0)
+                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f2[0] % 4 && f2.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
@@ -1168,14 +1173,14 @@ namespace Poker
 
                 if (f3.Length > 0)
                 {
-                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f3[0] % 4 && vf && f3.Length > 0)
+                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f3[0] % 4 && f3.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
                     }
 
-                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f3[0] % 4 && vf && f3.Length > 0)
+                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f3[0] % 4 && f3.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
@@ -1185,14 +1190,14 @@ namespace Poker
 
                 if (f4.Length > 0)
                 {
-                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f4[0] % 4 && vf && f4.Length > 0)
+                    if (Reserve[i] / 4 == 0 && Reserve[i] % 4 == f4[0] % 4 && f4.Length > 0)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
                         AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
                     }
 
-                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f4[0] % 4 && vf)
+                    if (Reserve[i + 1] / 4 == 0 && Reserve[i + 1] % 4 == f4[0] % 4)
                     {
                         currentGameParticipant.Type = 5.5;
                         currentGameParticipant.Power = (int)(13 + currentGameParticipant.Type * 100);
@@ -2057,7 +2062,7 @@ namespace Poker
 
             call = this.bigBlind;
             Raise = 0;
-            foldedPlayers = 5;
+            //foldedPlayers = 5;
             type = 0;
             rounds = 0;
 
@@ -2112,7 +2117,7 @@ namespace Poker
             winningHand.Power = 0;
             potTextBox.Text = "0";
             t = 60;
-            maxUp = 10000000;
+            //maxUp = 10000000;
             turnCount = 0;
 
             player.ParticipantPanel.StatusButton.Text = string.Empty;
@@ -2672,10 +2677,10 @@ namespace Poker
                 foldButton.Enabled = false;
                 checkButton.Enabled = false;
             }
-            if (maxUp > 0)
-            {
-                maxUp--;
-            }
+            //if (maxUp > 0)
+            //{
+            //    maxUp--;
+            //}
             if (player.Chips >= call)
             {
                 callButton.Text = "Call " + call.ToString();
