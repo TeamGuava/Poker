@@ -1,4 +1,6 @@
-﻿namespace Poker
+﻿using Poker.UI;
+
+namespace Poker
 {
     using System;
     using System.Collections.Generic;
@@ -21,6 +23,7 @@
 
         #region Variables
         ProgressBar progressBar = new ProgressBar();
+        ApplicationWriter writer = new ApplicationWriter();
 
         private Bot[] gameBots = new Bot[5]
         {
@@ -32,7 +35,6 @@
         };
 
         Player player = new Player();
-
         private int call = 500;
         private int foldedPlayers = 5;
         private double type;
@@ -46,7 +48,7 @@
         private int last = 123;
         int raisedTurn = 1;
 
-        List<bool?> bools = new List<bool?>();
+        //List<bool?> bools = new List<bool?>();
         List<Type> Win = new List<Type>();
         List<string> CheckWinners = new List<string>();
         List<int> ints = new List<int>();
@@ -109,11 +111,11 @@
 
         async Task Shuffle()
         {
-            bools.Add(player.FoldTurn);
-            for (int bot = 0; bot < NumberOfBots; bot++)
-            {
-                bools.Add(gameBots[bot].FoldTurn);
-            }
+            //bools.Add(player.FoldTurn);
+            //for (int bot = 0; bot < NumberOfBots; bot++)
+            //{
+            //    bools.Add(gameBots[bot].FoldTurn);
+            //}
 
             callButton.Enabled = false;
             raiseButton.Enabled = false;
@@ -401,7 +403,7 @@
                 if (player.Turn)
                 {
                     FixCallPlayer(1);
-                    MessageBox.Show("Player's Turn");
+                    writer.Print("Player's Turn");
                     timerProgressBar.Visible = true;
                     timerProgressBar.Value = 1000;
                     t = 60;
@@ -423,8 +425,8 @@
                 {
                     if (callButton.Text.Contains("All in") == false || raiseButton.Text.Contains("All in") == false)
                     {
-                        bools.RemoveAt(0);
-                        bools.Insert(0, null);
+                        //bools.RemoveAt(0);
+                        //bools.Insert(0, null);
                         maxLeft--;
                         player.IsFolded = true;
                     }
@@ -456,8 +458,8 @@
                             FixCallBot(currentBot, 2);
                             Rules(firstCard, secondCard, currentBot);
 
-                            // TODO: Maybe we can remove the message
-                            MessageBox.Show($"Bot {botIndex}'s Turn");
+                            // TODO: Maybe we can remove this
+                            writer.Print($"Bot {botIndex}'s Turn");
 
                             AI(firstCard, secondCard, currentBot);
                             turnCount++;
@@ -471,8 +473,8 @@
 
                         if (currentBot.FoldTurn && !currentBot.IsFolded)
                         {
-                            bools.RemoveAt(botIndex);
-                            bools.Insert(botIndex, null);
+                            //bools.RemoveAt(botIndex);
+                            //bools.Insert(botIndex, null);
                             maxLeft--;
                             currentBot.IsFolded = true;
                         }
@@ -494,8 +496,8 @@
                     if (!callButton.Text.Contains("All in") || !raiseButton.Text.Contains("All in"))
                     {
                         // TODO: Create PlayerClass and work with its bools
-                        bools.RemoveAt(0);
-                        bools.Insert(0, null);
+                        //bools.RemoveAt(0);
+                        //bools.Insert(0, null);
                         maxLeft--;
                         player.IsFolded = true;
                     }
@@ -1527,43 +1529,43 @@
                     CheckWinners.Add(currentText);
                     if (current == -1)
                     {
-                        MessageBox.Show(currentText + " High Card ");
+                        writer.Print(currentText + " High Card ");
                     }
                     else if (current == 1 || current == 0)
                     {
-                        MessageBox.Show(currentText + " Pair ");
+                        writer.Print(currentText + " Pair ");
                     }
                     else if (current == 2)
                     {
-                        MessageBox.Show(currentText + " Two Pair ");
+                        writer.Print(currentText + " Two Pair ");
                     }
                     else if (current == 3)
                     {
-                        MessageBox.Show(currentText + " Three of a Kind ");
+                        writer.Print(currentText + " Three of a Kind ");
                     }
                     else if (current == 4)
                     {
-                        MessageBox.Show(currentText + " Straight ");
+                        writer.Print(currentText + " Straight ");
                     }
                     else if (current == 5 || current == 5.5)
                     {
-                        MessageBox.Show(currentText + " Flush ");
+                        writer.Print(currentText + " Flush ");
                     }
                     else if (current == 6)
                     {
-                        MessageBox.Show(currentText + " Full House ");
+                        writer.Print(currentText + " Full House ");
                     }
                     else if (current == 7)
                     {
-                        MessageBox.Show(currentText + " Four of a Kind ");
+                        writer.Print(currentText + " Four of a Kind ");
                     }
                     else if (current == 8)
                     {
-                        MessageBox.Show(currentText + " Straight Flush ");
+                        writer.Print(currentText + " Straight Flush ");
                     }
                     else if (current == 9)
                     {
-                        MessageBox.Show(currentText + " Royal Flush ! ");
+                        writer.Print(currentText + " Royal Flush ! ");
                     }
                 }
             }
@@ -1793,7 +1795,7 @@
                 call = this.bigBlind;
                 Raise = 0;
                 ImgLocation = Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
-                bools.Clear();
+                //bools.Clear();
                 rounds = 0;
                 type = 0;                
 
@@ -1994,32 +1996,36 @@
                 ints.Clear();
             }
 
-            var abc = bools.Count(x => x == false);
-
-            // LastManStanding
-            if (abc == 1)
+            int leftOneNotFoldedPlayer = gameBots.Count(x => x.FoldTurn == false);
+            if (!player.FoldTurn)
             {
-                int index = bools.IndexOf(false);
-                if (index == 0)
+                leftOneNotFoldedPlayer++;
+            }
+            // LastManStanding
+            if (leftOneNotFoldedPlayer == 1)
+            {
+                if (!player.FoldTurn)
                 {
                     player.Chips += int.Parse(potTextBox.Text);
                     player.ParticipantPanel.ChipsTextBox.Text = player.Chips.ToString();
                     player.ParticipantPanel.Visible = true;
-                    MessageBox.Show("Player Wins");
+                    writer.Print("Player Wins");
                 }
-
-                for (int bot = 0; bot < NumberOfBots; bot++)
+                else
                 {
-                    int botIndex = bot + 1;
-                    if (index == botIndex)
+                    for (int bot = 0; bot < NumberOfBots; bot++)
                     {
-                        gameBots[bot].Chips += int.Parse(potTextBox.Text);
+                        int botIndex = bot + 1;
+                        if (!gameBots[bot].FoldTurn)
+                        {
+                            gameBots[bot].Chips += int.Parse(potTextBox.Text);
 
-                        // why is this here?!
-                        player.ParticipantPanel.ChipsTextBox.Text = gameBots[bot].Chips.ToString();
+                            // why is this here?!
+                            player.ParticipantPanel.ChipsTextBox.Text = gameBots[bot].Chips.ToString();
 
-                        gameBots[bot].ParticipantPanel.Visible = true;
-                        MessageBox.Show($"Bot {botIndex} wins");
+                            gameBots[bot].ParticipantPanel.Visible = true;
+                            writer.Print($"Bot {botIndex} wins");
+                        }
                     }
                 }
 
@@ -2034,7 +2040,7 @@
             intsadded = false;
 
             // FiveOrLessLeft
-            if (abc < 6 && abc > 1 && rounds >= End)
+            if (leftOneNotFoldedPlayer < 6 && leftOneNotFoldedPlayer > 1 && rounds >= End)
             {
                 await Finish(2);
             }
@@ -2097,7 +2103,7 @@
             last = 123;
             raisedTurn = 1;
 
-            bools.Clear();
+            //bools.Clear();
             CheckWinners.Clear();
             ints.Clear();
             Win.Clear();
@@ -2153,7 +2159,7 @@
             Win.Clear();
             winningHand.Current = 0;
             winningHand.Power = 0;
-            string fixedLast = "qwerty";
+            string fixedLast = string.Empty;
             if (!player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
@@ -2784,8 +2790,8 @@
                 {
                     if (Raise * 2 > int.Parse(raiseTextBox.Text))
                     {
-                        raiseTextBox.Text = (Raise * 2).ToString();
-                        MessageBox.Show("You must raise at least twice as the current raise !");
+                        raiseTextBox.Text = (Raise*2).ToString();
+                        writer.Print("You must raise at least twice as the current raise !");
                         return;
                     }
                     else
@@ -2818,7 +2824,7 @@
             }
             else
             {
-                MessageBox.Show("This is a number only field");
+                writer.Print("This is a number only field");
                 return;
             }
 
@@ -2867,62 +2873,62 @@
             int parsedValue;
             if (smallBlind_TextBox.Text.Contains(",") || smallBlind_TextBox.Text.Contains("."))
             {
-                MessageBox.Show("The Small Blind can be only round number !");
+                writer.Print("The Small Blind can be only round number !");
                 smallBlind_TextBox.Text = sb.ToString();
                 return;
             }
             if (!int.TryParse(smallBlind_TextBox.Text, out parsedValue))
             {
-                MessageBox.Show("This is a number only field");
+                writer.Print("This is a number only field");
                 smallBlind_TextBox.Text = sb.ToString();
                 return;
             }
 
             if (int.Parse(smallBlind_TextBox.Text) > 100000)
             {
-                MessageBox.Show("The maximum of the Small Blind is 100 000 $");
+                writer.Print("The maximum of the Small Blind is 100 000 $");
                 smallBlind_TextBox.Text = sb.ToString();
             }
             else if (int.Parse(smallBlind_TextBox.Text) < 250)
             {
-                MessageBox.Show("The minimum of the Small Blind is 250 $");
+                writer.Print("The minimum of the Small Blind is 250 $");
             }
             else
             {
                 sb = int.Parse(smallBlind_TextBox.Text);
-                MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
+                writer.Print("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
 
-        private void bBB_Click(object sender, EventArgs e)
+        private void bBigBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
             if (bigBlind_TextBox.Text.Contains(",") || bigBlind_TextBox.Text.Contains("."))
             {
-                MessageBox.Show("The Big Blind can be only round number !");
+                writer.Print("The Big Blind can be only round number !");
                 bigBlind_TextBox.Text = this.bigBlind.ToString();
                 return;
             }
             if (!int.TryParse(smallBlind_TextBox.Text, out parsedValue))
-            {
-                MessageBox.Show("This is a number only field");
+            { 
+                writer.Print("This is a number only field");
                 smallBlind_TextBox.Text = this.bigBlind.ToString();
                 return;
             }
 
             if (int.Parse(bigBlind_TextBox.Text) > 200000)
             {
-                MessageBox.Show("The maximum of the Big Blind is 200 000");
+                writer.Print("The maximum of the Big Blind is 200 000");
                 bigBlind_TextBox.Text = this.bigBlind.ToString();
             }
             else if (int.Parse(bigBlind_TextBox.Text) < 500)
             {
-                MessageBox.Show("The minimum of the Big Blind is 500 $");
+                writer.Print("The minimum of the Big Blind is 500 $");
             }
             else
             {
                 this.bigBlind = int.Parse(bigBlind_TextBox.Text);
-                MessageBox.Show("The changes have been saved ! They will become available the next hand you play. ");
+                writer.Print("The changes have been saved ! They will become available the next hand you play. ");
             }
         }
 

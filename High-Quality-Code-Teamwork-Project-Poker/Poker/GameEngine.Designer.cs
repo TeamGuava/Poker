@@ -227,7 +227,7 @@
             this.bigBlind_Button.TabIndex = 16;
             this.bigBlind_Button.Text = "Big Blind";
             this.bigBlind_Button.UseVisualStyleBackColor = true;
-            this.bigBlind_Button.Click += new System.EventHandler(this.bBB_Click);
+            this.bigBlind_Button.Click += new System.EventHandler(this.bBigBlindOnClick);
             // 
             // smallBlind_TextBox
             // 

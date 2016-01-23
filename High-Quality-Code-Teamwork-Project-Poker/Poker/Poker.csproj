@@ -50,6 +50,7 @@
     <Compile Include="AddChips.Designer.cs">
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IWriter.cs" />
     <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
@@ -76,6 +77,7 @@
     <Compile Include="Contracts\IFold.cs" />
     <Compile Include="Contracts\IGameParticipant.cs" />
     <Compile Include="Contracts\IRaiser.cs" />
+    <Compile Include="UI\ApplicationWriter.cs" />
     <EmbeddedResource Include="AddChips.resx">
       <DependentUpon>AddChips.cs</DependentUpon>
     </EmbeddedResource>
