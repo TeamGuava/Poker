@@ -10,23 +10,11 @@
         private System.Windows.Forms.Button optionsButton;
         private System.Windows.Forms.Button bigBlindButton;
         private System.Windows.Forms.Button smallBlindButton;
-        //private System.Windows.Forms.TextBox player_ChipsTextBox;
-        //private System.Windows.Forms.TextBox bot5_ChipsTextBox;
-        //private System.Windows.Forms.TextBox bot4_ChipsTextBox;
-        //private System.Windows.Forms.TextBox bot3_ChipsTextBox;
-        //private System.Windows.Forms.TextBox bot2_ChipsTextBox;
-        //private System.Windows.Forms.TextBox bot1_ChipsTextBox;
         private System.Windows.Forms.TextBox potTextBox;
         private System.Windows.Forms.TextBox addChipsTextBox;
         private System.Windows.Forms.TextBox smallBlindTextBox;
         private System.Windows.Forms.TextBox bigBlindTextBox;
         private System.Windows.Forms.TextBox raiseTextBox;
-        //private System.Windows.Forms.Label bot5_StatusButton;
-        //private System.Windows.Forms.Label bot4_StatusButton;
-        //private System.Windows.Forms.Label bot3_StatusButton;
-        //private System.Windows.Forms.Label bot1_StatusButton;
-        //private System.Windows.Forms.Label playerStatusButton;
-        //private System.Windows.Forms.Label bot2_StatusButton;
         private System.Windows.Forms.Label potLabel;
         private System.Windows.Forms.ProgressBar timerProgressBar;
 
@@ -64,28 +52,12 @@
             this.timerProgressBar = new System.Windows.Forms.ProgressBar();
             this.addChipsButton = new System.Windows.Forms.Button();
             this.addChipsTextBox = new System.Windows.Forms.TextBox();
-
-            //this.player.ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-            //this.gameBots[0].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-            //this.gameBots[1].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-            //this.gameBots[2].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-            //this.gameBots[3].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-            //this.gameBots[4].ParticipantPanel.ChipsTextBox = new System.Windows.Forms.TextBox();
-
             this.potTextBox = new System.Windows.Forms.TextBox();
             this.optionsButton = new System.Windows.Forms.Button();
             this.bigBlindButton = new System.Windows.Forms.Button();
             this.smallBlindTextBox = new System.Windows.Forms.TextBox();
             this.smallBlindButton = new System.Windows.Forms.Button();
             this.bigBlindTextBox = new System.Windows.Forms.TextBox();
-
-            //this.player.ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-            //this.gameBots[0].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-            //this.gameBots[1].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-            //this.gameBots[2].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-            //this.gameBots[3].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-            //this.gameBots[4].ParticipantPanel.StatusButton = new System.Windows.Forms.Label();
-
             this.potLabel = new System.Windows.Forms.Label();
             this.raiseTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -100,7 +72,7 @@
             this.foldButton.TabIndex = 0;
             this.foldButton.Text = "Fold";
             this.foldButton.UseVisualStyleBackColor = true;
-            this.foldButton.Click += new System.EventHandler(this.botFoldOnClick);
+            this.foldButton.Click += new System.EventHandler(this.buttonFoldOnClick);
             // 
             // check_Button
             // 
@@ -112,7 +84,7 @@
             this.checkButton.TabIndex = 2;
             this.checkButton.Text = "Check";
             this.checkButton.UseVisualStyleBackColor = true;
-            this.checkButton.Click += new System.EventHandler(this.botCheckOnClick);
+            this.checkButton.Click += new System.EventHandler(this.buttonCheckOnClick);
             // 
             // call_Button
             // 
@@ -124,7 +96,7 @@
             this.callButton.TabIndex = 3;
             this.callButton.Text = "Call";
             this.callButton.UseVisualStyleBackColor = true;
-            this.callButton.Click += new System.EventHandler(this.botCallOnClick);
+            this.callButton.Click += new System.EventHandler(this.buttonCallOnClick);
             // 
             // raise_Button
             // 
@@ -136,7 +108,7 @@
             this.raiseButton.TabIndex = 4;
             this.raiseButton.Text = "raise";
             this.raiseButton.UseVisualStyleBackColor = true;
-            this.raiseButton.Click += new System.EventHandler(this.botRaiseOnClick);
+            this.raiseButton.Click += new System.EventHandler(this.buttonRaiseOnClick);
             // 
             // timer_ProgressBar
             // 
@@ -168,7 +140,7 @@
             this.addChipsButton.TabIndex = 7;
             this.addChipsButton.Text = "AddChips";
             this.addChipsButton.UseVisualStyleBackColor = true;
-            this.addChipsButton.Click += new System.EventHandler(this.botAddOnClick);
+            this.addChipsButton.Click += new System.EventHandler(this.buttonAddOnClick);
             // 
             // addChipsTextBox
             // 
@@ -246,7 +218,7 @@
             this.optionsButton.TabIndex = 15;
             this.optionsButton.Text = "BB/SB";
             this.optionsButton.UseVisualStyleBackColor = true;
-            this.optionsButton.Click += new System.EventHandler(this.botOptionsOnClick);
+            this.optionsButton.Click += new System.EventHandler(this.buttonOptionsOnClick);
             // 
             // bigBlindButton
             // 
@@ -256,7 +228,7 @@
             this.bigBlindButton.TabIndex = 16;
             this.bigBlindButton.Text = "Big Blind";
             this.bigBlindButton.UseVisualStyleBackColor = true;
-            this.bigBlindButton.Click += new System.EventHandler(this.bBigBlindOnClick);
+            this.bigBlindButton.Click += new System.EventHandler(this.buttonBigBlindOnClick);
             // 
             // smallBlindTextBox
             // 
@@ -274,7 +246,7 @@
             this.smallBlindButton.TabIndex = 18;
             this.smallBlindButton.Text = "Small Blind";
             this.smallBlindButton.UseVisualStyleBackColor = true;
-            this.smallBlindButton.Click += new System.EventHandler(this.bSB_Click);
+            this.smallBlindButton.Click += new System.EventHandler(this.buttonSmallBlindOnClick);
             // 
             // bigBlindTextBox
             // 

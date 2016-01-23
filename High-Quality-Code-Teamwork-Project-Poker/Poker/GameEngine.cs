@@ -30,7 +30,7 @@
         private readonly List<int> ints = new List<int>();
         private readonly int[] reserve = new int[17];
         private readonly Image[] deck = new Image[52];
-        private readonly PictureBox[] holder = new PictureBox[52];
+        private readonly PictureBox[] cardImages = new PictureBox[52];
         #endregion
 
         #region Variables
@@ -46,7 +46,6 @@
         private int last = 123;
         int raisedTurn = 1;
         //List<bool?> bools = new List<bool?>();
-        //bool playerFoldTurn = false, playerTurn = true;
         private bool restart;
         private bool raising;
         private Type winningHand;
@@ -98,7 +97,7 @@
             }
 
             this.timer.Interval = 1 * 1 * 1000;
-            this.timer.Tick += this.timerTick;
+            this.timer.Tick += this.TimerTick;
             this.update.Interval = 1 * 1 * 100;
             this.update.Tick += this.UpdateTick;
 
@@ -148,31 +147,31 @@
                 }
 
                 this.reserve[currentCard] = int.Parse(this.imageLocation[currentCard]) - 1;
-                this.holder[currentCard] = new PictureBox();
-                this.holder[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
-                this.holder[currentCard].Height = 130;
-                this.holder[currentCard].Width = 80;
-                this.Controls.Add(this.holder[currentCard]);
-                this.holder[currentCard].Name = "pb" + currentCard;
+                this.cardImages[currentCard] = new PictureBox();
+                this.cardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
+                this.cardImages[currentCard].Height = 130;
+                this.cardImages[currentCard].Width = 80;
+                this.Controls.Add(this.cardImages[currentCard]);
+                this.cardImages[currentCard].Name = "pb" + currentCard;
                 await Task.Delay(200);
 
                 // Throwing Cards
                 if (currentCard < 2)
                 {
-                    if (this.holder[0].Tag != null)
+                    if (this.cardImages[0].Tag != null)
                     {
-                        this.holder[1].Tag = this.reserve[1];
+                        this.cardImages[1].Tag = this.reserve[1];
                     }
 
-                    this.holder[0].Tag = this.reserve[0];
-                    this.holder[currentCard].Image = this.deck[currentCard];
-                    this.holder[currentCard].Anchor = AnchorStyles.Bottom;
-                    //holder[i].Dock = DockStyle.Top;
-                    this.holder[currentCard].Location = new Point(horizontal, vertical);
-                    horizontal += this.holder[currentCard].Width;
+                    this.cardImages[0].Tag = this.reserve[0];
+                    this.cardImages[currentCard].Image = this.deck[currentCard];
+                    this.cardImages[currentCard].Anchor = AnchorStyles.Bottom;
+                    //cardImages[i].Dock = DockStyle.Top;
+                    this.cardImages[currentCard].Location = new Point(horizontal, vertical);
+                    horizontal += this.cardImages[currentCard].Width;
                     this.Controls.Add(this.player.ParticipantPanel);
                     this.player.ParticipantPanel.Location = new Point(
-                        this.holder[0].Left - 10, this.holder[0].Top - 10);
+                        this.cardImages[0].Left - 10, this.cardImages[0].Top - 10);
                     this.player.ParticipantPanel.BackColor = Color.DarkBlue;
                     this.player.ParticipantPanel.Height = 150;
                     this.player.ParticipantPanel.Width = 180;
@@ -202,12 +201,12 @@
 
                         if (currentCard % 2 == 1)
                         {
-                            horizontal += this.holder[currentCard].Width;
+                            horizontal += this.cardImages[currentCard].Width;
                         }
 
                         this.SetBotCards(
                             this.gameBots[0], 
-                            this.holder, 
+                            this.cardImages, 
                             backImage, 
                             this.reserve, 
                             horizontal, 
@@ -234,12 +233,12 @@
 
                         if (currentCard % 2 == 1)
                         {
-                            horizontal += this.holder[currentCard].Width;
+                            horizontal += this.cardImages[currentCard].Width;
                         }
 
                         this.SetBotCards(
                             this.gameBots[1],
-                            this.holder, backImage, 
+                            this.cardImages, backImage, 
                             this.reserve, 
                             horizontal, 
                             vertical, 
@@ -267,11 +266,11 @@
 
                         if (currentCard % 2 == 1)
                         {
-                            horizontal += this.holder[currentCard].Width;
+                            horizontal += this.cardImages[currentCard].Width;
                         }
 
                         this.SetBotCards(this.gameBots[2],
-                            this.holder, backImage,
+                            this.cardImages, backImage,
                             this.reserve, 
                             horizontal, 
                             vertical, 
@@ -299,11 +298,11 @@
 
                         if (currentCard % 2 == 1)
                         {
-                            horizontal += this.holder[currentCard].Width;
+                            horizontal += this.cardImages[currentCard].Width;
                         }
 
                         this.SetBotCards(this.gameBots[3],
-                            this.holder, 
+                            this.cardImages, 
                             backImage, 
                             this.reserve, 
                             horizontal, 
@@ -332,11 +331,11 @@
 
                         if (currentCard % 2 == 1)
                         {
-                            horizontal += this.holder[currentCard].Width;
+                            horizontal += this.cardImages[currentCard].Width;
                         }
 
                         this.SetBotCards(this.gameBots[4],
-                            this.holder,
+                            this.cardImages,
                             backImage, 
                             this.reserve,
                             horizontal, 
@@ -353,7 +352,7 @@
                 // Printing five cards on the desk
                 if (currentCard >= 12)
                 {
-                    this.holder[currentCard].Tag = this.reserve[currentCard];
+                    this.cardImages[currentCard].Tag = this.reserve[currentCard];
 
                     if (!check)
                     {
@@ -362,12 +361,12 @@
                     }
 
                     check = true;
-                    if (this.holder[currentCard] != null)
+                    if (this.cardImages[currentCard] != null)
                     {
-                        this.holder[currentCard].Anchor = AnchorStyles.None;
-                        this.holder[currentCard].Image = backImage;
-                        //holder[i].Image = deck[i];
-                        this.holder[currentCard].Location = new Point(horizontal, vertical);
+                        this.cardImages[currentCard].Anchor = AnchorStyles.None;
+                        this.cardImages[currentCard].Image = backImage;
+                        //cardImages[i].Image = deck[i];
+                        this.cardImages[currentCard].Location = new Point(horizontal, vertical);
                         horizontal += 110;
                     }
                 }
@@ -382,18 +381,18 @@
                 //        if (this.gameBots[bot].Chips <= 0)
                 //        {
                 //            this.gameBots[bot].FoldTurn = true;
-                //            this.holder[card].Visible = false;
-                //            this.holder[card + 1].Visible = false;
+                //            this.cardImages[card].Visible = false;
+                //            this.cardImages[card + 1].Visible = false;
                 //        }
                 //        else
                 //        {
                 //            this.gameBots[0].FoldTurn = false;
                 //            if (currentCard == card)
                 //            {
-                //                if (this.holder[card + 1] != null)
+                //                if (this.cardImages[card + 1] != null)
                 //                {
-                //                    this.holder[card].Visible = true;
-                //                    this.holder[card + 1].Visible = true;
+                //                    this.cardImages[card].Visible = true;
+                //                    this.cardImages[card + 1].Visible = true;
                 //                }
                 //            }
                 //        }
@@ -600,9 +599,9 @@
                 for (int cardIndex = 0; cardIndex < AllCardsOnTheTable; cardIndex++)
                 {
                     if (this.reserve[cardIndex] == int.Parse(
-                        this.holder[firstCard].Tag.ToString()) &&
+                        this.cardImages[firstCard].Tag.ToString()) &&
                         this.reserve[cardIndex + 1] == int.Parse(
-                            this.holder[secondCard].Tag.ToString()))
+                            this.cardImages[secondCard].Tag.ToString()))
                     {
                         //Pair from Hand current = 1
                         this.rPairFromHand(currentGameParticipant);
@@ -1904,8 +1903,8 @@
             for (int j = 0; j <= 16; j++)
             {
                 //await Task.Delay(5);
-                if (this.holder[j].Visible)
-                    this.holder[j].Image = this.deck[j];
+                if (this.cardImages[j].Visible)
+                    this.cardImages[j].Image = this.deck[j];
             }
 
             if (currentGameParticipantType == this.winningHand.Current)
@@ -2055,9 +2054,9 @@
             {
                 for (int j = 12; j <= 14; j++)
                 {
-                    if (this.holder[j].Image != this.deck[j])
+                    if (this.cardImages[j].Image != this.deck[j])
                     {
-                        this.holder[j].Image = this.deck[j];
+                        this.cardImages[j].Image = this.deck[j];
 
                         this.player.Call = 0;  
                         this.player.Raise = 0;
@@ -2075,9 +2074,9 @@
             {
                 for (int j = 14; j <= 15; j++)
                 {
-                    if (this.holder[j].Image != this.deck[j])
+                    if (this.cardImages[j].Image != this.deck[j])
                     {
-                        this.holder[j].Image = this.deck[j];
+                        this.cardImages[j].Image = this.deck[j];
     
                         this.player.Call = 0;
                         this.player.Raise = 0;
@@ -2095,9 +2094,9 @@
             {
                 for (int j = 15; j <= 16; j++)
                 {
-                    if (this.holder[j].Image != this.deck[j])
+                    if (this.cardImages[j].Image != this.deck[j])
                     {
-                        this.holder[j].Image = this.deck[j];
+                        this.cardImages[j].Image = this.deck[j];
 
                         this.player.Call = 0;
                         this.player.Raise = 0;
@@ -2204,9 +2203,9 @@
                 this.winningHand.Power = 0;
                 for (int os = 0; os < 17; os++)
                 {
-                    this.holder[os].Image = null;
-                    this.holder[os].Invalidate();
-                    this.holder[os].Visible = false;
+                    this.cardImages[os].Image = null;
+                    this.cardImages[os].Invalidate();
+                    this.cardImages[os].Visible = false;
                 }
 
                 this.potTextBox.Text = "0";
@@ -2438,7 +2437,7 @@
 
                 for (int j = 0; j <= 16; j++)
                 {
-                    this.holder[j].Visible = false;
+                    this.cardImages[j].Visible = false;
                 }
 
                 await this.Finish(1);
@@ -2551,9 +2550,9 @@
                 Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
             for (int os = 0; os < 17; os++)
             {
-                this.holder[os].Image = null;
-                this.holder[os].Invalidate();
-                this.holder[os].Visible = false;
+                this.cardImages[os].Image = null;
+                this.cardImages[os].Invalidate();
+                this.cardImages[os].Visible = false;
             }
 
             await this.Shuffle();
@@ -2646,8 +2645,8 @@
 
             if (currentGameParticipant.FoldTurn)
             {
-                this.holder[firstCard].Visible = false;
-                this.holder[secondCard].Visible = false;
+                this.cardImages[firstCard].Visible = false;
+                this.cardImages[secondCard].Visible = false;
             }
         }
 
@@ -3092,7 +3091,7 @@
         }
 
         #region UI
-        private async void timerTick(object sender, object e)
+        private async void TimerTick(object sender, object e)
         {
             if (this.timerProgressBar.Value <= 0)
             {
@@ -3191,7 +3190,7 @@
             }
         }
 
-        private async void botFoldOnClick(object sender, EventArgs e)
+        private async void buttonFoldOnClick(object sender, EventArgs e)
         {
             this.player.ParticipantPanel.StatusButton.Text = "Fold";
             this.player.Turn = false;
@@ -3199,7 +3198,7 @@
             await this.Turns();
         }
 
-        private async void botCheckOnClick(object sender, EventArgs e)
+        private async void buttonCheckOnClick(object sender, EventArgs e)
         {
             if (this.call <= 0)
             {
@@ -3215,7 +3214,7 @@
             await this.Turns();
         }
 
-        private async void botCallOnClick(object sender, EventArgs e)
+        private async void buttonCallOnClick(object sender, EventArgs e)
         {
             this.Rules(0, 1, this.player);
             if (this.player.Chips >= this.call)
@@ -3253,7 +3252,7 @@
             await this.Turns();
         }
 
-        private async void botRaiseOnClick(object sender, EventArgs e)
+        private async void buttonRaiseOnClick(object sender, EventArgs e)
         {
             this.Rules(0, 1, this.player);
             int parsedValue;
@@ -3309,7 +3308,7 @@
             await this.Turns();
         }
 
-        private void botAddOnClick(object sender, EventArgs e)
+        private void buttonAddOnClick(object sender, EventArgs e)
         {
             if (this.addChipsTextBox.Text != string.Empty)
             {
@@ -3323,7 +3322,7 @@
             this.player.ParticipantPanel.ChipsTextBox.Text = "Chips : " + this.player.Chips;
         }
 
-        private void botOptionsOnClick(object sender, EventArgs e)
+        private void buttonOptionsOnClick(object sender, EventArgs e)
         {
             this.bigBlindTextBox.Text = this.bigBlind.ToString();
             this.smallBlindTextBox.Text = this.smallBlind.ToString();
@@ -3345,7 +3344,7 @@
             }
         }
 
-        private void bSB_Click(object sender, EventArgs e)
+        private void buttonSmallBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
             if (this.smallBlindTextBox.Text.Contains(",") || 
@@ -3382,7 +3381,7 @@
             }
         }
 
-        private void bBigBlindOnClick(object sender, EventArgs e)
+        private void buttonBigBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
             if (this.bigBlindTextBox.Text.Contains(",") ||
@@ -3427,34 +3426,34 @@
         #endregion
 
         private void SetBotCards(
-            Bot botPanel, 
-            PictureBox[] holder, 
+            Bot bot, 
+            PictureBox[] cardImages, 
             Bitmap backImage, 
             int[] reserve, 
             int horizontal, 
             int vertical, 
             int currentCard)
         {
-            holder[currentCard].Tag = reserve[currentCard];
-            holder[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            holder[currentCard].Image = backImage;
-            // holder[currentCard].Image = deck[currentCard];
-            holder[currentCard].Location = new Point(horizontal, vertical);
+            cardImages[currentCard].Tag = reserve[currentCard];
+            cardImages[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            cardImages[currentCard].Image = backImage;
+            // cardImages[currentCard].Image = deck[currentCard];
+            cardImages[currentCard].Location = new Point(horizontal, vertical);
 
             if (currentCard % 2 == 0)
             {
-                horizontal += holder[currentCard].Width;
+                horizontal += cardImages[currentCard].Width;
             }
 
-            holder[currentCard].Visible = true;
-            this.Controls.Add(botPanel.ParticipantPanel);
-            botPanel.ParticipantPanel.Location = new Point(
-                holder[currentCard].Left - 10,
-                holder[currentCard].Top - 10);
-            botPanel.ParticipantPanel.BackColor = Color.DarkBlue;
-            botPanel.ParticipantPanel.Height = 150;
-            botPanel.ParticipantPanel.Width = 180;
-            botPanel.ParticipantPanel.Visible = false;
+            cardImages[currentCard].Visible = true;
+            this.Controls.Add(bot.ParticipantPanel);
+            bot.ParticipantPanel.Location = new Point(
+                cardImages[currentCard].Left - 10,
+                cardImages[currentCard].Top - 10);
+            bot.ParticipantPanel.BackColor = Color.DarkBlue;
+            bot.ParticipantPanel.Height = 150;
+            bot.ParticipantPanel.Width = 180;
+            bot.ParticipantPanel.Visible = false;
         }
 
         private void EnableButtons()
