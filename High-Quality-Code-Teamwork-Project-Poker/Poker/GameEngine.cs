@@ -31,6 +31,7 @@
         private readonly int[] reserve = new int[17];
         private readonly Image[] deck = new Image[52];
         private readonly PictureBox[] cardImages = new PictureBox[52];
+        private readonly Point[] cardLocations = new Point[AllCardsOnTheTable];
         #endregion
 
         #region Variables
@@ -45,7 +46,6 @@
         int winners, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
         private int last = 123;
         int raisedTurn = 1;
-        //List<bool?> bools = new List<bool?>();
         private bool restart;
         private bool raising;
         private Type winningHand;
@@ -74,12 +74,12 @@
         #endregion
         public GameEngine()
         {
-            //bools.Add(PFturn); bools.Add(B1Fturn); bools.Add(B2Fturn); bools.Add(B3Fturn); bools.Add(B4Fturn); bools.Add(B5Fturn);
             this.call = this.bigBlind;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.update.Start();
             this.InitializeComponent();
+            this.InitializeCardLocations(cardLocations);
             //int width = this.Width;
             //int height = this.Height;
             this.Shuffle();
@@ -115,11 +115,8 @@
             this.checkButton.Enabled = false;
 
             this.MaximizeBox = false;
-            bool check = false;
-
+            //bool check = false;
             Bitmap backImage = new Bitmap("Assets\\Back\\Back.png");
-            int horizontal = 580;
-            int vertical = 480;
             Random random = new Random();
             for (int i = this.imageLocation.Length; i > 0; i--)
             {
@@ -145,6 +142,8 @@
                 this.cardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
                 this.cardImages[currentCard].Height = 130;
                 this.cardImages[currentCard].Width = 80;
+                this.cardImages[currentCard].Image = backImage;
+                this.cardImages[currentCard].Location = cardLocations[currentCard];
                 this.Controls.Add(this.cardImages[currentCard]);
                 this.cardImages[currentCard].Name = "pb" + currentCard;
                 await Task.Delay(200);
@@ -160,11 +159,12 @@
                     this.cardImages[0].Tag = this.reserve[0];
                     this.cardImages[currentCard].Image = this.deck[currentCard];
                     this.cardImages[currentCard].Anchor = AnchorStyles.Bottom;
-                    //cardImages[i].Dock = DockStyle.Top;
-                    this.cardImages[currentCard].Location = new Point(horizontal, vertical);
-                    horizontal += this.cardImages[currentCard].Width;
+
                     // Not used in design logic, repeating already executed logic.
                     // TODO: Remove if proved redundant.
+                    ////cardImages[i].Dock = DockStyle.Top;
+                    //this.cardImages[currentCard].Location = new Point(horizontal, vertical);
+                    //horizontal += this.cardImages[currentCard].Width;
                     //this.Controls.Add(this.player.ParticipantPanel);
                     //this.player.ParticipantPanel.Location = new Point(
                     //    this.cardImages[0].Left - 10, this.cardImages[0].Top - 10);
@@ -179,32 +179,29 @@
                     //foldedPlayers--;
                     if (currentCard >= 2 && currentCard < 4)
                     {
-                        if (!check)
-                        {
-                            horizontal = 15;
-                            vertical = 420;
-                        }
+                        //if (!check)
+                        //{
+                        //    horizontal = 15;
+                        //    vertical = 420;
+                        //}
 
-                        check = true;
-
-                        if (currentCard % 2 == 1)
-                        {
-                            horizontal += this.cardImages[currentCard].Width;
-                        }
+                        //check = true;
+                        //if (currentCard % 2 == 1)
+                        //{
+                        //    horizontal += this.cardImages[currentCard].Width;
+                        //}
 
                         this.SetBotCards(
                             this.gameBots[0], 
                             this.cardImages, 
                             backImage, 
                             this.reserve, 
-                            horizontal, 
-                            vertical, 
                             currentCard);
 
-                        if (currentCard == 3)
-                        {
-                            check = false;
-                        }
+                        //if (currentCard == 3)
+                        //{
+                        //    check = false;
+                        //}
                     }
                 }
 
@@ -213,29 +210,27 @@
                     //foldedPlayers--;
                     if (currentCard >= 4 && currentCard < 6)
                     {
-                        if (!check)
-                        {
-                            horizontal = 75;
-                            vertical = 65;
-                        }
+                        //if (!check)
+                        //{
+                        //    horizontal = 75;
+                        //    vertical = 65;
+                        //}
 
-                        if (currentCard % 2 == 1)
-                        {
-                            horizontal += this.cardImages[currentCard].Width;
-                        }
+                        //if (currentCard % 2 == 1)
+                        //{
+                        //    horizontal += this.cardImages[currentCard].Width;
+                        //}
 
                         this.SetBotCards(
                             this.gameBots[1],
                             this.cardImages, backImage, 
                             this.reserve, 
-                            horizontal, 
-                            vertical, 
                             currentCard);
 
-                        if (currentCard == 5)
-                        {
-                            check = false;
-                        }
+                        //if (currentCard == 5)
+                        //{
+                        //    check = false;
+                        //}
                     }
                 }
 
@@ -244,30 +239,28 @@
                     //foldedPlayers--;
                     if (currentCard >= 6 && currentCard < 8)
                     {
-                        if (!check)
-                        {
-                            horizontal = 590;
-                            vertical = 25;
-                        }
+                        //if (!check)
+                        //{
+                        //    horizontal = 590;
+                        //    vertical = 25;
+                        //}
 
-                        check = true;
+                        //check = true;
 
-                        if (currentCard % 2 == 1)
-                        {
-                            horizontal += this.cardImages[currentCard].Width;
-                        }
+                        //if (currentCard % 2 == 1)
+                        //{
+                        //    horizontal += this.cardImages[currentCard].Width;
+                        //}
 
                         this.SetBotCards(this.gameBots[2],
                             this.cardImages, backImage,
                             this.reserve, 
-                            horizontal, 
-                            vertical, 
                             currentCard);
 
-                        if (currentCard == 7)
-                        {
-                            check = false;
-                        }
+                        //if (currentCard == 7)
+                        //{
+                        //    check = false;
+                        //}
                     }
                 }
 
@@ -276,31 +269,29 @@
                     //foldedPlayers--;
                     if (currentCard >= 8 && currentCard < 10)
                     {
-                        if (!check)
-                        {
-                            horizontal = 1115;
-                            vertical = 65;
-                        }
+                        //if (!check)
+                        //{
+                        //    horizontal = 1115;
+                        //    vertical = 65;
+                        //}
 
-                        check = true;
+                        //check = true;
 
-                        if (currentCard % 2 == 1)
-                        {
-                            horizontal += this.cardImages[currentCard].Width;
-                        }
+                        //if (currentCard % 2 == 1)
+                        //{
+                        //    horizontal += this.cardImages[currentCard].Width;
+                        //}
 
                         this.SetBotCards(this.gameBots[3],
                             this.cardImages, 
                             backImage, 
                             this.reserve, 
-                            horizontal, 
-                            vertical, 
                             currentCard);
 
-                        if (currentCard == 9)
-                        {
-                            check = false;
-                        }
+                        //if (currentCard == 9)
+                        //{
+                        //    check = false;
+                        //}
                     }
                 }
 
@@ -309,53 +300,52 @@
                     //foldedPlayers--;
                     if (currentCard >= 10 && currentCard < 12)
                     {
-                        if (!check)
-                        {
-                            horizontal = 1160;
-                            vertical = 420;
-                        }
+                        //if (!check)
+                        //{
+                        //    horizontal = 1160;
+                        //    vertical = 420;
+                        //}
 
-                        check = true;
+                        //check = true;
 
-                        if (currentCard % 2 == 1)
-                        {
-                            horizontal += this.cardImages[currentCard].Width;
-                        }
+                        //if (currentCard % 2 == 1)
+                        //{
+                        //    horizontal += this.cardImages[currentCard].Width;
+                        //}
 
                         this.SetBotCards(this.gameBots[4],
                             this.cardImages,
                             backImage, 
                             this.reserve,
-                            horizontal, 
-                            vertical, 
                             currentCard);
 
-                        if (currentCard == 11)
-                        {
-                            check = false;
-                        }
+                        //if (currentCard == 11)
+                        //{
+                        //    check = false;
+                        //}
                     }
                 }
 
-                // Printing five cards on the desk
+                // Printing the five river cards
                 if (currentCard >= 12)
                 {
                     this.cardImages[currentCard].Tag = this.reserve[currentCard];
 
-                    if (!check)
-                    {
-                        horizontal = 410;
-                        vertical = 265;
-                    }
+                    //if (!check)
+                    //{
+                    //    horizontal = 410;
+                    //    vertical = 265;
+                    //}
 
-                    check = true;
+                    //check = true;
+
                     if (this.cardImages[currentCard] != null)
                     {
                         this.cardImages[currentCard].Anchor = AnchorStyles.None;
-                        this.cardImages[currentCard].Image = backImage;
-                        //cardImages[i].Image = deck[i];
-                        this.cardImages[currentCard].Location = new Point(horizontal, vertical);
-                        horizontal += 110;
+                        //this.cardImages[currentCard].Image = backImage;
+                        ////cardImages[i].Image = deck[i];
+                        //this.cardImages[currentCard].Location = new Point(horizontal, vertical);
+                        //horizontal += 110;
                     }
                 }
 
@@ -3415,22 +3405,24 @@
             PictureBox[] cardImages, 
             Bitmap backImage, 
             int[] reserve, 
-            int horizontal, 
-            int vertical, 
             int currentCard)
         {
             cardImages[currentCard].Tag = reserve[currentCard];
             cardImages[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            cardImages[currentCard].Image = backImage;
-            // cardImages[currentCard].Image = deck[currentCard];
-            cardImages[currentCard].Location = new Point(horizontal, vertical);
-
-            if (currentCard % 2 == 0)
-            {
-                horizontal += cardImages[currentCard].Width;
-            }
-
             cardImages[currentCard].Visible = true;
+
+            // Not used in design logic, repeating already executed logic.
+            // TODO: Remove if proved redundant.
+            //cardImages[currentCard].Tag = reserve[currentCard];
+            //cardImages[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            //cardImages[currentCard].Image = backImage;
+            //// cardImages[currentCard].Image = deck[currentCard];
+            //cardImages[currentCard].Location = new Point(horizontal, vertical);
+            //if (currentCard % 2 == 0)
+            //{
+            //    horizontal += cardImages[currentCard].Width;
+            //}
+            //cardImages[currentCard].Visible = true;
             // Not used in design logic, repeating already executed logic.
             // TODO: Remove if proved redundant.
             //this.Controls.Add(bot.ParticipantPanel);
@@ -3441,6 +3433,34 @@
             //bot.ParticipantPanel.Height = 150;
             //bot.ParticipantPanel.Width = 180;
             //bot.ParticipantPanel.Visible = false;
+        }
+
+        private void InitializeCardLocations(Point[] cardLocations)
+        {
+            // Player cards
+            cardLocations[0] = new Point(580, 480);
+            cardLocations[1] = new Point(660, 480);
+            // Bot1 cards
+            cardLocations[2] = new Point(15, 420);
+            cardLocations[3] = new Point(95, 420);
+            // Bot2 cards
+            cardLocations[4] = new Point(75, 65);
+            cardLocations[5] = new Point(155, 65);
+            // Bot3 cards
+            cardLocations[6] = new Point(590, 25);
+            cardLocations[7] = new Point(670, 25);
+            // Bot4 cards
+            cardLocations[8] = new Point(1115, 65);
+            cardLocations[9] = new Point(1195, 65);
+            // Bot5 cards
+            cardLocations[10] = new Point(1160, 420);
+            cardLocations[11] = new Point(1240, 420);
+            // River card locations
+            cardLocations[12] = new Point(410, 265);
+            cardLocations[13] = new Point(520, 265);
+            cardLocations[14] = new Point(630, 265);
+            cardLocations[15] = new Point(740, 265);
+            cardLocations[16] = new Point(850, 265);
         }
 
         private void EnableButtons()

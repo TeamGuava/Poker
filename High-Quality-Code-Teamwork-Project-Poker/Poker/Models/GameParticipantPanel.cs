@@ -13,5 +13,9 @@
         public Label StatusButton { get; set; }
 
         public TextBox ChipsTextBox { get; set; }
+
+        public PictureBox FirstCard { get; set; }
+
+        public PictureBox SecondCard { get; set; }
     }
 }
