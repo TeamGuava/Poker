@@ -109,12 +109,6 @@
 
         async Task Shuffle()
         {
-            //bools.Add(player.FoldTurn);
-            //for (int bot = 0; bot < NumberOfBots; bot++)
-            //{
-            //    bools.Add(gameBots[bot].FoldTurn);
-            //}
-
             this.callButton.Enabled = false;
             this.raiseButton.Enabled = false;
             this.foldButton.Enabled = false;
@@ -169,22 +163,16 @@
                     //cardImages[i].Dock = DockStyle.Top;
                     this.cardImages[currentCard].Location = new Point(horizontal, vertical);
                     horizontal += this.cardImages[currentCard].Width;
-                    this.Controls.Add(this.player.ParticipantPanel);
-                    this.player.ParticipantPanel.Location = new Point(
-                        this.cardImages[0].Left - 10, this.cardImages[0].Top - 10);
-                    this.player.ParticipantPanel.BackColor = Color.DarkBlue;
-                    this.player.ParticipantPanel.Height = 150;
-                    this.player.ParticipantPanel.Width = 180;
-                    this.player.ParticipantPanel.Visible = false;
+                    // Not used in design logic, repeating already executed logic.
+                    // TODO: Remove if proved redundant.
+                    //this.Controls.Add(this.player.ParticipantPanel);
+                    //this.player.ParticipantPanel.Location = new Point(
+                    //    this.cardImages[0].Left - 10, this.cardImages[0].Top - 10);
+                    //this.player.ParticipantPanel.BackColor = Color.DarkBlue;
+                    //this.player.ParticipantPanel.Height = 150;
+                    //this.player.ParticipantPanel.Width = 180;
+                    //this.player.ParticipantPanel.Visible = false;
                 }
-
-                //for (int bot = 0; bot < NumberOfBots; bot++)
-                //{
-                //    if (gameBots[bot].Chips > 0)
-                //    {
-                        
-                //    }
-                //}
 
                 if (this.gameBots[0].Chips > 0)
                 {
@@ -3446,14 +3434,16 @@
             }
 
             cardImages[currentCard].Visible = true;
-            this.Controls.Add(bot.ParticipantPanel);
-            bot.ParticipantPanel.Location = new Point(
-                cardImages[currentCard].Left - 10,
-                cardImages[currentCard].Top - 10);
-            bot.ParticipantPanel.BackColor = Color.DarkBlue;
-            bot.ParticipantPanel.Height = 150;
-            bot.ParticipantPanel.Width = 180;
-            bot.ParticipantPanel.Visible = false;
+            // Not used in design logic, repeating already executed logic.
+            // TODO: Remove if proved redundant.
+            //this.Controls.Add(bot.ParticipantPanel);
+            //bot.ParticipantPanel.Location = new Point(
+            //    cardImages[currentCard].Left - 10,
+            //    cardImages[currentCard].Top - 10);
+            //bot.ParticipantPanel.BackColor = Color.DarkBlue;
+            //bot.ParticipantPanel.Height = 150;
+            //bot.ParticipantPanel.Width = 180;
+            //bot.ParticipantPanel.Visible = false;
         }
 
         private void EnableButtons()
