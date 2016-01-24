@@ -61,6 +61,8 @@
       <DependentUpon>GameEngine.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Bot.cs" />
+    <Compile Include="Models\Cards\Card.cs" />
+    <Compile Include="Models\Cards\DeckOfCards.cs" />
     <Compile Include="Models\GameParticipant.cs" />
     <Compile Include="Models\GameParticipantPanel.cs">
       <SubType>Component</SubType>

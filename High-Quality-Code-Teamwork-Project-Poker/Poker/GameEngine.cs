@@ -10,6 +10,7 @@
 
     using Poker.Contracts;
     using Poker.Models;
+    using Poker.Models.Cards;
     using Poker.UI;
 
     public partial class GameEngine : Form
@@ -49,8 +50,9 @@
         private bool restart;
         private bool raising;
         private Type winningHand;
-        private string[] imageLocation = Directory.GetFiles(
-            "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
+        DeckOfCards deckOfCards;
+        /* private string[] imageLocation = Directory.GetFiles(
+             "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);*/
         /*string[] imageLocation ={card
                    "Assets\\Cards\\33.png","Assets\\Cards\\22.png",
                     "Assets\\Cards\\29.png","Assets\\Cards\\21.png",
@@ -73,6 +75,7 @@
         #endregion
         public GameEngine()
         {
+            this.deckOfCards = new DeckOfCards("Assets\\Cards", "*.png");
             this.call = this.bigBlind;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -116,27 +119,21 @@
             this.MaximizeBox = false;
             //bool check = false;
             Bitmap backImage = new Bitmap("Assets\\Back\\Back.png");
-            Random random = new Random();
-            for (int i = this.imageLocation.Length; i > 0; i--)
-            {
-                int generatedNumber = random.Next(i);
-                var k = this.imageLocation[generatedNumber];
-                this.imageLocation[generatedNumber] = this.imageLocation[i - 1];
-                this.imageLocation[i - 1] = k;
-            }
+
+            // Shuffle the deck. // Aleksandar
+            this.deckOfCards.ShuffleDeck();
+
             // Not sure
             for (int currentCard = 0; currentCard < AllCardsOnTheTable; currentCard++)
             {
-                this.deck[currentCard] = Image.FromFile(
-                    this.imageLocation[currentCard]);
-                var charsToRemove = new string[] { "Assets\\Cards\\", ".png" };
-                foreach (var c in charsToRemove)
-                {
-                    this.imageLocation[currentCard] = 
-                        this.imageLocation[currentCard].Replace(c, string.Empty);
-                }
+                // Next card from the deck. // Aleksandar
+                Card drawnCard = this.deckOfCards.DrawOneCard();
 
-                this.reserve[currentCard] = int.Parse(this.imageLocation[currentCard]) - 1;
+                this.deck[currentCard] = drawnCard.Image;
+
+                // TODO: The name of the card file should not be used like this. // Aleksandar
+                this.reserve[currentCard] = int.Parse(drawnCard.Name) - 1;
+
                 this.cardImages[currentCard] = new PictureBox();
                 this.cardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
                 this.cardImages[currentCard].Height = 130;
