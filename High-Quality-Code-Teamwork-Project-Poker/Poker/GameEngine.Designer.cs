@@ -72,7 +72,7 @@
             this.foldButton.TabIndex = 0;
             this.foldButton.Text = "Fold";
             this.foldButton.UseVisualStyleBackColor = true;
-            this.foldButton.Click += new System.EventHandler(this.buttonFoldOnClick);
+            this.foldButton.Click += new System.EventHandler(this.ButtonFoldOnClick);
             // 
             // check_Button
             // 
@@ -84,7 +84,7 @@
             this.checkButton.TabIndex = 2;
             this.checkButton.Text = "Check";
             this.checkButton.UseVisualStyleBackColor = true;
-            this.checkButton.Click += new System.EventHandler(this.buttonCheckOnClick);
+            this.checkButton.Click += new System.EventHandler(this.ButtonCheckOnClick);
             // 
             // call_Button
             // 
@@ -96,19 +96,19 @@
             this.callButton.TabIndex = 3;
             this.callButton.Text = "Call";
             this.callButton.UseVisualStyleBackColor = true;
-            this.callButton.Click += new System.EventHandler(this.buttonCallOnClick);
+            this.callButton.Click += new System.EventHandler(this.ButtonCallOnClick);
             // 
             // raise_Button
             // 
             this.raiseButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.raiseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.raiseButton.Location = new System.Drawing.Point(835, 661);
-            this.raiseButton.Name = "raise_Button";
+            this.raiseButton.Name = "Raise_Button";
             this.raiseButton.Size = new System.Drawing.Size(124, 62);
             this.raiseButton.TabIndex = 4;
-            this.raiseButton.Text = "raise";
+            this.raiseButton.Text = "Raise";
             this.raiseButton.UseVisualStyleBackColor = true;
-            this.raiseButton.Click += new System.EventHandler(this.buttonRaiseOnClick);
+            this.raiseButton.Click += new System.EventHandler(this.ButtonRaiseOnClick);
             // 
             // timer_ProgressBar
             // 
@@ -140,7 +140,7 @@
             this.addChipsButton.TabIndex = 7;
             this.addChipsButton.Text = "AddChips";
             this.addChipsButton.UseVisualStyleBackColor = true;
-            this.addChipsButton.Click += new System.EventHandler(this.buttonAddOnClick);
+            this.addChipsButton.Click += new System.EventHandler(this.ButtonAddOnClick);
             // 
             // addChipsTextBox
             // 
@@ -218,7 +218,7 @@
             this.optionsButton.TabIndex = 15;
             this.optionsButton.Text = "BB/SB";
             this.optionsButton.UseVisualStyleBackColor = true;
-            this.optionsButton.Click += new System.EventHandler(this.buttonOptionsOnClick);
+            this.optionsButton.Click += new System.EventHandler(this.ButtonOptionsOnClick);
             // 
             // bigBlindButton
             // 
@@ -228,7 +228,7 @@
             this.bigBlindButton.TabIndex = 16;
             this.bigBlindButton.Text = "Big Blind";
             this.bigBlindButton.UseVisualStyleBackColor = true;
-            this.bigBlindButton.Click += new System.EventHandler(this.buttonBigBlindOnClick);
+            this.bigBlindButton.Click += new System.EventHandler(this.ButtonBigBlindOnClick);
             // 
             // smallBlindTextBox
             // 
@@ -246,7 +246,7 @@
             this.smallBlindButton.TabIndex = 18;
             this.smallBlindButton.Text = "Small Blind";
             this.smallBlindButton.UseVisualStyleBackColor = true;
-            this.smallBlindButton.Click += new System.EventHandler(this.buttonSmallBlindOnClick);
+            this.smallBlindButton.Click += new System.EventHandler(this.ButtonSmallBlindOnClick);
             // 
             // bigBlindTextBox
             // 
@@ -317,7 +317,7 @@
             // 
             this.raiseTextBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.raiseTextBox.Location = new System.Drawing.Point(965, 703);
-            this.raiseTextBox.Name = "raise_TextBox";
+            this.raiseTextBox.Name = "Raise_TextBox";
             this.raiseTextBox.Size = new System.Drawing.Size(108, 20);
             this.raiseTextBox.TabIndex = 0;
             // 

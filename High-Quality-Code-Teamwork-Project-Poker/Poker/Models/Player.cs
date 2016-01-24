@@ -12,7 +12,6 @@
             this.Raise = 0;
             this.Turn = true;
             this.IsFolded = false;
-            this.ParticipantPanel = new GameParticipantPanel();
         }
     }
 }

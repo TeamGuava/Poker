@@ -554,7 +554,7 @@
                 this.player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
             {
                 // Variables
-                bool done = false;
+                //bool done = false;
                 //bool vf = false;
 
                 int[] straight1 = new int[5];
@@ -586,6 +586,7 @@
 
                 for (int cardIndex = 0; cardIndex < AllCardsOnTheTable; cardIndex++)
                 {
+                    // bool hasCards 
                     if (this.reserve[cardIndex] == int.Parse(
                         this.cardImages[firstCard].Tag.ToString()) &&
                         this.reserve[cardIndex + 1] == int.Parse(
@@ -607,13 +608,10 @@
                         this.rStraight(currentGameParticipant, straight);
 
                         // Flush current = 5 || 5.5
-
                         this.rFlush(currentGameParticipant, straight1);
 
-                        rFlush(currentGameParticipant, straight1);
-
                         // Full House current = 6
-                        this.rFullHouse(currentGameParticipant, ref done, straight);
+                        this.rFullHouse(currentGameParticipant, straight);
 
                         // Four of a Kind current = 7
                         this.rFourOfAKind(currentGameParticipant, straight);
@@ -796,11 +794,10 @@
         }
 
         // TODO: Extract method
-        private void rFullHouse(
-            IGameParticipant currentGameParticipant, 
-            ref bool done, 
-            int[] straight)
+        private void rFullHouse(IGameParticipant currentGameParticipant, int[] straight)
         {
+            // WTF?!
+            bool done = false;
             if (currentGameParticipant.Type >= -1)
             {
                 this.type = currentGameParticipant.Power;
@@ -859,14 +856,14 @@
             }
         }
 
-        private void rFlush(IGameParticipant currentGameParticipant, int[] straight1)
+        private void rFlush(IGameParticipant currentGameParticipant, int[] straight)
         {
-            if (currentGameParticipant.Type >= -1)
-            {
-                var f1 = straight1.Where(o => o % 4 == 0).ToArray();
-                var f2 = straight1.Where(o => o % 4 == 1).ToArray();
-                var f3 = straight1.Where(o => o % 4 == 2).ToArray();
-                var f4 = straight1.Where(o => o % 4 == 3).ToArray();
+            //if (currentGameParticipant.Type >= -1)
+            //{
+                var f1 = straight.Where(o => o % 4 == 0).ToArray();
+                var f2 = straight.Where(o => o % 4 == 1).ToArray();
+                var f3 = straight.Where(o => o % 4 == 2).ToArray();
+                var f4 = straight.Where(o => o % 4 == 3).ToArray();
 
                 if (f1.Length == 3 || f1.Length == 4)
                 {
@@ -1481,14 +1478,14 @@
                             currentGameParticipant.Type);
                     }
                 }
-            }
+            //}
         }
 
         private void rStraight(IGameParticipant currentGameParticipant, int[] straight)
         {
             // TODO: Etract method
-            if (currentGameParticipant.Type >= -1)
-            {
+            //if (currentGameParticipant.Type >= -1)
+            //{
                 var op = straight.Select(o => o / 4).Distinct().ToArray();
                 for (int j = 0; j < op.Length - 4; j++)
                 {
@@ -1525,14 +1522,14 @@
                             currentGameParticipant.Power, currentGameParticipant.Type);
                     }
                 }
-            }
+            //}
         }
 
         private void rThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight)
         {
             // TODO: Etract method
-            if (currentGameParticipant.Type >= -1)
-            {
+            //if (currentGameParticipant.Type >= -1)
+            //{
                 for (int j = 0; j <= 12; j++)
                 {
                     var fh = straight.Where(o => o / 4 == j).ToArray();
@@ -1557,13 +1554,13 @@
                         }
                     }
                 }
-            }
+            //}
         }
 
         private void rTwoPair(IGameParticipant currentGameParticipant)
         {
-            if (currentGameParticipant.Type >= -1)
-            {
+            //if (currentGameParticipant.Type >= -1)
+            //{
                 bool msgbox = false;
                 // TODO: Extract method
                 for (int tc = 16; tc >= 12; tc--)
@@ -1624,13 +1621,13 @@
                        }
                     }
                 }
-            }
+           // }
         }
 
         private void rPairTwoPair(IGameParticipant currentGameParticipant)
         {
-            if (currentGameParticipant.Type >= -1)
-            {
+            //if (currentGameParticipant.Type >= -1)
+            //{
                 bool msgbox = false;
                 bool msgbox1 = false;
 
@@ -1746,13 +1743,13 @@
                         }
                     }
                 }
-            }
+           // }
         }
 
         private void rPairFromHand(IGameParticipant currentGameParticipant)
         {
-            if (currentGameParticipant.Type >= -1)
-            {
+            //if (currentGameParticipant.Type >= -1)
+            //{
                 bool msgbox = false;
                 if (this.reserve[i] / 4 == this.reserve[i + 1] / 4)
                 {
@@ -1837,13 +1834,13 @@
                         msgbox = true;
                     }
                 }
-            }
+            //}
         }
 
         private void rHighCard(IGameParticipant currentGameParticipant)
         {
-            if (currentGameParticipant.Type == -1)
-            {
+            //if (currentGameParticipant.Type == -1)
+            //{
                 if (this.reserve[i] / 4 > this.reserve[i + 1] / 4)
                 {
                     currentGameParticipant.Type = -1;
@@ -1871,7 +1868,7 @@
                         currentGameParticipant.Power, 
                         currentGameParticipant.Type);
                 }
-            }
+           // }
         }
 
         void ValidateWinner(
@@ -2151,7 +2148,7 @@
                         this.foldButton.Enabled = true;
                         this.checkButton.Enabled = true;
 
-                        this.raiseButton.Text = "raise";
+                        this.raiseButton.Text = "Raise";
                     }
                 }
 
@@ -2210,7 +2207,7 @@
         //    {
         //        if (options == 1)
         //        {
-        //            if (status.Text.Contains("raise"))
+        //            if (status.Text.Contains("Raise"))
         //            {
         //                var changeRaise = status.Text.Substring(6);
         //                currentRaise = int.Parse(changeRaise);
@@ -2256,7 +2253,7 @@
             {
                 if (options == 1)
                 {
-                    if (this.player.ParticipantPanel.StatusButton.Text.Contains("raise"))
+                    if (this.player.ParticipantPanel.StatusButton.Text.Contains("Raise"))
                     {
                         var changeRaise = this.player.ParticipantPanel.StatusButton.Text.Substring(6);
                         this.player.Raise = int.Parse(changeRaise);
@@ -2302,7 +2299,7 @@
             {
                 if (options == 1)
                 {
-                    if (currentBot.ParticipantPanel.StatusButton.Text.Contains("raise"))
+                    if (currentBot.ParticipantPanel.StatusButton.Text.Contains("Raise"))
                     {
                         var changeRaise = currentBot.ParticipantPanel.StatusButton.Text.Substring(6);
                         currentBot.Raise = int.Parse(changeRaise);
@@ -2349,7 +2346,7 @@
             // All in
             if (this.player.Chips <= 0 && !this.intsadded)
             {
-                if (this.player.ParticipantPanel.StatusButton.Text.Contains("raise"))
+                if (this.player.ParticipantPanel.StatusButton.Text.Contains("Raise"))
                 {
                     this.ints.Add(this.player.Chips);
                     this.intsadded = true;
@@ -2530,7 +2527,7 @@
                     this.raiseButton.Enabled = true;
                     this.foldButton.Enabled = true;
                     this.checkButton.Enabled = true;
-                    this.raiseButton.Text = "raise";
+                    this.raiseButton.Text = "Raise";
                 }
             }
 
@@ -2822,7 +2819,7 @@
         private void Raised(IGameParticipant currentGameParticipant)
         {
             currentGameParticipant.Chips -= Convert.ToInt32(this.raise);
-            currentGameParticipant.ParticipantPanel.StatusButton.Text = "raise " + this.raise;
+            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Raise " + this.raise;
             this.potTextBox.Text =
                 (int.Parse(this.potTextBox.Text) + Convert.ToInt32(this.raise)).ToString();
             this.call = Convert.ToInt32(this.raise);
@@ -3168,7 +3165,7 @@
                 }
                 else
                 {
-                    this.raiseButton.Text = "raise";
+                    this.raiseButton.Text = "Raise";
                 }
             }
 
@@ -3178,7 +3175,7 @@
             }
         }
 
-        private async void buttonFoldOnClick(object sender, EventArgs e)
+        private async void ButtonFoldOnClick(object sender, EventArgs e)
         {
             this.player.ParticipantPanel.StatusButton.Text = "Fold";
             this.player.Turn = false;
@@ -3186,7 +3183,7 @@
             await this.Turns();
         }
 
-        private async void buttonCheckOnClick(object sender, EventArgs e)
+        private async void ButtonCheckOnClick(object sender, EventArgs e)
         {
             if (this.call <= 0)
             {
@@ -3202,7 +3199,7 @@
             await this.Turns();
         }
 
-        private async void buttonCallOnClick(object sender, EventArgs e)
+        private async void ButtonCallOnClick(object sender, EventArgs e)
         {
             this.Rules(0, 1, this.player);
             if (this.player.Chips >= this.call)
@@ -3240,7 +3237,7 @@
             await this.Turns();
         }
 
-        private async void buttonRaiseOnClick(object sender, EventArgs e)
+        private async void ButtonRaiseOnClick(object sender, EventArgs e)
         {
             this.Rules(0, 1, this.player);
             int parsedValue;
@@ -3263,7 +3260,7 @@
                         {
                             this.call = int.Parse(this.raiseTextBox.Text);
                             this.raise = int.Parse(raiseTextBox.Text);
-                            this.player.ParticipantPanel.StatusButton.Text = "raise " + this.call;
+                            this.player.ParticipantPanel.StatusButton.Text = "Raise " + this.call;
                             this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + this.call).ToString();
                             this.callButton.Text = "Call";
                             this.player.Chips -= int.Parse(this.raiseTextBox.Text);
@@ -3277,7 +3274,7 @@
                             this.raise = this.player.Chips;
                             this.potTextBox.Text =
                                 (int.Parse(this.potTextBox.Text) + this.player.Chips).ToString();
-                            this.player.ParticipantPanel.StatusButton.Text = "raise " + this.call;
+                            this.player.ParticipantPanel.StatusButton.Text = "Raise " + this.call;
                             this.player.Chips = 0;
                             this.raising = true;
                             this.last = 0;
@@ -3296,7 +3293,7 @@
             await this.Turns();
         }
 
-        private void buttonAddOnClick(object sender, EventArgs e)
+        private void ButtonAddOnClick(object sender, EventArgs e)
         {
             if (this.addChipsTextBox.Text != string.Empty)
             {
@@ -3310,7 +3307,7 @@
             this.player.ParticipantPanel.ChipsTextBox.Text = "Chips : " + this.player.Chips;
         }
 
-        private void buttonOptionsOnClick(object sender, EventArgs e)
+        private void ButtonOptionsOnClick(object sender, EventArgs e)
         {
             this.bigBlindTextBox.Text = this.bigBlind.ToString();
             this.smallBlindTextBox.Text = this.smallBlind.ToString();
@@ -3332,7 +3329,7 @@
             }
         }
 
-        private void buttonSmallBlindOnClick(object sender, EventArgs e)
+        private void ButtonSmallBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
             if (this.smallBlindTextBox.Text.Contains(",") || 
@@ -3369,7 +3366,7 @@
             }
         }
 
-        private void buttonBigBlindOnClick(object sender, EventArgs e)
+        private void ButtonBigBlindOnClick(object sender, EventArgs e)
         {
             int parsedValue;
             if (this.bigBlindTextBox.Text.Contains(",") ||

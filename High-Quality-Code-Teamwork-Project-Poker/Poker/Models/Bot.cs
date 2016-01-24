@@ -12,7 +12,6 @@
         {
             this.Type = -1;
             this.Chips = StartChips;
-            this.ParticipantPanel = new GameParticipantPanel();
         }
     }
 }

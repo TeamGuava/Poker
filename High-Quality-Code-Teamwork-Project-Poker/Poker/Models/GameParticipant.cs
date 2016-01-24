@@ -1,4 +1,6 @@
-﻿namespace Poker.Models
+﻿using System.Windows.Forms;
+
+namespace Poker.Models
 {
     using Poker.Contracts;
 
@@ -6,7 +8,7 @@
     {
         protected GameParticipant()
         {
-            
+            this.ParticipantPanel = new GameParticipantPanel();
         }
 
         // TODO: VALIDATION
