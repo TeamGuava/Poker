@@ -51,6 +51,7 @@
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IWriter.cs" />
+    <Compile Include="Engine\AI.cs" />
     <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
@@ -222,9 +223,7 @@
     <Content Include="Resources\Cards\9_of_hearts.png" />
     <Content Include="Resources\Cards\9_of_spades.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
