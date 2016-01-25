@@ -49,10 +49,10 @@
             currentGameParticipant.FoldTurn = true;
         }
 
-        public void ChooseToCheck(IGameParticipant currentChooseToCall)
+        public void ChooseToCheck(IGameParticipant currentGameParticipant)
         {
-            currentChooseToCall.ParticipantPanel.StatusButton.Text = "Check";
-            currentChooseToCall.Turn = false;
+            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
+            currentGameParticipant.Turn = false;
             raising = false;
         }
     }
