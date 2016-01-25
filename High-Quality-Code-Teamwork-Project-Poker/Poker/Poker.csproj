@@ -51,6 +51,7 @@
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IGameEngine.cs" />
+    <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
     <Compile Include="Enums\CardValue.cs" />

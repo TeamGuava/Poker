@@ -1,6 +1,8 @@
 ﻿namespace Poker.Contracts
 {
-    public interface IBot : IGameParticipant
+    using Poker.Models;
+
+    public interface IBot : ICaller, IRaiser, IFold, IChecker, IGameParticipant
     {
         //void MakeDecision();
     }

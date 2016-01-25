@@ -1,9 +1,6 @@
 ﻿namespace Poker.Contracts
 {
-    public interface IPlayer : ICaller, IRaiser, IFold, IChecker
+    public interface IPlayer : ICaller, IRaiser, IFold, IChecker, IGameParticipant
     {
-        // TO DO: public properties
-        int Chips { get; }
-
     }
 }

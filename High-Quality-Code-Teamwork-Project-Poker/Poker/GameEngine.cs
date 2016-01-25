@@ -24,9 +24,9 @@
         #region Readonlyflo
         private ProgressBar progressBar = new ProgressBar();
         private readonly ApplicationWriter writer = new ApplicationWriter();
-        private readonly Bot[] gameBots = new Bot[5]
+        private readonly IBot[] gameBots = new Bot[5]
         { new Bot(), new Bot(), new Bot(), new Bot(), new Bot() };
-        private readonly Player player = new Player();
+        private readonly IPlayer player = new Player();
         private readonly IList<IType> win = new List<IType>();
         private readonly IList<string> winnersChecker = new List<string>();
         private readonly IList<int> ints = new List<int>();
@@ -35,7 +35,7 @@
         private readonly PictureBox[] cardImages = new PictureBox[52];
         private readonly Point[] cardLocations = new Point[AllCardsOnTheTable];
         #endregion
-
+        
         #region Variables
         private int call = 500;
         // private int foldedPlayers = 5;
@@ -309,7 +309,7 @@
                 this.gameBots[0].Turn = true;
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
-                    Bot currentBot = this.gameBots[bot];
+                    IBot currentBot = this.gameBots[bot];
                     int botIndex = bot + 1;
                     if (!currentBot.FoldTurn)
                     {
@@ -1912,7 +1912,7 @@
 
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
-                    Bot currentBot = this.gameBots[bot];
+                    IBot currentBot = this.gameBots[bot];
                     int botIndex = bot + 1;
                     int firstCard = botIndex * 2;
                     int seconCard = botIndex * 2 + 1;
@@ -1927,7 +1927,7 @@
                 this.ValidateWinner(this.player, "Player", fixedLast);
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
-                    Bot currentBot = this.gameBots[bot];
+                    IBot currentBot = this.gameBots[bot];
                     this.ValidateWinner(currentBot, $"Bot {bot + 1}", fixedLast);
                     currentBot.FoldTurn = false;
                 }
@@ -1966,7 +1966,7 @@
 
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
-                    Bot currentBot = this.gameBots[bot];
+                    IBot currentBot = this.gameBots[bot];
 
                     currentBot.ParticipantPanel.Visible = false;
                     currentBot.Call = 0;
@@ -2098,7 +2098,7 @@
             }
         }
 
-        void FixCallBot(Bot currentBot, int options)
+        void FixCallBot(IBot currentBot, int options)
         {
             if (this.rounds != 4)
             {
@@ -2126,7 +2126,7 @@
                     // Changed // todor
                     if (currentBot.Raise != 0)
                     {
-                        call = currentBot.Raise;
+                        this.call = currentBot.Raise;
                     }
 
                     if (currentBot.Call != this.call ||
@@ -2167,7 +2167,7 @@
             //intsadded = false;
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                Bot currentBot = this.gameBots[bot];
+                IBot currentBot = this.gameBots[bot];
 
                 if (currentBot.Chips <= 0 &&
                     !currentBot.FoldTurn)
@@ -2259,7 +2259,7 @@
 
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                Bot currentBot = this.gameBots[bot];
+                IBot currentBot = this.gameBots[bot];
 
                 currentBot.ParticipantPanel.Visible = false;
                 currentBot.Power = 0;
@@ -2292,8 +2292,8 @@
             //Turn = 2;
             //River = 3;
             //End = 4;
-            maxLeft = 6;
-            last = 123;
+            this.maxLeft = 6;
+            this.last = 123;
             //this.raisedTurn = 1;
 
             //bools.Clear();
@@ -2363,7 +2363,7 @@
 
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                Bot currentBot = this.gameBots[bot];
+                IBot currentBot = this.gameBots[bot];
                 int botIndex = bot + 1;
                 int firstCard = botIndex * 2;
                 int secondCard = botIndex * 2 + 1;
@@ -3221,7 +3221,7 @@
         #endregion
 
         private void SetBotCards(
-            Bot bot,
+            IBot bot,
             PictureBox[] cardImages,
             Bitmap backImage,
             int[] reserve,

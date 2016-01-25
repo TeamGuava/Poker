@@ -1,6 +1,8 @@
 ﻿namespace Poker.Models
 {
-    public class Bot : GameParticipant
+    using Poker.Contracts;
+
+    public class Bot : GameParticipant, IBot
     {
         public Bot()
             : base()

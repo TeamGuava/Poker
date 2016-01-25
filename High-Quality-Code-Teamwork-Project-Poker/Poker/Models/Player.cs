@@ -1,6 +1,8 @@
 ﻿namespace Poker.Models
 {
-    public class Player : GameParticipant
+    using Poker.Contracts;
+
+    public class Player : GameParticipant, IPlayer
     {
         public Player()
             : base()
