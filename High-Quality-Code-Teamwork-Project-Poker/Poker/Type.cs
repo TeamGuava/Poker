@@ -2,13 +2,13 @@
 {
     public class Type
     {
-        public Type(double power, double current)
+        public Type(int power, double current)
         {
             this.Power = power;
             this.Current = current;
         }
 
-        public double Power { get; set; }
+        public int Power { get; set; }
 
         public double Current { get; set; }
     }
