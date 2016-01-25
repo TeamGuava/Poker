@@ -54,6 +54,7 @@
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
     <Compile Include="Enums\CardValue.cs" />
+    <Compile Include="Enums\PokerStages.cs" />
     <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
       <SubType>Form</SubType>

@@ -9,6 +9,7 @@
     using System.Windows.Forms;
 
     using Poker.Contracts;
+    using Poker.Enums;
     using Poker.Models;
     using Poker.Models.Cards;
     using Poker.UI;
@@ -20,7 +21,7 @@
         private const int AllCardsOnTheTable = 17;
         #endregion
 
-        #region Readonly
+        #region Readonlyflo
         private ProgressBar progressBar = new ProgressBar();
         private readonly ApplicationWriter writer = new ApplicationWriter();
         private readonly Bot[] gameBots = new Bot[5]
@@ -39,12 +40,11 @@
         private int call = 500;
         // private int foldedPlayers = 5;
         private double type;
-        private double rounds;
+        private int rounds;
         //private double raise;
         //private bool intsadded;
         bool changed;
-        // TODO: to make enumaration
-        int winners, Flop = 1, Turn = 2, River = 3, End = 4, maxLeft = 6;
+        int winners, maxLeft = 6; 
         private int last = 123;
         int raisedTurn = 1;
         private bool restart;
@@ -1841,7 +1841,7 @@
                 }
             }
 
-            if (this.rounds == Flop)
+            if (this.rounds == (int)PokerStages.Flop)
             {
                 for (int j = 12; j <= 14; j++)
                 {
@@ -1861,7 +1861,7 @@
                 }
             }
 
-            if (this.rounds == Turn)
+            if (this.rounds == (int)PokerStages.Turn)
             {
                 for (int j = 14; j <= 15; j++)
                 {
@@ -1881,7 +1881,7 @@
                 }
             }
 
-            if (this.rounds == River)
+            if (this.rounds == (int)PokerStages.River)
             {
                 for (int j = 15; j <= 16; j++)
                 {
@@ -1901,7 +1901,7 @@
                 }
             }
 
-            if (this.rounds == End && this.maxLeft == 6)
+            if (this.rounds == (int)PokerStages.End && this.maxLeft == 6)
             {
                 string fixedLast = string.Empty;
                 if (!this.player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
@@ -2237,7 +2237,7 @@
 
             // FiveOrLessLeft
             if (leftOneNotFoldedPlayer < 6 && leftOneNotFoldedPlayer > 1 &&
-                this.rounds >= End)
+                this.rounds >= (int)PokerStages.End)
             {
                 await this.Finish(2);
             }
@@ -2288,10 +2288,10 @@
             //height = 0;
             //width = 0;
             this.winners = 0;
-            Flop = 1;
-            Turn = 2;
-            River = 3;
-            End = 4;
+            //Flop = 1;
+            //Turn = 2;
+            //River = 3;
+            //End = 4;
             maxLeft = 6;
             last = 123;
             //this.raisedTurn = 1;
