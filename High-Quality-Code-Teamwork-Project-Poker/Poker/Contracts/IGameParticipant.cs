@@ -2,7 +2,7 @@
 {
     using Poker.Models;
 
-    public interface IGameParticipant : ICaller, IRaiser, IFold
+    public interface IGameParticipant : ICaller, IRaiser, IFold, IChecker
     {
         bool Turn { get; set; }
 

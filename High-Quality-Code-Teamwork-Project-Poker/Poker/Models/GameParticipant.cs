@@ -1,14 +1,21 @@
-﻿using System.Windows.Forms;
-
-namespace Poker.Models
+﻿namespace Poker.Models
 {
     using Poker.Contracts;
 
     public abstract class GameParticipant : IGameParticipant
     {
+        // TODO:
+        // This field should be in other class, extracted from GameEngine later.
+        // It is used temporarily here as public (!) in order to extract game participant's 
+        // method ChooseToCheck(..) from GameEngine (to use an appropriate interface)
+        public static bool raising;
+
+        private const int StartChips = 10000;
+
         protected GameParticipant()
         {
             this.ParticipantPanel = new GameParticipantPanel();
+            this.Chips = StartChips;
         }
 
         // TODO: VALIDATION
@@ -29,5 +36,24 @@ namespace Poker.Models
         public double Type { get; set; }
 
         public GameParticipantPanel ParticipantPanel { get; set; }
+
+        //public void ChooseToCall(IGameParticipant currentChooseToCall);
+
+        //public void ChooseToRaise(IGameParticipant currentChooseToCall);
+
+        public void ChooseToFold(IGameParticipant currentGameParticipant)
+        {
+            GameParticipant.raising = false;
+            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
+            currentGameParticipant.Turn = false;
+            currentGameParticipant.FoldTurn = true;
+        }
+
+        public void ChooseToCheck(IGameParticipant currentChooseToCall)
+        {
+            currentChooseToCall.ParticipantPanel.StatusButton.Text = "Check";
+            currentChooseToCall.Turn = false;
+            raising = false;
+        }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IBot : IGameParticipant
     {
-        void MakeDecision();
+        //void MakeDecision();
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Poker
+﻿using Poker.Contracts;
+
+namespace Poker
 {
-    public class Type
+    public class Type : IType
     {
         public Type(int power, double current)
         {

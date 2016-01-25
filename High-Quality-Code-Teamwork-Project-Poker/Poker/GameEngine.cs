@@ -13,7 +13,7 @@
     using Poker.Models.Cards;
     using Poker.UI;
 
-    public partial class GameEngine : Form
+    public partial class GameEngine : Form/*, IGameEngine*/
     {
         #region Constants
         private const int NumberOfBots = 5;
@@ -26,9 +26,9 @@
         private readonly Bot[] gameBots = new Bot[5] 
         { new Bot(), new Bot(), new Bot(), new Bot(), new Bot() };
         private readonly Player player = new Player();
-        private readonly List<Type> win = new List<Type>();
-        private readonly List<string> winnersChecker = new List<string>();
-        private readonly List<int> ints = new List<int>();
+        private readonly IList<IType> win = new List<IType>();
+        private readonly IList<string> winnersChecker = new List<string>();
+        private readonly IList<int> ints = new List<int>();
         private readonly int[] reserve = new int[17];
         private readonly Image[] deck = new Image[52];
         private readonly PictureBox[] cardImages = new PictureBox[52];
@@ -48,8 +48,8 @@
         private int last = 123;
         int raisedTurn = 1;
         private bool restart;
-        private bool raising;
-        private Type winningHand;
+        //private bool raising;
+        private IType winningHand;
         DeckOfCards deckOfCards;
         private string[] imageLocation = Directory.GetFiles(
             "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
@@ -72,6 +72,8 @@
         private int bigBlind = 500;
         private int smallBlind = 250;
         private int turnCount;
+        //Temporal field (for fixing class GameParticipant):
+        private GameParticipant participant;
         #endregion
         public GameEngine()
         {
@@ -139,7 +141,7 @@
                 this.cardImages[currentCard].Height = 130;
                 this.cardImages[currentCard].Width = 80;
                 this.cardImages[currentCard].Image = backImage;
-                this.cardImages[currentCard].Location = cardLocations[currentCard];
+                this.cardImages[currentCard].Location = this.cardLocations[currentCard];
                 this.Controls.Add(this.cardImages[currentCard]);
                 this.cardImages[currentCard].Name = "pb" + currentCard;
                 await Task.Delay(200);
@@ -465,13 +467,13 @@
         }
 
         /// <summary>
-        /// Adds a winning hand to the collection of <see cref="Type"/>.
+        /// Adds a winning hand to the collection of <see cref="IType"/>.
         /// </summary>
         /// <param botIndex="power"></param>
         /// <param botIndex="current"></param>
         private void AddWin(int power, double current)
         {
-            Type typeToAdd = new Type(power, current);
+            IType typeToAdd = new Type(power, current);
             this.win.Add(typeToAdd);
             // Returns the best hand so far by sorting the win collection.
             this.winningHand = this.win
@@ -1802,10 +1804,10 @@
         async Task CheckRaise(int currentTurn)
         {
             // TODO: currentTurn or raisedTurn
-            if (this.raising)
+            if (GameParticipant.raising)
             {
                 this.turnCount = 0;
-                this.raising = false;
+                GameParticipant.raising = false;
                 this.raisedTurn = currentTurn;
                 this.changed = true;
             }
@@ -2282,7 +2284,7 @@
             this.player.Turn = true;
 
             this.restart = false;
-            this.raising = false;
+            GameParticipant.raising = false;
 
             this.player.Call = 0;
             this.player.Raise = 0;
@@ -2603,24 +2605,24 @@
             }
         }
 
-        private void Fold(IGameParticipant currentGameParticipant)
-        {
-            this.raising = false;
-            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
-            currentGameParticipant.Turn = false;
-            currentGameParticipant.FoldTurn = true;
-        }
+        //private void ChooseToFold(IGameParticipant currentGameParticipant)
+        //{
+        //    GameParticipant.raising = false;
+        //    currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
+        //    currentGameParticipant.Turn = false;
+        //    currentGameParticipant.FoldTurn = true;
+        //}
 
-        private void Check(IGameParticipant currentGameParticipant)
-        {
-            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
-            currentGameParticipant.Turn = false;
-            this.raising = false;
-        }
+        ////private void ChooseToCheck(IGameParticipant currentGameParticipant)
+        //{
+        //    currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
+        //    currentGameParticipant.Turn = false;
+        //    GameParticipant.raising = false;
+        //}
 
-        private void Call(IGameParticipant currentGameParticipant)
+        private void ChooseToCall(IGameParticipant currentGameParticipant)
         {
-            this.raising = false;
+            GameParticipant.raising = false;
             currentGameParticipant.Turn = false;
             currentGameParticipant.Chips -= this.call;
             currentGameParticipant.ParticipantPanel.Text = "Call " + this.call;
@@ -2634,7 +2636,7 @@
             this.potTextBox.Text =
                 (int.Parse(this.potTextBox.Text) + Convert.ToInt32(this.raise)).ToString();
             this.call = Convert.ToInt32(this.raise);
-            this.raising = true;
+            GameParticipant.raising = true;
             currentGameParticipant.Turn = false;
         }
 
@@ -2655,7 +2657,7 @@
 
             if (this.call <= 0)
             {
-                this.Check(currrentGameParticipant);
+                participant.ChooseToCheck(currrentGameParticipant);
             }
 
             if (this.call > 0)
@@ -2664,11 +2666,11 @@
                 {
                     if (this.call <= RoundN(currrentGameParticipant.Chips, n))
                     {
-                        this.Call(currrentGameParticipant);
+                        this.ChooseToCall(currrentGameParticipant);
                     }
                     else
                     {
-                        this.Fold(currrentGameParticipant);
+                        participant.ChooseToFold(currrentGameParticipant);
                     }
                 }
 
@@ -2676,11 +2678,11 @@
                 {
                     if (this.call <= RoundN(currrentGameParticipant.Chips, n1))
                     {
-                        this.Call(currrentGameParticipant);
+                        this.ChooseToCall(currrentGameParticipant);
                     }
                     else
                     {
-                        this.Fold(currrentGameParticipant);
+                        participant.ChooseToFold(currrentGameParticipant);
                     }
                 }
             }
@@ -2701,7 +2703,7 @@
                     }
                     else
                     {
-                        this.Fold(currrentGameParticipant);
+                        participant.ChooseToFold(currrentGameParticipant);
                     }
                 }
             }
@@ -2725,19 +2727,19 @@
             {
                 if (this.call <= 0)
                 {
-                    this.Check(currentGameParticipant);
+                    participant.ChooseToCheck(currentGameParticipant);
                 }
 
                 if (this.call > 0)
                 {
                     if (this.call >= RoundN(currentGameParticipant.Chips, n1))
                     {
-                        this.Fold(currentGameParticipant);
+                        participant.ChooseToFold(currentGameParticipant);
                     }
 
                     if (this.raise > RoundN(currentGameParticipant.Chips, n))
                     {
-                        this.Fold(currentGameParticipant);
+                        participant.ChooseToFold(currentGameParticipant);
                     }
 
                     if (!currentGameParticipant.FoldTurn)
@@ -2745,13 +2747,13 @@
                         if (this.call >= RoundN(currentGameParticipant.Chips, n) &&
                             this.call <= RoundN(currentGameParticipant.Chips, n1))
                         {
-                            this.Call(currentGameParticipant);
+                            this.ChooseToCall(currentGameParticipant);
                         }
 
                         if (this.raise <= RoundN(currentGameParticipant.Chips, n) && 
                             this.raise >= RoundN(currentGameParticipant.Chips, n) / 2)
                         {
-                            this.Call(currentGameParticipant);
+                            this.ChooseToCall(currentGameParticipant);
                         }
 
                         if (this.raise <= RoundN(currentGameParticipant.Chips, n) / 2)
@@ -2777,12 +2779,12 @@
                 {
                     if (this.call >= RoundN(currentGameParticipant.Chips, n1 - rnd))
                     {
-                        this.Fold(currentGameParticipant);
+                        participant.ChooseToFold(currentGameParticipant);
                     }
 
                     if (this.raise > RoundN(currentGameParticipant.Chips, n - rnd))
                     {
-                        this.Fold(currentGameParticipant);
+                        participant.ChooseToFold(currentGameParticipant);
                     }
 
                     if (!currentGameParticipant.FoldTurn)
@@ -2790,13 +2792,13 @@
                         if (this.call >= RoundN(currentGameParticipant.Chips, n - rnd) && 
                             this.call <= RoundN(currentGameParticipant.Chips, n1 - rnd))
                         {
-                            this.Call(currentGameParticipant);
+                            this.ChooseToCall(currentGameParticipant);
                         }
 
                         if (this.raise <= RoundN(currentGameParticipant.Chips, n - rnd) &&
                             this.raise >= RoundN(currentGameParticipant.Chips, n - rnd) / 2)
                         {
-                            this.Call(currentGameParticipant);
+                            this.ChooseToCall(currentGameParticipant);
                         }
 
                         if (this.raise <= RoundN(currentGameParticipant.Chips, n - rnd) / 2)
@@ -2837,7 +2839,7 @@
             //int rnd = random.Next(1, 3);
             if (this.call <= 0)
             {
-                this.Check(currentGameParticipant);
+                participant.ChooseToCheck(currentGameParticipant);
             }
             else
             {
@@ -2845,11 +2847,11 @@
                 {
                     if (currentGameParticipant.Chips > this.call)
                     {
-                        this.Call(currentGameParticipant);
+                        this.ChooseToCall(currentGameParticipant);
                     }
                     else if (currentGameParticipant.Chips <= this.call)
                     {
-                        this.raising = false;
+                        GameParticipant.raising = false;
                         currentGameParticipant.Turn = false;
                         currentGameParticipant.Chips = 0;
                         currentGameParticipant.ParticipantPanel.StatusButton.Text = 
@@ -2869,7 +2871,7 @@
                         }
                         else
                         {
-                            this.Call(currentGameParticipant);
+                            this.ChooseToCall(currentGameParticipant);
                         }
                     }
                     else
@@ -3070,12 +3072,12 @@
                         if (this.player.Chips >= int.Parse(this.raiseTextBox.Text))
                         {
                             this.call = int.Parse(this.raiseTextBox.Text);
-                            this.raise = int.Parse(raiseTextBox.Text);
+                            this.raise = int.Parse(this.raiseTextBox.Text);
                             this.player.ParticipantPanel.StatusButton.Text = "Raise " + this.call;
                             this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + this.call).ToString();
                             this.callButton.Text = "Call";
                             this.player.Chips -= int.Parse(this.raiseTextBox.Text);
-                            this.raising = true;
+                            GameParticipant.raising = true;
                             this.last = 0;
                             this.player.Raise = Convert.ToInt32(this.raise);
                         }
@@ -3087,7 +3089,7 @@
                                 (int.Parse(this.potTextBox.Text) + this.player.Chips).ToString();
                             this.player.ParticipantPanel.StatusButton.Text = "Raise " + this.call;
                             this.player.Chips = 0;
-                            this.raising = true;
+                            GameParticipant.raising = true;
                             this.last = 0;
                             this.player.Raise = Convert.ToInt32(this.raise);
                         }

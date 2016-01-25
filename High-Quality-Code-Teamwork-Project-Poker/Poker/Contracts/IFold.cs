@@ -5,5 +5,7 @@
         bool FoldTurn { get; set; }
 
         //bool IsFolded { get; set; }
+
+        //void ChooseToFold(IGameParticipant gameParticipant);
     }
 }
