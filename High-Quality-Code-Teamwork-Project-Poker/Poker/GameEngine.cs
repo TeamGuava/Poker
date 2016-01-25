@@ -286,7 +286,7 @@
             if (this.player.FoldTurn || !this.player.Turn)
             {
                 await this.AllIn();
-                if (this.player.FoldTurn && !this.player.IsFolded)
+                if (this.player.FoldTurn)
                 {
                     if (this.callButton.Text.Contains("All in") == false || 
                         this.raiseButton.Text.Contains("All in") == false)
@@ -294,7 +294,7 @@
                         //bools.RemoveAt(0);
                         //bools.Insert(0, null);
                         this.maxLeft--;
-                        this.player.IsFolded = true;
+                        //this.player.IsFolded = true;
                     }
                 }
 
@@ -340,7 +340,7 @@
                             //bools.RemoveAt(botIndex);
                             //bools.Insert(botIndex, null);
                             this.maxLeft--;
-                            currentBot.IsFolded = true;
+                            //currentBot.IsFolded = true;
                         }
 
                         if (currentBot.FoldTurn ||
@@ -356,7 +356,7 @@
                 }
 
                 this.player.Turn = true;
-                if (this.player.FoldTurn && !this.player.IsFolded)
+                if (this.player.FoldTurn)
                 {
                     if (!this.callButton.Text.Contains("All in") ||
                         !this.raiseButton.Text.Contains("All in"))
@@ -364,7 +364,7 @@
                         //bools.RemoveAt(0);
                         //bools.Insert(0, null);
                         this.maxLeft--;
-                        this.player.IsFolded = true;
+                        //this.player.IsFolded = true;
                     }
                 }
 
@@ -383,30 +383,26 @@
             int secondCard, 
             IGameParticipant currentGameParticipant)
         {
-            if (firstCard == 0 &&
-                secondCard == 1)
-            {
-            }
+            //if (firstCard == 0 &&
+            //    secondCard == 1)
+            //{
+            //}
 
             if (!currentGameParticipant.FoldTurn ||
                 firstCard == 0 &&
                 secondCard == 1 && 
                 this.player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
             {
-                // Variables
-                bool done = false;
-                //bool vf = false;
-
-                int[] straight1 = new int[5];
+                //int[] straight1 = new int[5];
                 int[] straight = new int[7];
 
                 straight[0] = this.reserve[firstCard];
                 straight[1] = this.reserve[secondCard];
-                straight1[0] = straight[2] = this.reserve[12];
-                straight1[1] = straight[3] = this.reserve[13];
-                straight1[2] = straight[4] = this.reserve[14];
-                straight1[3] = straight[5] = this.reserve[15];
-                straight1[4] = straight[6] = this.reserve[16];
+                straight[2] = this.reserve[12];
+                straight[3] = this.reserve[13];
+                straight[4] = this.reserve[14];
+                straight[5] = this.reserve[15];
+                straight[6] = this.reserve[16];
 
                 var a = straight.Where(o => o % 4 == 0).ToArray();
                 var b = straight.Where(o => o % 4 == 1).ToArray();
@@ -448,12 +444,12 @@
                         this.rStraight(currentGameParticipant, straight);
 
                         // Flush current = 5 || 5.5
-                        this.rFlush(currentGameParticipant, straight1);
+                        this.rFlush(currentGameParticipant, straight);
 
-                        rFlush(currentGameParticipant, straight1);
+                        rFlush(currentGameParticipant, straight);
 
                         // Full House current = 6
-                        this.rFullHouse(currentGameParticipant, ref done, straight);
+                        this.rFullHouse(currentGameParticipant, straight);
 
                         // Four of a Kind current = 7
                         this.rFourOfAKind(currentGameParticipant, straight);
@@ -637,10 +633,12 @@
 
         // TODO: Extract method
         private void rFullHouse(
-            IGameParticipant currentGameParticipant,
-            ref bool done,
+            IGameParticipant currentGameParticipant,           
             int[] straight)
         {
+            // TODO: WTF? Should be here?
+            bool done = false;
+
             if (currentGameParticipant.Type >= -1)
             {
                 this.type = currentGameParticipant.Power;
@@ -737,7 +735,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                 }
 
@@ -762,7 +759,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
 
                     if (this.reserve[0 + 1] % 4 != this.reserve[0] % 4 && 
@@ -776,7 +772,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -786,7 +781,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type); 
-                            //vf = true;
                         }
                     }
                 }
@@ -802,7 +796,6 @@
                         this.AddWin(
                             currentGameParticipant.Power,
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
 
                     if (this.reserve[0 + 1] % 4 == f1[0] % 4 && 
@@ -814,7 +807,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                     else if (this.reserve[0] / 4 < f1.Min() / 4 &&
                         this.reserve[0 + 1] / 4 < f1.Min())
@@ -825,7 +817,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                 }
 
@@ -842,7 +833,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
 
                         if (this.reserve[0 + 1] / 4 > f2.Max() / 4)
@@ -853,7 +843,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else if (this.reserve[0] / 4 < f2.Max() / 4 &&
                             this.reserve[0 + 1] / 4 < f2.Max() / 4)
@@ -863,7 +852,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -881,7 +869,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -891,7 +878,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
 
@@ -905,7 +891,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -915,7 +900,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -931,7 +915,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
 
                     if (this.reserve[0 + 1] % 4 == f2[0] % 4 &&
@@ -943,7 +926,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                     else if (this.reserve[0] / 4 < f2.Min() / 4 && this.reserve[0 + 1] / 4 < f2.Min())
                     {
@@ -953,7 +935,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                 }
 
@@ -968,7 +949,6 @@
                             currentGameParticipant.Power = 
                                 (int)(this.reserve[0] + currentGameParticipant.Type * 100);
                             this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                            //vf = true;
                         }
 
                         if (this.reserve[0 + 1] / 4 > f3.Max() / 4)
@@ -979,7 +959,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else if (this.reserve[0] / 4 < f3.Max() / 4 && this.reserve[0 + 1] / 4 < f3.Max() / 4)
                         {
@@ -989,7 +968,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -1007,7 +985,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -1017,7 +994,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
 
@@ -1032,7 +1008,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -1042,7 +1017,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -1056,7 +1030,6 @@
                         currentGameParticipant.Power = 
                             (int)(this.reserve[0] + currentGameParticipant.Type * 100);
                         this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        //vf = true;
                     }
 
                     if (this.reserve[0 + 1] % 4 == f3[0] % 4 &&
@@ -1068,7 +1041,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                     else if (this.reserve[0] / 4 < f3.Min() / 4 &&
                         this.reserve[0 + 1] / 4 < f3.Min())
@@ -1079,7 +1051,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                 }
 
@@ -1096,7 +1067,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
 
                         if (this.reserve[0 + 1] / 4 > f4.Max() / 4)
@@ -1105,9 +1075,8 @@
                             currentGameParticipant.Power = 
                                 (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
                             this.AddWin(
-                                currentGameParticipant.Power, 
+                                currentGameParticipant.Power,
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else if (this.reserve[0] / 4 < f4.Max() / 4 &&
                             this.reserve[0 + 1] / 4 < f4.Max() / 4)
@@ -1118,7 +1087,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -1136,7 +1104,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -1146,7 +1113,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
 
@@ -1161,7 +1127,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                         else
                         {
@@ -1171,7 +1136,6 @@
                             this.AddWin(
                                 currentGameParticipant.Power, 
                                 currentGameParticipant.Type);
-                            //vf = true;
                         }
                     }
                 }
@@ -1187,7 +1151,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
 
                     if (this.reserve[0 + 1] % 4 == f4[0] % 4 && 
@@ -1199,7 +1162,6 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                     else if (this.reserve[0] / 4 < f4.Min() / 4 &&
                         this.reserve[0 + 1] / 4 < f4.Min())
@@ -1210,14 +1172,12 @@
                         this.AddWin(
                             currentGameParticipant.Power, 
                             currentGameParticipant.Type);
-                        //vf = true;
                     }
                 }
 
                 // ace
                 if (f1.Length > 0)
                 {
-                    // vf is removed from the if-statements
                     if (this.reserve[0] / 4 == 0 && 
                         this.reserve[0] % 4 == f1[0] % 4 &&  
                         f1.Length > 0)
@@ -2253,8 +2213,7 @@
                     for (int bot = 0; bot < NumberOfBots; bot++)
                     {
                         int botIndex = bot + 1;
-                        if (!this.gameBots[bot].FoldTurn ||
-                            !this.gameBots[bot].IsFolded)
+                        if (!this.gameBots[bot].FoldTurn)
                         {
                             this.gameBots[bot].Chips += int.Parse(this.potTextBox.Text);
 
@@ -2310,7 +2269,7 @@
                 currentBot.Type = -1;
                 currentBot.Turn = false;
                 currentBot.FoldTurn = false;
-                currentBot.IsFolded = false;
+                //currentBot.IsFolded = false;
                 currentBot.Call = 0;
                 currentBot.Raise = 0;
             }
@@ -2318,7 +2277,7 @@
             this.player.Power = 0;
             this.player.Type = -1;
             this.raise = 0;
-            this.player.IsFolded = false;
+            //this.player.IsFolded = false;
             this.player.FoldTurn = false;
             this.player.Turn = true;
 
@@ -2459,6 +2418,7 @@
                 {
                     this.Straight(currentGameParticipant);
                 }
+                // TODO: botType will never be 5.5, because it is int
                 else if (botType == 5 || 
                     botType == 5.5)
                 {

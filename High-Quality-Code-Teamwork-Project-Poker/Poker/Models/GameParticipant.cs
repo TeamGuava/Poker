@@ -18,7 +18,7 @@ namespace Poker.Models
 
         public bool FoldTurn { get; set; }
 
-        public bool IsFolded { get; set; }
+        //public bool IsFolded { get; set; }
 
         public bool Turn { get; set; }
 

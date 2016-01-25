@@ -4,6 +4,6 @@
     {
         bool FoldTurn { get; set; }
 
-        bool IsFolded { get; set; }
+        //bool IsFolded { get; set; }
     }
 }
