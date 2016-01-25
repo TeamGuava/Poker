@@ -1801,10 +1801,18 @@
         async Task CheckRaise(int currentTurn)
         {
             // TODO: currentTurn or raisedTurn
-            if (GameParticipant.raising)
+            bool hasBotRised = gameBots.Count(bot => bot.RaiseTurn == true) > 0;
+            bool hasPlayerRised = player.RaiseTurn;
+            if (hasPlayerRised || hasBotRised)
             {
                 this.turnCount = 0;
-                GameParticipant.raising = false;
+                //GameParticipant.raising = false;
+                player.RaiseTurn = false;
+                for (int i = 0; i < NumberOfBots; i++)
+                {
+                    gameBots[i].RaiseTurn = false;
+                }
+
                 this.raisedTurn = currentTurn;
                 this.changed = true;
             }
@@ -2281,9 +2289,10 @@
             //this.player.IsFolded = false;
             this.player.FoldTurn = false;
             this.player.Turn = true;
+            this.player.RaiseTurn = false;
 
             this.restart = false;
-            GameParticipant.raising = false;
+            //GameParticipant.raising = false;
 
             //height = 0;
             //width = 0;
@@ -2618,7 +2627,7 @@
 
         private void ChooseToCall(IGameParticipant currentGameParticipant)
         {
-            GameParticipant.raising = false;
+            currentGameParticipant.RaiseTurn = false;
             currentGameParticipant.Turn = false;
             currentGameParticipant.Chips -= this.call;
             currentGameParticipant.ParticipantPanel.Text = "Call " + this.call;
@@ -2633,7 +2642,7 @@
             this.potTextBox.Text =
                 (int.Parse(this.potTextBox.Text) + currentGameParticipant.Raise).ToString();
             this.call = currentGameParticipant.Raise;
-            GameParticipant.raising = true;
+            currentGameParticipant.RaiseTurn = true;
             currentGameParticipant.Turn = false;
         }
 
@@ -2848,7 +2857,7 @@
                     }
                     else if (currentGameParticipant.Chips <= this.call)
                     {
-                        GameParticipant.raising = false;
+                        currentGameParticipant.RaiseTurn = false;
                         currentGameParticipant.Turn = false;
                         currentGameParticipant.Chips = 0;
                         currentGameParticipant.ParticipantPanel.StatusButton.Text = 
@@ -3074,7 +3083,7 @@
                             this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + this.call).ToString();
                             this.callButton.Text = "Call";
                             this.player.Chips -= int.Parse(this.raiseTextBox.Text);
-                            GameParticipant.raising = true;
+                            this.player.RaiseTurn = true;
                             this.last = 0;
                             //this.player.Raise = Convert.ToInt32(this.raise);
                         }
@@ -3086,7 +3095,7 @@
                                 (int.Parse(this.potTextBox.Text) + this.player.Chips).ToString();
                             this.player.ParticipantPanel.StatusButton.Text = "Raise " + this.call;
                             this.player.Chips = 0;
-                            GameParticipant.raising = true;
+                            this.player.RaiseTurn = true;
                             this.last = 0;
                             //this.player.Raise = Convert.ToInt32(this.raise);
                         }

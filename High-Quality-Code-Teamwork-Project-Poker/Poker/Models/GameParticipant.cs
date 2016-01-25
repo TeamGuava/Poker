@@ -8,7 +8,7 @@
         // This field should be in other class, extracted from GameEngine later.
         // It is used temporarily here as public (!) in order to extract game participant's 
         // method ChooseToCheck(..) from GameEngine (to use an appropriate interface)
-        public static bool raising;
+        //public static bool raising;
 
         private const int StartChips = 10000;
 
@@ -25,7 +25,7 @@
 
         public bool FoldTurn { get; set; }
 
-        //public bool IsFolded { get; set; }
+        public bool RaiseTurn { get; set; }
 
         public bool Turn { get; set; }
 
@@ -43,7 +43,7 @@
 
         public void ChooseToFold(IGameParticipant currentGameParticipant)
         {
-            GameParticipant.raising = false;
+            currentGameParticipant.RaiseTurn = false;
             currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
             currentGameParticipant.Turn = false;
             currentGameParticipant.FoldTurn = true;
@@ -53,7 +53,7 @@
         {
             currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
             currentGameParticipant.Turn = false;
-            raising = false;
+            currentGameParticipant.RaiseTurn = false;
         }
     }
 }

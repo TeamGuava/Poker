@@ -53,8 +53,6 @@
     <Compile Include="Contracts\IGameEngine.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
-    <Compile Include="Engine\AIFactory.cs" />
-    <Compile Include="Engine\ParticipantOptions.cs" />
     <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
@@ -229,7 +227,9 @@
     <Content Include="Resources\Cards\9_of_hearts.png" />
     <Content Include="Resources\Cards\9_of_spades.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Engine\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
