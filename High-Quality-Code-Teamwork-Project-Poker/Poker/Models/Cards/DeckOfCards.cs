@@ -6,7 +6,7 @@
 
     using Poker.Contracts;
 
-    public class DeckOfCards : IDeckOfCards
+    public class DeckOfCards : IDeckOfCards, ICardDealer
     {
         private IList<Card> listOfCards;
         private string locationOfTheCards;

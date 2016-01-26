@@ -50,7 +50,7 @@
         private bool restart;
         //private bool raising;
         private IType winningHand;
-        DeckOfCards deckOfCards;
+        IDeckOfCards deckOfCards;
         private string[] imageLocation = Directory.GetFiles(
             "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] imageLocation ={card
