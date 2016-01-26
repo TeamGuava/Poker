@@ -52,7 +52,7 @@
         private bool restart;
         //private bool raising;
         //private IType winningHand;
-        DeckOfCards deckOfCards;
+        IDeckOfCards deckOfCards;
         private string[] imageLocation = Directory.GetFiles(
             "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
         /*string[] imageLocation ={card
@@ -138,7 +138,7 @@
             for (int currentCard = 0; currentCard < AllCardsOnTheTable; currentCard++)
             {
                 // Next card from the deck. // Aleksandar
-                Card drawnCard = this.deckOfCards.DrawOneCard();
+                ICard drawnCard = this.deckOfCards.DrawOneCard();
 
                 this.deck[currentCard] = drawnCard.Image;
 
@@ -465,7 +465,8 @@
                 {
                     if (this.winnersChecker.Contains("Player"))
                     {
-                        this.player.Chips += int.Parse(this.potTextBox.Text) / this.winners;
+                        this.player.Chips += int.Parse(
+                            this.potTextBox.Text) / this.winners;
                         this.player.ParticipantPanel.ChipsTextBox.Text = this.player.Chips.ToString();
                         //pPanel.Visible = true;
 
@@ -476,7 +477,8 @@
                         int botIndex = bot + 1;
                         if (this.winnersChecker.Contains($"Bot {botIndex}"))
                         {
-                            this.gameBots[bot].Chips += int.Parse(this.potTextBox.Text) / this.winners;
+                            this.gameBots[bot].Chips += int.Parse(
+                                this.potTextBox.Text) / this.winners;
                             this.gameBots[bot].ParticipantPanel.ChipsTextBox.Text =
                                 this.gameBots[bot].Chips.ToString();
                             //gameBots[bot].Visible = true;
@@ -500,7 +502,8 @@
                         int botIndex = bot + 1;
                         if (this.winnersChecker.Contains($"Bot {botIndex}"))
                         {
-                            this.gameBots[bot].Chips += int.Parse(this.potTextBox.Text) / this.winners;
+                            this.gameBots[bot].Chips += int.Parse(
+                                this.potTextBox.Text) / this.winners;
                             //await Finish(1)
                             //gameBots[bot].Visible = true;
                         }
@@ -512,16 +515,16 @@
         async Task CheckRaise(int currentTurn)
         {
             // TODO: currentTurn or raisedTurn
-            bool hasBotRised = gameBots.Count(bot => bot.RaiseTurn == true) > 0;
-            bool hasPlayerRised = player.RaiseTurn;
+            bool hasBotRised = this.gameBots.Count(bot => bot.RaiseTurn == true) > 0;
+            bool hasPlayerRised = this.player.RaiseTurn;
             if (hasPlayerRised || hasBotRised)
             {
                 this.turnCount = 0;
                 //GameParticipant.raising = false;
-                player.RaiseTurn = false;
+                this.player.RaiseTurn = false;
                 for (int i = 0; i < NumberOfBots; i++)
                 {
-                    gameBots[i].RaiseTurn = false;
+                    this.gameBots[i].RaiseTurn = false;
                 }
 
                 this.raisedTurn = currentTurn;
@@ -1614,10 +1617,10 @@
                 this.player.FoldTurn = true;
                 await this.Turns();
             }
-            if (timeForTurn > 0)
+            if (this.timeForTurn > 0)
             {
-                timeForTurn--;
-                this.timerProgressBar.Value = timeForTurn / 6 * 100;
+                this.timeForTurn--;
+                this.timerProgressBar.Value = this.timeForTurn / 6 * 100;
             }
         }
 

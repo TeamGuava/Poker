@@ -6,7 +6,7 @@ namespace Poker.PokerMechanics
 {
     using Poker.Contracts;
 
-    public class GameRules
+    public class GameRules : IGameRules
     {
         private IGameParticipant player;
 

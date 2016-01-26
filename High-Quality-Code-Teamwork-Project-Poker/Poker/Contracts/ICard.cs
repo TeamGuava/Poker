@@ -2,14 +2,10 @@
 {
     using System.Drawing;
 
-    using Poker.Enums;
-
     public interface ICard
     {
-        Image Picture { get; }
+        string Name { get; set; }
 
-        //CardValue CardValue { get; }
-
-        //SuitSign CardSign { get; }
+        Image Image { get; set; }
     }
 }

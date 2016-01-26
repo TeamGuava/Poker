@@ -50,7 +50,10 @@
     <Compile Include="AddChips.Designer.cs">
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\ICardDealer.cs" />
+    <Compile Include="Contracts\IDeckOfCards.cs" />
     <Compile Include="Contracts\IGameEngine.cs" />
+    <Compile Include="Contracts\IGameRules.cs" />
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
