@@ -2,7 +2,7 @@
 {
     using Poker.Contracts;
 
-    public abstract class GameParticipant : IGameParticipant
+    public class GameParticipant : IGameParticipant
     {
         // TODO:
         // This field should be in other class, extracted from GameEngine later.
@@ -12,7 +12,7 @@
 
         private const int StartChips = 10000;
 
-        protected GameParticipant()
+        public GameParticipant()
         {
             this.ParticipantPanel = new GameParticipantPanel();
             this.Chips = StartChips;

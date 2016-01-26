@@ -3,6 +3,9 @@
     using System;
     using System.Windows.Forms;
 
+    using Poker.Models;
+    using Poker.PokerMechanics;
+
     public static class PokerMain
     {
         /// <summary>
@@ -10,10 +13,15 @@
         /// </summary>
         [STAThread]
         public static void Main()
-        {
+        { 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameEngine());
+
+            var gameParticipant = new GameParticipant();
+            var handRanking = new HandRanking();
+            var gameRule = new GameRules(handRanking, gameParticipant);
+
+            Application.Run(new GameEngine(gameRule, handRanking));
         }
     }
 }

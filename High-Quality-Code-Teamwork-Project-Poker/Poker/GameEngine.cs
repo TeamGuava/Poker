@@ -6,15 +6,17 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
 
     using Poker.Contracts;
     using Poker.Enums;
     using Poker.Models;
     using Poker.Models.Cards;
     using Poker.UI;
+    using System.Windows.Forms;
 
-    public partial class GameEngine : Form/*, IGameEngine*/
+    using Poker.PokerMechanics;
+
+    public partial class GameEngine : Form /*, IGameEngine*/
     {
         #region Constants
         private const int NumberOfBots = 5;
@@ -30,16 +32,16 @@
         private readonly IList<IType> win = new List<IType>();
         private readonly IList<string> winnersChecker = new List<string>();
         private readonly IList<int> ints = new List<int>();
-        private readonly int[] reserve = new int[17];
+        //private readonly int[] reserve = new int[17];
         private readonly Image[] deck = new Image[52];
-        private readonly PictureBox[] cardImages = new PictureBox[52];
+        //private readonly PictureBox[] cardImages = new PictureBox[52];
         private readonly Point[] cardLocations = new Point[AllCardsOnTheTable];
         #endregion
         
         #region Variables
         private int call = 500;
         // private int foldedPlayers = 5;
-        private double type;
+        //private double type;
         private int rounds;
         //private double raise;
         //private bool intsadded;
@@ -49,7 +51,7 @@
         int raisedTurn = 1;
         private bool restart;
         //private bool raising;
-        private IType winningHand;
+        //private IType winningHand;
         DeckOfCards deckOfCards;
         private string[] imageLocation = Directory.GetFiles(
             "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
@@ -72,12 +74,18 @@
         private int bigBlind = 500;
         private int smallBlind = 250;
         private int turnCount;
+
+        public HandRanking HandRank { get; private set; }
+        public GameRules Rule { get; private set; }
+
         //Temporal field (for fixing class GameParticipant):
         //private GameParticipant participant;
         #endregion
 
-        public GameEngine()
+        public GameEngine(GameRules rule, HandRanking handRank)
         {
+            this.Rule = rule;
+            this.HandRank = handRank;
             this.deckOfCards = new DeckOfCards("Assets\\Cards", "*.png");
             this.call = this.bigBlind;
             this.MaximizeBox = false;
@@ -135,29 +143,29 @@
                 this.deck[currentCard] = drawnCard.Image;
 
                 // TODO: The name of the card file should not be used like this. // Aleksandar
-                this.reserve[currentCard] = int.Parse(drawnCard.Name) - 1;
+                this.HandRank.Reserve[currentCard] = int.Parse(drawnCard.Name) - 1;
 
-                this.cardImages[currentCard] = new PictureBox();
-                this.cardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
-                this.cardImages[currentCard].Height = 130;
-                this.cardImages[currentCard].Width = 80;
-                this.cardImages[currentCard].Image = backImage;
-                this.cardImages[currentCard].Location = this.cardLocations[currentCard];
-                this.Controls.Add(this.cardImages[currentCard]);
-                this.cardImages[currentCard].Name = "pb" + currentCard;
+                this.Rule.CardImages[currentCard] = new PictureBox();
+                this.Rule.CardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
+                this.Rule.CardImages[currentCard].Height = 130;
+                this.Rule.CardImages[currentCard].Width = 80;
+                this.Rule.CardImages[currentCard].Image = backImage;
+                this.Rule.CardImages[currentCard].Location = this.cardLocations[currentCard];
+                this.Controls.Add(this.Rule.CardImages[currentCard]);
+                this.Rule.CardImages[currentCard].Name = "pb" + currentCard;
                 await Task.Delay(200);
 
                 // Throwing Cards
                 if (currentCard < 2)
                 {
-                    if (this.cardImages[0].Tag != null)
+                    if (this.Rule.CardImages[0].Tag != null)
                     {
-                        this.cardImages[1].Tag = this.reserve[1];
+                        this.Rule.CardImages[1].Tag = this.HandRank.Reserve[1];
                     }
 
-                    this.cardImages[0].Tag = this.reserve[0];
-                    this.cardImages[currentCard].Image = this.deck[currentCard];
-                    this.cardImages[currentCard].Anchor = AnchorStyles.Bottom;
+                    this.Rule.CardImages[0].Tag = this.HandRank.Reserve[0];
+                    this.Rule.CardImages[currentCard].Image = this.deck[currentCard];
+                    this.Rule.CardImages[currentCard].Anchor = AnchorStyles.Bottom;
                 }
 
                 if (this.gameBots[0].Chips > 0)
@@ -166,9 +174,9 @@
                     {
                         this.SetBotCards(
                             this.gameBots[0],
-                            this.cardImages,
+                            this.Rule.CardImages,
                             backImage,
-                            this.reserve,
+                            this.HandRank.Reserve,
                             currentCard);
                     }
                 }
@@ -179,8 +187,8 @@
                     {
                         this.SetBotCards(
                             this.gameBots[1],
-                            this.cardImages, backImage,
-                            this.reserve,
+                            this.Rule.CardImages, backImage,
+                            this.HandRank.Reserve,
                             currentCard);
                     }
                 }
@@ -190,8 +198,8 @@
                     if (currentCard >= 6 && currentCard < 8)
                     {
                         this.SetBotCards(this.gameBots[2],
-                            this.cardImages, backImage,
-                            this.reserve,
+                            this.Rule.CardImages, backImage,
+                            this.HandRank.Reserve,
                             currentCard);
                     }
                 }
@@ -201,9 +209,9 @@
                     if (currentCard >= 8 && currentCard < 10)
                     {
                         this.SetBotCards(this.gameBots[3],
-                            this.cardImages,
+                            this.Rule.CardImages,
                             backImage,
-                            this.reserve,
+                            this.HandRank.Reserve,
                             currentCard);
                     }
                 }
@@ -213,9 +221,9 @@
                     if (currentCard >= 10 && currentCard < 12)
                     {
                         this.SetBotCards(this.gameBots[4],
-                            this.cardImages,
+                            this.Rule.CardImages,
                             backImage,
-                            this.reserve,
+                            this.HandRank.Reserve,
                             currentCard);
                     }
                 }
@@ -223,10 +231,10 @@
                 // Printing the five river cards
                 if (currentCard >= 12)
                 {
-                    this.cardImages[currentCard].Tag = this.reserve[currentCard];
-                    if (this.cardImages[currentCard] != null)
+                    this.Rule.CardImages[currentCard].Tag = this.HandRank.Reserve[currentCard];
+                    if (this.Rule.CardImages[currentCard] != null)
                     {
-                        this.cardImages[currentCard].Anchor = AnchorStyles.None;
+                        this.Rule.CardImages[currentCard].Anchor = AnchorStyles.None;
                     }
                 }
 
@@ -243,10 +251,12 @@
             }
 
             // If all bots ran out of money, player wins.
-            int leftBotsWithoutMoney = gameBots.Count(bot => bot.Chips <= 0);
-            if (leftBotsWithoutMoney == gameBots.Length)
+            int leftBotsWithoutMoney = this.gameBots.Count(bot => bot.Chips <= 0);
+            if (leftBotsWithoutMoney == this.gameBots.Length)
             {
-                DialogResult dialogResult = MessageBox.Show("Would You Like To Play Again ?", "You Won , Congratulations ! ", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show(
+                    "Would You Like To Play Again ?", "You Won , Congratulations ! ",
+                    MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Application.Restart();
@@ -316,7 +326,7 @@
 
                             this.FixParticipantCall(currentBot, 1);
                             this.FixParticipantCall(currentBot, 2);
-                            this.Rules(firstCard, secondCard, currentBot);
+                            this.Rule.ExecuteGameRules(firstCard, secondCard, currentBot);
 
                             // TODO: Maybe we can remove this
                             this.writer.Print($"Bot {botIndex}'s Turn");
@@ -374,1291 +384,7 @@
             }
         }
 
-        void Rules(
-            int firstCard,
-            int secondCard,
-            IGameParticipant currentGameParticipant)
-        {
-            //if (firstCard == 0 &&
-            //    secondCard == 1)
-            //{
-            //}
-
-            if (!currentGameParticipant.FoldTurn ||
-                firstCard == 0 &&
-                secondCard == 1 &&
-                this.player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
-            {
-                //int[] straight1 = new int[5];
-                int[] straight = new int[7];
-
-                straight[0] = this.reserve[firstCard];
-                straight[1] = this.reserve[secondCard];
-                straight[2] = this.reserve[12];
-                straight[3] = this.reserve[13];
-                straight[4] = this.reserve[14];
-                straight[5] = this.reserve[15];
-                straight[6] = this.reserve[16];
-
-                var a = straight.Where(o => o % 4 == 0).ToArray();
-                var b = straight.Where(o => o % 4 == 1).ToArray();
-                var c = straight.Where(o => o % 4 == 2).ToArray();
-                var d = straight.Where(o => o % 4 == 3).ToArray();
-
-                var st1 = a.Select(o => o / 4).Distinct().ToArray();
-                var st2 = b.Select(o => o / 4).Distinct().ToArray();
-                var st3 = c.Select(o => o / 4).Distinct().ToArray();
-                var st4 = d.Select(o => o / 4).Distinct().ToArray();
-
-                Array.Sort(straight);
-                Array.Sort(st1);
-                Array.Sort(st2);
-                Array.Sort(st3);
-                Array.Sort(st4);
-
-                for (int cardIndex = 0; cardIndex < AllCardsOnTheTable; cardIndex++)
-                {
-                    // bool  
-                    if (this.reserve[cardIndex] == int.Parse(
-                        this.cardImages[firstCard].Tag.ToString()) &&
-                        this.reserve[cardIndex + 1] == int.Parse(
-                            this.cardImages[secondCard].Tag.ToString()))
-                    {
-                        //Pair from Hand current = 1
-                        this.rPairFromHand(currentGameParticipant);
-
-                        // Pair or Two Pair from Table current = 2 || 0
-                        this.rPairTwoPair(currentGameParticipant);
-
-                        // Two Pair current = 2
-                        this.rTwoPair(currentGameParticipant);
-
-                        // Three of a kind current = 3
-                        this.rThreeOfAKind(currentGameParticipant, straight);
-
-                        // straight current = 4
-                        this.rStraight(currentGameParticipant, straight);
-
-                        // Flush current = 5 || 5.5
-                        this.rFlush(currentGameParticipant, straight);
-
-                        // Full House current = 6
-                        this.rFullHouse(currentGameParticipant, straight);
-
-                        // Four of a Kind current = 7
-                        this.rFourOfAKind(currentGameParticipant, straight);
-
-                        // straight Flush current = 8 || 9
-                        this.rStraightFlush(currentGameParticipant, st1, st2, st3, st4);
-
-                        // High Card current = -1
-                        this.rHighCard(currentGameParticipant);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a winning hand to the collection of <see cref="IType"/>.
-        /// </summary>
-        /// <param botIndex="power"></param>
-        /// <param botIndex="current"></param>
-        private void AddWin(int power, double current)
-        {
-            IType typeToAdd = new Type(power, current);
-            this.win.Add(typeToAdd);
-            // Returns the best hand so far by sorting the win collection.
-            this.winningHand = this.win
-                .OrderByDescending(op1 => op1.Current)
-                .ThenByDescending(op1 => op1.Power)
-                .First();
-        }
-
-        private void rStraightFlush(
-            IGameParticipant currentGameParticipant,
-            int[] st1,
-            int[] st2,
-            int[] st3,
-            int[] st4)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                if (st1.Length >= 5)
-                {
-                    if (st1[0] + 4 == st1[4])
-                    {
-                        currentGameParticipant.Type = 8;
-                        currentGameParticipant.Power =
-                            (int)(st1.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (st1[0] == 0 &&
-                        st1[1] == 9 &&
-                        st1[2] == 10 &&
-                        st1[3] == 11 &&
-                        st1[0] + 12 == st1[4])
-                    {
-                        currentGameParticipant.Type = 9;
-                        currentGameParticipant.Power =
-                            (int)(st1.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (st2.Length >= 5)
-                {
-                    if (st2[0] + 4 == st2[4])
-                    {
-                        currentGameParticipant.Type = 8;
-                        currentGameParticipant.Power =
-                            (int)(st2.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (st2[0] == 0 && st2[1] == 9 &&
-                        st2[2] == 10 && st2[3] == 11 &&
-                        st2[0] + 12 == st2[4])
-                    {
-                        currentGameParticipant.Type = 9;
-                        currentGameParticipant.Power =
-                            (int)(st2.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (st3.Length >= 5)
-                {
-                    if (st3[0] + 4 == st3[4])
-                    {
-                        currentGameParticipant.Type = 8;
-                        currentGameParticipant.Power =
-                            (int)(st3.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (st3[0] == 0 &&
-                        st3[1] == 9 &&
-                        st3[2] == 10 &&
-                        st3[3] == 11 &&
-                        st3[0] + 12 == st3[4])
-                    {
-                        currentGameParticipant.Type = 9;
-                        currentGameParticipant.Power =
-                            (int)(st3.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (st4.Length >= 5)
-                {
-                    if (st4[0] + 4 == st4[4])
-                    {
-                        currentGameParticipant.Type = 8;
-                        currentGameParticipant.Power =
-                            (int)(st4.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (st4[0] == 0 &&
-                        st4[1] == 9 &&
-                        st4[2] == 10 &&
-                        st4[3] == 11 &&
-                        st4[0] + 12 == st4[4])
-                    {
-                        currentGameParticipant.Type = 9;
-                        currentGameParticipant.Power =
-                            (int)(st4.Max() / 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-        }
-
-        private void rFourOfAKind(IGameParticipant currentGameParticipant, int[] straight)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                for (int j = 0; j <= 3; j++)
-                {
-                    if (straight[j] / 4 == straight[j + 1] / 4 &&
-                        straight[j] / 4 == straight[j + 2] / 4 &&
-                        straight[j] / 4 == straight[j + 3] / 4)
-                    {
-                        currentGameParticipant.Type = 7;
-                        currentGameParticipant.Power =
-                            (int)(straight[j] / 4 * 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (straight[j] / 4 == 0 &&
-                        straight[j + 1] / 4 == 0 &&
-                        straight[j + 2] / 4 == 0 &&
-                        straight[j + 3] / 4 == 0)
-                    {
-                        currentGameParticipant.Type = 7;
-                        currentGameParticipant.Power =
-                            (int)(13 * 4 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-        }
-
-        // TODO: Extract method
-        private void rFullHouse(
-            IGameParticipant currentGameParticipant,
-            int[] straight)
-        {
-            // TODO: WTF? Should be here?
-            bool done = false;
-
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                this.type = currentGameParticipant.Power;
-                for (int j = 0; j <= 12; j++)
-                {
-                    var fh = straight.Where(o => o / 4 == j).ToArray();
-                    if (fh.Length == 3 || done)
-                    {
-                        if (fh.Length == 2)
-                        {
-                            if (fh.Max() / 4 == 0)
-                            {
-                                currentGameParticipant.Type = 6;
-                                currentGameParticipant.Power =
-                                    (int)(13 * 2 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                                break;
-                            }
-
-                            if (fh.Max() / 4 > 0)
-                            {
-                                currentGameParticipant.Type = 6;
-                                currentGameParticipant.Power =
-                                    (int)(fh.Max() / 4 * 2 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                                break;
-                            }
-                        }
-
-                        if (!done)
-                        {
-                            if (fh.Max() / 4 == 0)
-                            {
-                                currentGameParticipant.Power = 13;
-                                done = true;
-                                j = -1;
-                            }
-                            else
-                            {
-                                currentGameParticipant.Power = fh.Max() / 4;
-                                done = true;
-                                j = -1;
-                            }
-                        }
-                    }
-                }
-
-                if (currentGameParticipant.Type != 6)
-                {
-                    currentGameParticipant.Power = (int)this.type;
-                }
-        }
-
-        private void rFlush(IGameParticipant currentGameParticipant, int[] straight)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-            // should be here?
-            var f1 = straight.Where(o => o % 4 == 0).ToArray();
-            var f2 = straight.Where(o => o % 4 == 1).ToArray();
-            var f3 = straight.Where(o => o % 4 == 2).ToArray();
-            var f4 = straight.Where(o => o % 4 == 3).ToArray();
-
-            if (f1.Length == 3 || f1.Length == 4)
-            {
-                if (this.reserve[0] % 4 == this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f1[0] % 4)
-                {
-                    currentGameParticipant.Type = 5;
-
-                    if (this.reserve[0] / 4 > f1.Max() / 4)
-                    {
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    }
-
-                    if (this.reserve[0 + 1] / 4 > f1.Max() / 4)
-                    {
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                    }
-                    else if (this.reserve[0] / 4 < f1.Max() / 4 &&
-                        this.reserve[0 + 1] / 4 < f1.Max() / 4)
-                    {
-                        currentGameParticipant.Power =
-                            (int)(f1.Max() + currentGameParticipant.Type * 100);
-                    }
-
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f1.Length == 4) // different cards in hand
-            {
-                if (this.reserve[0] % 4 != this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f1[0] % 4)
-                {
-                    currentGameParticipant.Type = 5;
-
-                    if (this.reserve[0] / 4 > f1.Max() / 4)
-                    {
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Power =
-                            (int)(f1.Max() + currentGameParticipant.Type * 100);
-                    }
-
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] % 4 != this.reserve[0] % 4 &&
-                    this.reserve[0 + 1] % 4 == f1[0] % 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    if (this.reserve[0 + 1] / 4 > f1.Max() / 4)
-                    {
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f1.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f1.Length == 5)
-            {
-                if (this.reserve[0] % 4 == f1[0] % 4 &&
-                    this.reserve[0] / 4 > f1.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] % 4 == f1[0] % 4 &&
-                    this.reserve[0 + 1] / 4 > f1.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-                else if (this.reserve[0] / 4 < f1.Min() / 4 &&
-                    this.reserve[0 + 1] / 4 < f1.Min())
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(f1.Max() + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f2.Length == 3 || f2.Length == 4)
-            {
-                if (this.reserve[0] % 4 == this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f2[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f2.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (this.reserve[0 + 1] / 4 > f2.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else if (this.reserve[0] / 4 < f2.Max() / 4 &&
-                        this.reserve[0 + 1] / 4 < f2.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power = (int)(f2.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f2.Length == 4) // different cards in hand
-            {
-                if (this.reserve[0] % 4 != this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f2[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f2.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f2.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (this.reserve[0 + 1] % 4 != this.reserve[0] % 4 && this.reserve[0 + 1] % 4 == f2[0] % 4)
-                {
-                    if (this.reserve[0 + 1] / 4 > f2.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f2.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f2.Length == 5)
-            {
-                if (this.reserve[0] % 4 == f2[0] % 4 &&
-                    this.reserve[0] / 4 > f2.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] % 4 == f2[0] % 4 &&
-                    this.reserve[0 + 1] / 4 > f2.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-                else if (this.reserve[0] / 4 < f2.Min() / 4 && this.reserve[0 + 1] / 4 < f2.Min())
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(f2.Max() + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f3.Length == 3 || f3.Length == 4)
-            {
-                if (this.reserve[0] % 4 == this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f3[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f3.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                    }
-
-                    if (this.reserve[0 + 1] / 4 > f3.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else if (this.reserve[0] / 4 < f3.Max() / 4 && this.reserve[0 + 1] / 4 < f3.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f3.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f3.Length == 4)//different cards in hand
-            {
-                if (this.reserve[0] % 4 != this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f3[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f3.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f3.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (this.reserve[0 + 1] % 4 != this.reserve[0] % 4 &&
-                    this.reserve[0 + 1] % 4 == f3[0] % 4)
-                {
-                    if (this.reserve[0 + 1] / 4 > f3.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f3.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f3.Length == 5)
-            {
-                if (this.reserve[0] % 4 == f3[0] % 4 &&
-                    this.reserve[0] / 4 > f3.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] % 4 == f3[0] % 4 &&
-                    this.reserve[0 + 1] / 4 > f3.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-                else if (this.reserve[0] / 4 < f3.Min() / 4 &&
-                    this.reserve[0 + 1] / 4 < f3.Min())
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(f3.Max() + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f4.Length == 3 || f4.Length == 4)
-            {
-                if (this.reserve[0] % 4 == this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f4[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f4.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-
-                    if (this.reserve[0 + 1] / 4 > f4.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else if (this.reserve[0] / 4 < f4.Max() / 4 &&
-                        this.reserve[0 + 1] / 4 < f4.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f4.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f4.Length == 4)//different cards in hand
-            {
-                if (this.reserve[0] % 4 != this.reserve[0 + 1] % 4 &&
-                    this.reserve[0] % 4 == f4[0] % 4)
-                {
-                    if (this.reserve[0] / 4 > f4.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f4.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-
-                if (this.reserve[0 + 1] % 4 != this.reserve[0] % 4 &&
-                    this.reserve[0 + 1] % 4 == f4[0] % 4)
-                {
-                    if (this.reserve[0 + 1] / 4 > f4.Max() / 4)
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                    else
-                    {
-                        currentGameParticipant.Type = 5;
-                        currentGameParticipant.Power =
-                            (int)(f4.Max() + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power,
-                            currentGameParticipant.Type);
-                    }
-                }
-            }
-
-            if (f4.Length == 5)
-            {
-                if (this.reserve[0] % 4 == f4[0] % 4 &&
-                    this.reserve[0] / 4 > f4.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] % 4 == f4[0] % 4 &&
-                    this.reserve[0 + 1] / 4 > f4.Min() / 4)
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-                else if (this.reserve[0] / 4 < f4.Min() / 4 &&
-                    this.reserve[0 + 1] / 4 < f4.Min())
-                {
-                    currentGameParticipant.Type = 5;
-                    currentGameParticipant.Power =
-                        (int)(f4.Max() + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            // ace
-            if (f1.Length > 0)
-            {
-                if (this.reserve[0] / 4 == 0 &&
-                    this.reserve[0] % 4 == f1[0] % 4 &&
-                    f1.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] / 4 == 0 &&
-                    this.reserve[0 + 1] % 4 == f1[0] % 4
-                    && f1.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f2.Length > 0)
-            {
-                if (this.reserve[0] / 4 == 0 &&
-                    this.reserve[0] % 4 == f2[0] % 4 &&
-                    f2.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] / 4 == 0 &&
-                    this.reserve[0 + 1] % 4 == f2[0] % 4 &&
-                    f2.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f3.Length > 0)
-            {
-                if (this.reserve[0] / 4 == 0 &&
-                    this.reserve[0] % 4 == f3[0] % 4 &&
-                    f3.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] / 4 == 0 &&
-                    this.reserve[0 + 1] % 4 == f3[0] % 4 &&
-                    f3.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-
-            if (f4.Length > 0)
-            {
-                if (this.reserve[0] / 4 == 0 &&
-                    this.reserve[0] % 4 == f4[0] % 4 &&
-                    f4.Length > 0)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0 + 1] / 4 == 0 &&
-                    this.reserve[0 + 1] % 4 == f4[0] % 4)
-                {
-                    currentGameParticipant.Type = 5.5;
-                    currentGameParticipant.Power =
-                        (int)(13 + currentGameParticipant.Type * 100);
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-            }
-        }
-
-        private void rStraight(IGameParticipant currentGameParticipant, int[] straight)
-        {
-            // TODO: Etract method
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                var op = straight.Select(o => o / 4).Distinct().ToArray();
-                for (int j = 0; j < op.Length - 4; j++)
-                {
-                    if (op[j] + 4 == op[j + 4])
-                    {
-                        if (op.Max() - 4 == op[j])
-                        {
-                            currentGameParticipant.Type = 4;
-                            currentGameParticipant.Power =
-                                (int)(op.Max() + currentGameParticipant.Type * 100);
-                            this.AddWin(
-                                currentGameParticipant.Power,
-                                currentGameParticipant.Type);
-                        }
-                        else
-                        {
-                            currentGameParticipant.Type = 4;
-                            currentGameParticipant.Power =
-                                (int)(op[j + 4] + currentGameParticipant.Type * 100);
-                            this.AddWin(currentGameParticipant.Power, currentGameParticipant.Type);
-                        }
-                    }
-
-                    if (op[j] == 0 &&
-                        op[j + 1] == 9 &&
-                        op[j + 2] == 10 &&
-                        op[j + 3] == 11 &&
-                        op[j + 4] == 12)
-                    {
-                        currentGameParticipant.Type = 4;
-                        currentGameParticipant.Power =
-                            (int)(13 + currentGameParticipant.Type * 100);
-                        this.AddWin(
-                            currentGameParticipant.Power, currentGameParticipant.Type);
-                    }
-                }
-        }
-
-        private void rThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight)
-        {
-            // TODO: Etract method
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                for (int j = 0; j <= 12; j++)
-                {
-                    var fh = straight.Where(o => o / 4 == j).ToArray();
-                    if (fh.Length == 3)
-                    {
-                        if (fh.Max() / 4 == 0)
-                        {
-                            currentGameParticipant.Type = 3;
-                            currentGameParticipant.Power =
-                                (int)(13 * 3 + currentGameParticipant.Type * 100);
-                            this.AddWin(
-                                currentGameParticipant.Power, currentGameParticipant.Type);
-                        }
-                        else
-                        {
-                            currentGameParticipant.Type = 3;
-                            currentGameParticipant.Power =
-                                (int)(fh[0] / 4 + fh[1] / 4 + fh[2] / 4 + currentGameParticipant.Type * 100);
-                            this.AddWin(
-                                currentGameParticipant.Power,
-                                currentGameParticipant.Type);
-                        }
-                    }
-                }
-        }
-
-        private void rTwoPair(IGameParticipant currentGameParticipant)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                bool msgbox = false;
-                // TODO: Extract method
-                for (int tc = 16; tc >= 12; tc--)
-                {
-                    int max = tc - 12;
-                    if (this.reserve[0] / 4 != this.reserve[0 + 1] / 4)
-                    {
-                        for (int k = 1; k <= max; k++)
-                        {
-                            if (tc - k < 12)
-                            {
-                                max--;
-                            }
-                            else
-                            {
-                                if (this.reserve[0] / 4 == this.reserve[tc] / 4 &&
-                                    this.reserve[0 + 1] / 4 == this.reserve[tc - k] / 4 ||
-                                    this.reserve[0 + 1] / 4 == this.reserve[tc] / 4 &&
-                                    this.reserve[0] / 4 == this.reserve[tc - k] / 4)
-                                {
-                                    if (!msgbox)
-                                    {
-                                        if (this.reserve[0] / 4 == 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)(13 * 4 + (this.reserve[0 + 1] / 4) * 2 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-
-                                        if (this.reserve[0 + 1] / 4 == 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)(13 * 4 + (this.reserve[0] / 4) * 2 + currentGameParticipant.Type * 100);
-                                            this.AddWin
-                                                (currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-
-                                        if (this.reserve[0 + 1] / 4 != 0 &&
-                                            this.reserve[0] / 4 != 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)((this.reserve[0] / 4) * 2 + (this.reserve[0 + 1] / 4) * 2 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-                                    }
-
-                                    msgbox = true;
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-
-        private void rPairTwoPair(IGameParticipant currentGameParticipant)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                bool msgbox = false;
-                bool msgbox1 = false;
-
-                // TODO: Extract method
-                for (int tc = 16; tc >= 12; tc--)
-                {
-                    int max = tc - 12;
-                    for (int k = 1; k <= max; k++)
-                    {
-                        if (tc - k < 12)
-                        {
-                            max--;
-                        }
-
-                        if (tc - k >= 12)
-                        {
-                            if (this.reserve[tc] / 4 == this.reserve[tc - k] / 4)
-                            {
-                                if (this.reserve[tc] / 4 != this.reserve[0] / 4 &&
-                                    this.reserve[tc] / 4 != this.reserve[0 + 1] / 4 &&
-                                    currentGameParticipant.Type == 1)
-                                {
-                                    if (!msgbox)
-                                    {
-                                        if (this.reserve[0 + 1] / 4 == 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)((this.reserve[0] / 4) * 2 + 13 * 4 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-
-                                        if (this.reserve[0] / 4 == 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)((this.reserve[0 + 1] / 4) * 2 + 13 * 4 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-
-                                        if (this.reserve[0 + 1] / 4 != 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)((this.reserve[tc] / 4) * 2 + (this.reserve[0 + 1] / 4) * 2 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-
-                                        if (this.reserve[0] / 4 != 0)
-                                        {
-                                            currentGameParticipant.Type = 2;
-                                            currentGameParticipant.Power =
-                                                (int)((this.reserve[tc] / 4) * 2 + (this.reserve[0] / 4) * 2 + currentGameParticipant.Type * 100);
-                                            this.AddWin(
-                                                currentGameParticipant.Power,
-                                                currentGameParticipant.Type);
-                                        }
-                                    }
-
-                                    msgbox = true;
-                                }
-                                if (currentGameParticipant.Type == -1)
-                                {
-                                    if (!msgbox1)
-                                    {
-                                        if (this.reserve[0] / 4 > this.reserve[0 + 1] / 4)
-                                        {
-                                            if (this.reserve[tc] / 4 == 0)
-                                            {
-                                                currentGameParticipant.Type = 0;
-                                                currentGameParticipant.Power =
-                                                    (int)(13 + this.reserve[0] / 4 + currentGameParticipant.Type * 100);
-                                                // using AddWin method with current value = 1 was intended
-                                                // to match with default game logic 
-                                                this.AddWin(currentGameParticipant.Power, 1);
-                                            }
-                                            else
-                                            {
-                                                currentGameParticipant.Type = 0;
-                                                currentGameParticipant.Power =
-                                                    (int)(this.reserve[tc] / 4 + this.reserve[0] / 4 + currentGameParticipant.Type * 100);
-                                                this.AddWin(currentGameParticipant.Power, 1);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (this.reserve[tc] / 4 == 0)
-                                            {
-                                                currentGameParticipant.Type = 0;
-                                                currentGameParticipant.Power =
-                                                    (int)(13 + this.reserve[0 + 1] + currentGameParticipant.Type * 100);
-                                                this.AddWin(currentGameParticipant.Power, 1);
-                                            }
-                                            else
-                                            {
-                                                currentGameParticipant.Type = 0;
-                                                currentGameParticipant.Power =
-                                                    (int)(this.reserve[tc] / 4 + this.reserve[0 + 1] / 4 + currentGameParticipant.Type * 100);
-                                                this.AddWin(currentGameParticipant.Power, 1);
-                                            }
-                                        }
-                                    }
-
-                                    msgbox1 = true;
-                                }
-                            }
-                        }
-                    }
-                }
-        }
-
-        private void rPairFromHand(IGameParticipant currentGameParticipant)
-        {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-                bool msgbox = false;
-                if (this.reserve[0] / 4 == this.reserve[0 + 1] / 4)
-                {
-                    // This expression is always true
-                    if (!msgbox)
-                    {
-                        if (this.reserve[0] / 4 == 0)
-                        {
-                            currentGameParticipant.Type = 1;
-                            currentGameParticipant.Power =
-                                (int)(13 * 4 + currentGameParticipant.Type * 100);
-                            this.AddWin(
-                                currentGameParticipant.Power,
-                                currentGameParticipant.Type);
-                        }
-                        else
-                        {
-                            currentGameParticipant.Type = 1;
-                            currentGameParticipant.Power =
-                                (int)((this.reserve[0 + 1] / 4) * 4 + currentGameParticipant.Type * 100);
-                            this.AddWin(
-                                currentGameParticipant.Power,
-                                currentGameParticipant.Type);
-                        }
-                    }
-
-                    msgbox = true;
-                }
-
-                for (int tc = 16; tc >= 12; tc--)
-                {
-                    if (this.reserve[0 + 1] / 4 == this.reserve[tc] / 4)
-                    {
-                        if (!msgbox)
-                        {
-                            if (this.reserve[0 + 1] / 4 == 0)
-                            {
-                                currentGameParticipant.Type = 1;
-                                currentGameParticipant.Power =
-                                    (int)(13 * 4 + this.reserve[0] / 4 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                            }
-                            else
-                            {
-                                currentGameParticipant.Type = 1;
-                                currentGameParticipant.Power =
-                                    (int)((this.reserve[0 + 1] / 4) * 4 + this.reserve[0] / 4 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                            }
-                        }
-
-                        msgbox = true;
-                    }
-
-                    if (this.reserve[0] / 4 == this.reserve[tc] / 4)
-                    {
-                        if (!msgbox)
-                        {
-                            if (this.reserve[0] / 4 == 0)
-                            {
-                                currentGameParticipant.Type = 1;
-                                currentGameParticipant.Power = (int)(13 * 4 + this.reserve[0 + 1] / 4 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                            }
-                            else
-                            {
-                                currentGameParticipant.Type = 1;
-                                currentGameParticipant.Power =
-                                    (int)((this.reserve[tc] / 4) * 4 + this.reserve[0 + 1] / 4 + currentGameParticipant.Type * 100);
-                                this.AddWin(
-                                    currentGameParticipant.Power,
-                                    currentGameParticipant.Type);
-                            }
-                        }
-
-                        msgbox = true;
-                    }
-                }
-        }
-
-        private void rHighCard(IGameParticipant currentGameParticipant)
-        {
-            //if (currentGameParticipant.Type == -1)
-            //{
-                if (this.reserve[0] / 4 > this.reserve[0 + 1] / 4)
-                {
-                    currentGameParticipant.Type = -1;
-                    currentGameParticipant.Power = this.reserve[0] / 4;
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-                else
-                {
-                    currentGameParticipant.Type = -1;
-                    currentGameParticipant.Power =
-                        this.reserve[0 + 1] / 4;
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-
-                if (this.reserve[0] / 4 == 0 ||
-                    this.reserve[0 + 1] / 4 == 0)
-                {
-                    currentGameParticipant.Type = -1;
-                    currentGameParticipant.Power = 13;
-                    this.AddWin(
-                        currentGameParticipant.Power,
-                        currentGameParticipant.Type);
-                }
-        }
-
+        
         void ValidateWinner(
             IGameParticipant currentGameParticipant,
             string currentText,
@@ -1676,15 +402,15 @@
             for (int j = 0; j <= 16; j++)
             {
                 //await Task.Delay(5);
-                if (this.cardImages[j].Visible)
+                if (this.Rule.CardImages[j].Visible)
                 {
-                    this.cardImages[j].Image = this.deck[j];
+                    this.Rule.CardImages[j].Image = this.deck[j];
                 }
             }
 
-            if (currentGameParticipantType == this.winningHand.Current)
+            if (currentGameParticipantType == this.HandRank.WinningHand.Current)
             {
-                if (currentGameParticipantPower == this.winningHand.Power)
+                if (currentGameParticipantPower == this.HandRank.WinningHand.Power)
                 {
                     this.winners++;
                     this.winnersChecker.Add(currentText);
@@ -1840,9 +566,9 @@
             {
                 for (int j = 12; j <= 14; j++)
                 {
-                    if (this.cardImages[j].Image != this.deck[j])
+                    if (this.Rule.CardImages[j].Image != this.deck[j])
                     {
-                        this.cardImages[j].Image = this.deck[j];
+                        this.Rule.CardImages[j].Image = this.deck[j];
 
                         this.player.Call = 0;
                         this.player.Raise = 0;
@@ -1860,9 +586,9 @@
             {
                 for (int j = 14; j <= 15; j++)
                 {
-                    if (this.cardImages[j].Image != this.deck[j])
+                    if (this.Rule.CardImages[j].Image != this.deck[j])
                     {
-                        this.cardImages[j].Image = this.deck[j];
+                        this.Rule.CardImages[j].Image = this.deck[j];
 
                         this.player.Call = 0;
                         this.player.Raise = 0;
@@ -1880,9 +606,9 @@
             {
                 for (int j = 15; j <= 16; j++)
                 {
-                    if (this.cardImages[j].Image != this.deck[j])
+                    if (this.Rule.CardImages[j].Image != this.deck[j])
                     {
-                        this.cardImages[j].Image = this.deck[j];
+                        this.Rule.CardImages[j].Image = this.deck[j];
 
                         this.player.Call = 0;
                         this.player.Raise = 0;
@@ -1902,7 +628,7 @@
                 if (!this.player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
                 {
                     fixedLast = "Player";
-                    this.Rules(0, 1, this.player);
+                    this.Rule.ExecuteGameRules(0, 1, this.player);
                 }
 
                 for (int bot = 0; bot < NumberOfBots; bot++)
@@ -1915,7 +641,7 @@
                     if (!currentBot.ParticipantPanel.StatusButton.Text.Contains("Fold"))
                     {
                         fixedLast = $"Bot {botIndex}";
-                        this.Rules(firstCard, seconCard, currentBot);
+                        this.Rule.ExecuteGameRules(firstCard, seconCard, currentBot);
                     }
                 }
 
@@ -1979,19 +705,19 @@
                     Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
                 //bools.Clear();
                 this.rounds = 0;
-                this.type = 0;
+                this.HandRank.Type = 0;
 
                 this.ints.Clear();
                 this.winnersChecker.Clear();
                 this.winners = 0;
                 this.win.Clear();
-                this.winningHand.Current = 0;
-                this.winningHand.Power = 0;
+                this.HandRank.WinningHand.Current = 0;
+                this.HandRank.WinningHand.Power = 0;
                 for (int os = 0; os < 17; os++)
                 {
-                    this.cardImages[os].Image = null;
-                    this.cardImages[os].Invalidate();
-                    this.cardImages[os].Visible = false;
+                    this.Rule.CardImages[os].Image = null;
+                    this.Rule.CardImages[os].Invalidate();
+                    this.Rule.CardImages[os].Visible = false;
                 }
 
                 this.potTextBox.Text = "0";
@@ -2222,7 +948,7 @@
 
                 for (int j = 0; j <= 16; j++)
                 {
-                    this.cardImages[j].Visible = false;
+                    this.Rule.CardImages[j].Visible = false;
                 }
 
                 await this.Finish(1);
@@ -2249,7 +975,7 @@
             this.call = this.bigBlind;
             //this.raise = 0;
             //this.foldedPlayers = 5;
-            this.type = 0;
+            this.HandRank.Type = 0;
             this.rounds = 0;
 
             for (int bot = 0; bot < NumberOfBots; bot++)
@@ -2296,8 +1022,8 @@
             this.ints.Clear();
             this.win.Clear();
 
-            this.winningHand.Current = 0;
-            this.winningHand.Power = 0;
+            this.HandRank.WinningHand.Current = 0;
+            this.HandRank.WinningHand.Power = 0;
             this.potTextBox.Text = "0";
             this.timeForTurn = 60;
             //this.maxUp = 10000000;
@@ -2334,9 +1060,9 @@
                 Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
             for (int os = 0; os < 17; os++)
             {
-                this.cardImages[os].Image = null;
-                this.cardImages[os].Invalidate();
-                this.cardImages[os].Visible = false;
+                this.Rule.CardImages[os].Image = null;
+                this.Rule.CardImages[os].Invalidate();
+                this.Rule.CardImages[os].Visible = false;
             }
 
             await this.Shuffle();
@@ -2346,14 +1072,14 @@
         void FixWinners()
         {
             this.win.Clear();
-            this.winningHand.Current = 0;
-            this.winningHand.Power = 0;
+            this.HandRank.WinningHand.Current = 0;
+            this.HandRank.WinningHand.Power = 0;
             string fixedLast = string.Empty;
 
             if (!this.player.ParticipantPanel.StatusButton.Text.Contains("Fold"))
             {
                 fixedLast = "Player";
-                this.Rules(0, 1, this.player);
+                this.Rule.ExecuteGameRules(0, 1, this.player);
             }
 
             for (int bot = 0; bot < NumberOfBots; bot++)
@@ -2366,7 +1092,7 @@
                 if (!currentBot.ParticipantPanel.StatusButton.Text.Contains("Fold"))
                 {
                     fixedLast = $"Bot {botIndex}";
-                    this.Rules(firstCard, secondCard, currentBot);
+                    this.Rule.ExecuteGameRules(firstCard, secondCard, currentBot);
                 }
             }
 
@@ -2434,8 +1160,8 @@
 
             if (currentGameParticipant.FoldTurn)
             {
-                this.cardImages[firstCard].Visible = false;
-                this.cardImages[secondCard].Visible = false;
+                this.Rule.CardImages[firstCard].Visible = false;
+                this.Rule.CardImages[secondCard].Visible = false;
             }
         }
 
@@ -3006,7 +1732,7 @@
 
         private async void ButtonCallOnClick(object sender, EventArgs e)
         {
-            this.Rules(0, 1, this.player);
+            this.Rule.ExecuteGameRules(0, 1, this.player);
             if (this.player.Chips >= this.call)
             {
                 this.player.Chips -= this.call;
@@ -3044,7 +1770,7 @@
 
         private async void ButtonRaiseOnClick(object sender, EventArgs e)
         {
-            this.Rules(0, 1, this.player);
+            this.Rule.ExecuteGameRules(0, 1, this.player);
             int parsedValue;
             if (this.raiseTextBox.Text != string.Empty &&
                 int.TryParse(this.raiseTextBox.Text, out parsedValue))
