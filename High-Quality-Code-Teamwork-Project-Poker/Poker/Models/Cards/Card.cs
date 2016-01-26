@@ -3,7 +3,9 @@
     using System;
     using System.Drawing;
 
-    public class Card
+    using Poker.Contracts;
+
+    public class Card : ICard
     {
         private string name;
         private Image image;
@@ -11,7 +13,7 @@
         public Card(string name, string imageLocation)
         {
             this.Name = name;
-            this.Image = Image.FromFile(imageLocation); ;
+            this.Image = Image.FromFile(imageLocation);
         }
 
         public string Name
@@ -25,7 +27,8 @@
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("The name of the card cannot be empty.");
+                    throw new ArgumentNullException(
+                        "The name of the card cannot be empty.");
                 }
 
                 this.name = value;
@@ -43,7 +46,8 @@
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("The Image of the card cannot be null.");
+                    throw new ArgumentNullException(
+                        "The Image of the card cannot be null.");
                 }
 
                 this.image = value;

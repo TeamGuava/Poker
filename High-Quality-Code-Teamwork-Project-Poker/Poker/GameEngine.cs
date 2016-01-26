@@ -130,7 +130,7 @@
             for (int currentCard = 0; currentCard < AllCardsOnTheTable; currentCard++)
             {
                 // Next card from the deck. // Aleksandar
-                Card drawnCard = this.deckOfCards.DrawOneCard();
+                ICard drawnCard = this.deckOfCards.DrawOneCard();
 
                 this.deck[currentCard] = drawnCard.Image;
 
