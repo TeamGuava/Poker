@@ -162,7 +162,6 @@
 
                 if (this.gameBots[0].Chips > 0)
                 {
-                    //foldedPlayers--;
                     if (currentCard >= 2 && currentCard < 4)
                     {
                         this.SetBotCards(
@@ -176,7 +175,6 @@
 
                 if (this.gameBots[1].Chips > 0)
                 {
-                    //foldedPlayers--;
                     if (currentCard >= 4 && currentCard < 6)
                     {
                         this.SetBotCards(
@@ -189,7 +187,6 @@
 
                 if (this.gameBots[2].Chips > 0)
                 {
-                    //foldedPlayers--;
                     if (currentCard >= 6 && currentCard < 8)
                     {
                         this.SetBotCards(this.gameBots[2],
@@ -201,7 +198,6 @@
 
                 if (this.gameBots[3].Chips > 0)
                 {
-                    //foldedPlayers--;
                     if (currentCard >= 8 && currentCard < 10)
                     {
                         this.SetBotCards(this.gameBots[3],
@@ -214,7 +210,6 @@
 
                 if (this.gameBots[4].Chips > 0)
                 {
-                    //foldedPlayers--;
                     if (currentCard >= 10 && currentCard < 12)
                     {
                         this.SetBotCards(this.gameBots[4],
@@ -270,7 +265,7 @@
             {
                 if (this.player.Turn)
                 {
-                    this.FixCallPlayer(1);
+                    this.FixParticipantCall(this.player, 1);
                     this.writer.Print("Player's Turn");
 
                     this.timerProgressBar.Visible = true;
@@ -280,7 +275,7 @@
 
                     this.EnableButtons();
                     this.turnCount++;
-                    this.FixCallPlayer(2);
+                    this.FixParticipantCall(this.player, 2);
                 }
             }
 
@@ -319,8 +314,8 @@
                             int firstCard = botIndex * 2;
                             int secondCard = botIndex * 2 + 1;
 
-                            this.FixCallBot(currentBot, 1);
-                            this.FixCallBot(currentBot, 2);
+                            this.FixParticipantCall(currentBot, 1);
+                            this.FixParticipantCall(currentBot, 2);
                             this.Rules(firstCard, secondCard, currentBot);
 
                             // TODO: Maybe we can remove this
@@ -2053,52 +2048,52 @@
 
         // Temporary FixCall workaround
         // TODO: Consolidate FixCall for player and for bot. (Process through shared interface)
-        void FixCallPlayer(int options)
-        {
-            if (this.rounds != 4)
-            {
-                if (options == 1)
-                {
-                    if (this.player.ParticipantPanel.StatusButton.Text.Contains("Raise"))
-                    {
-                        var changeRaise = this.player.ParticipantPanel.StatusButton.Text.Substring(6);
-                        this.player.Raise = int.Parse(changeRaise);
-                    }
-                    else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Call"))
-                    {
-                        var changeCall = this.player.ParticipantPanel.StatusButton.Text.Substring(5);
-                        this.player.Call = int.Parse(changeCall);
-                    }
-                    else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Check"))
-                    {
-                        this.player.Raise = 0;
-                        this.player.Call = 0;
-                    }
-                }
-                if (options == 2)
-                {
-                    if (this.player.Raise != 0)
-                    {
-                        this.call = this.player.Raise;
-                    }
+        //void FixCallPlayer(int options)
+        //{
+        //    if (this.rounds != 4)
+        //    {
+        //        if (options == 1)
+        //        {
+        //            if (this.player.ParticipantPanel.StatusButton.Text.Contains("Raise"))
+        //            {
+        //                var changeRaise = this.player.ParticipantPanel.StatusButton.Text.Substring(6);
+        //                this.player.Raise = int.Parse(changeRaise);
+        //            }
+        //            else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Call"))
+        //            {
+        //                var changeCall = this.player.ParticipantPanel.StatusButton.Text.Substring(5);
+        //                this.player.Call = int.Parse(changeCall);
+        //            }
+        //            else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Check"))
+        //            {
+        //                this.player.Raise = 0;
+        //                this.player.Call = 0;
+        //            }
+        //        }
+        //        if (options == 2)
+        //        {
+        //            if (this.player.Raise != 0)
+        //            {
+        //                this.call = this.player.Raise;
+        //            }
 
-                    if (this.player.Call != call || this.player.Call <= call)
-                    {
-                        this.call = this.call - this.player.Call;
-                    }
+        //            if (this.player.Call != call || this.player.Call <= call)
+        //            {
+        //                this.call = this.call - this.player.Call;
+        //            }
 
-                    if (this.player.Raise != 0)
-                    {
-                        this.call = 0;
-                        this.player.Raise = 0;
-                        this.callButton.Enabled = false;
-                        this.callButton.Text = "Call button is unable.";
-                    }
-                }
-            }
-        }
+        //            if (this.player.Raise != 0)
+        //            {
+        //                this.call = 0;
+        //                this.player.Raise = 0;
+        //                this.callButton.Enabled = false;
+        //                this.callButton.Text = "Call button is unable.";
+        //            }
+        //        }
+        //    }
+        //}
 
-        void FixCallBot(IBot currentBot, int options)
+        void FixParticipantCall(IGameParticipant currentBot, int options)
         {
             if (this.rounds != 4)
             {
