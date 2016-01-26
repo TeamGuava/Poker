@@ -1,30 +1,10 @@
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
-C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
-E:\newRepo\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
-E:\branchPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\branch\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
