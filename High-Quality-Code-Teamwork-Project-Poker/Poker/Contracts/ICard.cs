@@ -4,8 +4,8 @@
 
     public interface ICard
     {
-        string Name { get; set; }
+        string Name { get; }
 
-        Image Image { get; set; }
+        Image Image { get; }
     }
 }

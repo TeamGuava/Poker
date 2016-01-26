@@ -23,7 +23,7 @@
         private const int AllCardsOnTheTable = 17;
         #endregion
 
-        #region Readonlyflo
+        #region Readonlyfloz
         private ProgressBar progressBar = new ProgressBar();
         private readonly ApplicationWriter writer = new ApplicationWriter();
         private readonly IBot[] gameBots = new Bot[5]
@@ -75,14 +75,11 @@
         private int smallBlind = 250;
         private int turnCount;
 
-        public HandRanking HandRank { get; private set; }
-        public GameRules Rule { get; private set; }
-
         //Temporal field (for fixing class GameParticipant):
         //private GameParticipant participant;
         #endregion
 
-        public GameEngine(GameRules rule, HandRanking handRank)
+        public GameEngine(IGameRules rule, IHandRanking handRank)
         {
             this.Rule = rule;
             this.HandRank = handRank;
@@ -97,7 +94,6 @@
             //int height = this.Height;
             this.Shuffle();
             this.potTextBox.Enabled = false;
-
             this.player.ParticipantPanel.ChipsTextBox.Enabled = false;
             this.player.ParticipantPanel.ChipsTextBox.Text =
                 string.Format("Chips : {0}", this.player.Chips);
@@ -118,7 +114,12 @@
             this.smallBlindTextBox.Visible = true;
 
             this.raiseTextBox.Text = (this.bigBlind * 2).ToString();
+ 
         }
+
+        public IHandRanking HandRank { get; private set; }
+
+        public IGameRules Rule { get; private set; }
 
         async Task Shuffle()
         {

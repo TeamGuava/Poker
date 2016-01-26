@@ -10,14 +10,14 @@ namespace Poker.PokerMechanics
     {
         private IGameParticipant player;
 
-        public GameRules(HandRanking handRanking, IGameParticipant player)
+        public GameRules(IHandRanking handRanking, IGameParticipant player)
         {
             this.HandRanking = handRanking;
             this.player = player;
             this.CardImages = new PictureBox[52];
         }
 
-        public HandRanking HandRanking { get; private set; }
+        public IHandRanking HandRanking { get; private set; }
 
         public PictureBox[] CardImages { get; set; }
 

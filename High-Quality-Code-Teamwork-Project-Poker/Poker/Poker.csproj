@@ -54,9 +54,11 @@
     <Compile Include="Contracts\IDeckOfCards.cs" />
     <Compile Include="Contracts\IGameEngine.cs" />
     <Compile Include="Contracts\IGameRules.cs" />
+    <Compile Include="Contracts\IHandRanking.cs" />
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
+    <Compile Include="Core\ButtonHandler.cs" />
     <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\PokerStages.cs" />
     <Compile Include="Enums\SuitSign.cs" />
@@ -234,9 +236,7 @@
     <Content Include="Resources\Cards\9_of_hearts.png" />
     <Content Include="Resources\Cards\9_of_spades.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
