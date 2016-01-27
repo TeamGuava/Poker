@@ -6,6 +6,6 @@
 
         //bool IsFolded { get; set; }
 
-        void ChooseToFold(IGameParticipant gameParticipant);
+        void ChooseToFold();
     }
 }

@@ -3,6 +3,6 @@
     public interface IChecker
     {
         //// TODO: Should be fixed without paramether.
-        void ChooseToCheck(IGameParticipant currentChooseToCall);
+        void ChooseToCheck();
     }
 }

@@ -37,23 +37,37 @@
 
         public GameParticipantPanel ParticipantPanel { get; set; }
 
-        //public void ChooseToCall(IGameParticipant currentChooseToCall);
-
-        //public void ChooseToRaise(IGameParticipant currentChooseToCall);
-
-        public void ChooseToFold(IGameParticipant currentGameParticipant)
+        public void ChooseToCall()
         {
-            currentGameParticipant.RaiseTurn = false;
-            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
-            currentGameParticipant.Turn = false;
-            currentGameParticipant.FoldTurn = true;
+            this.RaiseTurn = false;
+            this.Turn = false;
+            this.Chips -= this.Call;
+            this.ParticipantPanel.Text = "Call " + this.Call;
+           // this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + this.call).ToString();
         }
 
-        public void ChooseToCheck(IGameParticipant currentGameParticipant)
+        public void ChooseToRaise()
         {
-            currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
-            currentGameParticipant.Turn = false;
-            currentGameParticipant.RaiseTurn = false;
+            this.Chips -= this.Raise;
+            this.ParticipantPanel.StatusButton.Text = "Raise " + this.Raise;
+            // this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + currentGameParticipant.Raise).ToString();
+            this.RaiseTurn = true;
+            this.Turn = false;
+        }
+
+        public void ChooseToFold()
+        {
+            this.RaiseTurn = false;
+            this.ParticipantPanel.StatusButton.Text = "Is Folded";
+            this.Turn = false;
+            this.FoldTurn = true;
+        }
+
+        public void ChooseToCheck()
+        {
+            this.ParticipantPanel.StatusButton.Text = "Check";
+            this.Turn = false;
+            this.RaiseTurn = false;
         }
     }
 }
