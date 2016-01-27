@@ -361,11 +361,6 @@
             double currentGameParticipantType = currentGameParticipant.Type;
             int currentGameParticipantPower = currentGameParticipant.Power;
 
-            //if (lastly == " ")
-            //{
-            //    lastly = "Bot 5";
-            //}
-
             for (int j = 0; j <= 16; j++)
             {
                 //await Task.Delay(5);

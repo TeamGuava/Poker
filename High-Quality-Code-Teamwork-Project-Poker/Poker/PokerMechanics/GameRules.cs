@@ -25,11 +25,6 @@
             int secondCard,
             IGameParticipant currentGameParticipant)
         {
-            //if (firstCard == 0 &&
-            //    secondCard == 1)
-            //{
-            //}
-
             if (!currentGameParticipant.FoldTurn ||
                 firstCard == 0 &&
                 secondCard == 1 &&
@@ -64,41 +59,42 @@
 
                 for (int cardIndex = 0; cardIndex < 17; cardIndex++)
                 {
-                    // bool  
-                    if (this.HandRanking.Reserve[cardIndex] == int.Parse(
-                        this.CardImages[firstCard].Tag.ToString()) &&
+                    bool haveCards = 
+                        this.HandRanking.Reserve[cardIndex] == int.Parse(
+                            this.CardImages[firstCard].Tag.ToString()) &&
                         this.HandRanking.Reserve[cardIndex + 1] == int.Parse(
-                            this.CardImages[secondCard].Tag.ToString()))
+                            this.CardImages[secondCard].Tag.ToString());
+                    if (haveCards)
                     {
                         //Pair from Hand current = 1
-                        this.HandRanking.rPairFromHand(currentGameParticipant);
+                        this.HandRanking.TryFindingPairFromHand(currentGameParticipant);
 
                         // Pair or Two Pair from Table current = 2 || 0
-                        this.HandRanking.rPairTwoPair(currentGameParticipant);
+                        this.HandRanking.TryFindingPairTwoPair(currentGameParticipant);
 
                         // Two Pair current = 2
-                        this.HandRanking.rTwoPair(currentGameParticipant);
+                        this.HandRanking.TryFindingTwoPair(currentGameParticipant);
 
                         // Three of a kind current = 3
-                        this.HandRanking.rThreeOfAKind(currentGameParticipant, straight);
+                        this.HandRanking.TryFindingThreeOfAKind(currentGameParticipant, straight);
 
                         // straight current = 4
-                        this.HandRanking.rStraight(currentGameParticipant, straight);
+                        this.HandRanking.TryFindingStraight(currentGameParticipant, straight);
 
                         // Flush current = 5 || 5.5
-                        this.HandRanking.rFlush(currentGameParticipant, straight);
+                        this.HandRanking.TryFindingFlush(currentGameParticipant, straight);
 
                         // Full House current = 6
-                        this.HandRanking.rFullHouse(currentGameParticipant, straight);
+                        this.HandRanking.TryFindingFullHouse(currentGameParticipant, straight);
 
                         // Four of a Kind current = 7
-                        this.HandRanking.rFourOfAKind(currentGameParticipant, straight);
+                        this.HandRanking.TryFindingFourOfAKind(currentGameParticipant, straight);
 
                         // straight Flush current = 8 || 9
-                        this.HandRanking.rStraightFlush(currentGameParticipant, st1, st2, st3, st4);
+                        this.HandRanking.TryFindingStraightFlush(currentGameParticipant, st1, st2, st3, st4);
 
                         // High Card current = -1
-                        this.HandRanking.rHighCard(currentGameParticipant);
+                        this.HandRanking.TryFindingHighCard(currentGameParticipant);
                     }
                 }
             }

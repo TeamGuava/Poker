@@ -21,15 +21,17 @@
 
         public double Type { get; set; }
 
-        public void rStraightFlush(
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a straingt flush.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingStraightFlush(
             IGameParticipant currentGameParticipant,
             int[] st1,
             int[] st2,
             int[] st3,
             int[] st4)
         {
-            //if (currentGameParticipant.Type >= -1)
-            //{
             if (st1.Length >= 5)
             {
                 if (st1[0] + 4 == st1[4])
@@ -137,7 +139,11 @@
             }
         }
 
-        public void rFourOfAKind(
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a four of a kind.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingFourOfAKind(
             IGameParticipant currentGameParticipant,
             int[] straight)
         {
@@ -172,8 +178,11 @@
             }
         }
 
-        // TODO: Extract method
-        public void rFullHouse(
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a full house.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingFullHouse(
             IGameParticipant currentGameParticipant,
             int[] straight)
         {
@@ -227,7 +236,11 @@
             }
         }
 
-        public void rFlush(IGameParticipant currentGameParticipant, int[] straight)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a flush.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingFlush(IGameParticipant currentGameParticipant, int[] straight)
         {
             // should be here?
             var f1 = straight.Where(o => o % 4 == 0).ToArray();
@@ -812,7 +825,11 @@
             }
         }
 
-        public void rStraight(
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a straingt.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingStraight(
             IGameParticipant currentGameParticipant,
             int[] straight)
         {
@@ -854,7 +871,11 @@
             }
         }
 
-        public void rThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a three of a kind.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight)
         {
             for (int j = 0; j <= 12; j++)
             {
@@ -883,7 +904,11 @@
             }
         }
 
-        public void rTwoPair(IGameParticipant currentGameParticipant)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a two pair.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingTwoPair(IGameParticipant currentGameParticipant)
         {
             for (int tc = 16; tc >= 12; tc--)
             {
@@ -943,7 +968,11 @@
             }
         }
 
-        public void rPairTwoPair(IGameParticipant currentGameParticipant)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find a pair two pair.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingPairTwoPair(IGameParticipant currentGameParticipant)
         {
             for (int tc = 16; tc >= 12; tc--)
             {
@@ -1058,16 +1087,14 @@
             }
         }
 
-        public void rPairFromHand(IGameParticipant currentGameParticipant)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find only a pair.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingPairFromHand(IGameParticipant currentGameParticipant)
         {
-            //if (currentGameParticipant.Type >= -1)
-            //{
-            bool msgbox = false;
             if (this.Reserve[0] / 4 == this.Reserve[0 + 1] / 4)
             {
-                // This expression is always true
-                if (!msgbox)
-                {
                     if (this.Reserve[0] / 4 == 0)
                     {
                         currentGameParticipant.Type = 1;
@@ -1087,17 +1114,12 @@
                             currentGameParticipant.Power,
                             currentGameParticipant.Type);
                     }
-                }
-
-                msgbox = true;
             }
 
             for (int tc = 16; tc >= 12; tc--)
             {
                 if (this.Reserve[0 + 1] / 4 == this.Reserve[tc] / 4)
                 {
-                    if (!msgbox)
-                    {
                         if (this.Reserve[0 + 1] / 4 == 0)
                         {
                             currentGameParticipant.Type = 1;
@@ -1118,15 +1140,10 @@
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
                         }
-                    }
-
-                    msgbox = true;
                 }
 
                 if (this.Reserve[0] / 4 == this.Reserve[tc] / 4)
                 {
-                    if (!msgbox)
-                    {
                         if (this.Reserve[0] / 4 == 0)
                         {
                             currentGameParticipant.Type = 1;
@@ -1146,43 +1163,46 @@
                                 currentGameParticipant.Power,
                                 currentGameParticipant.Type);
                         }
-                    }
-
-                    msgbox = true;
                 }
             }
         }
 
-        public void rHighCard(IGameParticipant currentGameParticipant)
+        /// <summary>
+        /// From the participant's cards and these on the desk are tried to find the highest card.
+        /// </summary>
+        /// <param name="currentGameParticipant">The participant who is on turn.</param>
+        public void TryFindingHighCard(IGameParticipant currentGameParticipant)
         {
-            //if (currentGameParticipant.Type == -1)
-            //{
-            if (this.Reserve[0] / 4 > this.Reserve[0 + 1] / 4)
+            if (currentGameParticipant.Type == -1)
             {
-                currentGameParticipant.Type = -1;
-                currentGameParticipant.Power = this.Reserve[0] / 4;
-                this.AddWin(
-                    currentGameParticipant.Power,
-                    currentGameParticipant.Type);
-            }
-            else
-            {
-                currentGameParticipant.Type = -1;
-                currentGameParticipant.Power =
-                    this.Reserve[0 + 1] / 4;
-                this.AddWin(
-                    currentGameParticipant.Power,
-                    currentGameParticipant.Type);
-            }
 
-            if (this.Reserve[0] / 4 == 0 ||
-                this.Reserve[0 + 1] / 4 == 0)
-            {
-                currentGameParticipant.Type = -1;
-                currentGameParticipant.Power = 13;
-                this.AddWin(
-                    currentGameParticipant.Power,
-                    currentGameParticipant.Type);
+                if (this.Reserve[0]/4 > this.Reserve[0 + 1]/4)
+                {
+                    currentGameParticipant.Type = -1;
+                    currentGameParticipant.Power = this.Reserve[0]/4;
+                    this.AddWin(
+                        currentGameParticipant.Power,
+                        currentGameParticipant.Type);
+                }
+                else
+                {
+                    currentGameParticipant.Type = -1;
+                    currentGameParticipant.Power =
+                        this.Reserve[0 + 1]/4;
+                    this.AddWin(
+                        currentGameParticipant.Power,
+                        currentGameParticipant.Type);
+                }
+
+                if (this.Reserve[0]/4 == 0 ||
+                    this.Reserve[0 + 1]/4 == 0)
+                {
+                    currentGameParticipant.Type = -1;
+                    currentGameParticipant.Power = 13;
+                    this.AddWin(
+                        currentGameParticipant.Power,
+                        currentGameParticipant.Type);
+                }
             }
         }
 

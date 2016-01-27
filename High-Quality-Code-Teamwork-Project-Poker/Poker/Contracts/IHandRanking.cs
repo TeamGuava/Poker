@@ -12,24 +12,24 @@
 
         double Type { get; set; }
 
-        void rStraightFlush(IGameParticipant currentGameParticipant, int[] st1, int[] st2, int[] st3, int[] st4);
+        void TryFindingStraightFlush(IGameParticipant currentGameParticipant, int[] st1, int[] st2, int[] st3, int[] st4);
 
-        void rFourOfAKind(IGameParticipant currentGameParticipant, int[] straight);
+        void TryFindingFourOfAKind(IGameParticipant currentGameParticipant, int[] straight);
 
-        void rFullHouse(IGameParticipant currentGameParticipant, int[] straight);
+        void TryFindingFullHouse(IGameParticipant currentGameParticipant, int[] straight);
 
-        void rFlush(IGameParticipant currentGameParticipant, int[] straight);
+        void TryFindingFlush(IGameParticipant currentGameParticipant, int[] straight);
 
-        void rStraight(IGameParticipant currentGameParticipant, int[] straight);
+        void TryFindingStraight(IGameParticipant currentGameParticipant, int[] straight);
 
-        void rThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight);
+        void TryFindingThreeOfAKind(IGameParticipant currentGameParticipant, int[] straight);
 
-        void rTwoPair(IGameParticipant currentGameParticipant);
+        void TryFindingTwoPair(IGameParticipant currentGameParticipant);
 
-        void rPairTwoPair(IGameParticipant currentGameParticipant);
+        void TryFindingPairTwoPair(IGameParticipant currentGameParticipant);
 
-        void rPairFromHand(IGameParticipant currentGameParticipant);
+        void TryFindingPairFromHand(IGameParticipant currentGameParticipant);
 
-        void rHighCard(IGameParticipant currentGameParticipant);
+        void TryFindingHighCard(IGameParticipant currentGameParticipant);
     }
 }
