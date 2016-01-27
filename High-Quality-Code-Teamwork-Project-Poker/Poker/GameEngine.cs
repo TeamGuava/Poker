@@ -14,8 +14,6 @@
     using Poker.UI;
     using System.Windows.Forms;
 
-    using Poker.PokerMechanics;
-
     public partial class GameEngine : Form /*, IGameEngine*/
     {
         #region Constants

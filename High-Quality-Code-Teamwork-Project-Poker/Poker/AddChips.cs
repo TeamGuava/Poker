@@ -55,16 +55,16 @@
                     MessageBox.Show(
                         "Too many chips were given! The maximium chips you can add is 100 000 000.");
                 }
-
-                this.newChips = value;
+                else
+                {
+                    this.newChips = value;
+                }
             }
         }
 
         /// <summary>
         /// Takes the given number of chips in TextBox "AddNewChips".
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void ClickButtonAddChips(object sender, EventArgs e)
         {
             int parsedValue;

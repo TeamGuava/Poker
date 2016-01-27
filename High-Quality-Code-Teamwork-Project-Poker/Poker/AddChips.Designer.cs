@@ -1,5 +1,8 @@
 ﻿namespace Poker
 {
+    /// <summary>
+    /// With using of this class the player is provided with new chips.
+    /// </summary>
     public partial class AddChips
     {
         private System.Windows.Forms.Label labelMainMessage;
@@ -15,7 +18,7 @@
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param name="disposing">True if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (this.components != null))
