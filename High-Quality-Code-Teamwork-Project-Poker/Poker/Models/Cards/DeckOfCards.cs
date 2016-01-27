@@ -29,6 +29,10 @@
             this.ListOfCards = this.LoadCardsFromDirectory(directory, extention);
         }
 
+        /// <summary>
+        /// The ListOfCards property represents the list of cards in the deck.
+        /// </summary>
+        /// <value>The ListOfCards property gets/sets the value of the field listOfCards.</value>
         public IList<Card> ListOfCards
         {
             get
