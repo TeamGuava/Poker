@@ -36,31 +36,22 @@
         #endregion
         
         #region Variables
-        //private int call = 500;
-        // private int foldedPlayers = 5;
-        //private double type;
         private int rounds;
-        //private double raise;
-        //private bool intsadded;
         bool changed;
         int winners, maxLeft = 6; 
         private int last = 123;
         int raisedTurn = 1;
         private bool restart;
-        //private bool raising;
-        //private IType winningHand;
+
         IDeckOfCards deckOfCards;
 
         private Timer timer = new Timer();
         private Timer update = new Timer();
         private int timeForTurn = 60;
-        //private int i;
+
         private int bigBlind = 500;
         private int smallBlind = 250;
         private int turnCount;
-
-        //Temporal field (for fixing class GameParticipant):
-        //private GameParticipant participant;
         #endregion
 
         public GameEngine(IGameRules rule, IHandRanking handRank)
@@ -68,8 +59,6 @@
             this.Rule = rule;
             this.HandRank = handRank;
             this.deckOfCards = new DeckOfCards("Assets\\Cards", "*.png");
-
-            //this.call = this.bigBlind;
             this.player.Call = this.bigBlind;
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
@@ -77,12 +66,9 @@
             }
 
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.update.Start();
             this.InitializeComponent();
             this.InitializeCardLocations(cardLocations);
-            //int width = this.Width;
-            //int height = this.Height;
             this.Shuffle();
             this.potTextBox.Enabled = false;
             this.player.ParticipantPanel.ChipsTextBox.Enabled = false;
@@ -105,7 +91,6 @@
             this.smallBlindTextBox.Visible = true;
 
             this.raiseTextBox.Text = (this.bigBlind * 2).ToString();
- 
         }
 
         public IHandRanking HandRank { get; private set; }
@@ -881,14 +866,14 @@
                 this.ints.Clear();
             }
 
-            int leftOneNotFoldedPlayer = this.gameBots.Count(x => x.FoldTurn == false);
+            int leftNotFoldedParticipants = this.gameBots.Count(x => x.FoldTurn == false);
             if (!this.player.FoldTurn)
             {
-                leftOneNotFoldedPlayer++;
+                leftNotFoldedParticipants++;
             }
 
             // LastManStanding
-            if (leftOneNotFoldedPlayer == 1)
+            if (leftNotFoldedParticipants == 1)
             {
                 if (!this.player.FoldTurn)
                 {
@@ -924,7 +909,7 @@
             }
 
             // FiveOrLessLeft
-            if (leftOneNotFoldedPlayer < 6 && leftOneNotFoldedPlayer > 1 &&
+            if (leftNotFoldedParticipants < 6 && leftNotFoldedParticipants > 1 &&
                 this.rounds >= (int)PokerStages.End)
             {
                 await this.Finish(2);
@@ -961,26 +946,16 @@
             this.player.Type = -1;
             this.player.Raise = 0;
             this.player.Call = 0;
-            //this.player.IsFolded = false;
             this.player.FoldTurn = false;
             this.player.Turn = true;
             this.player.RaiseTurn = false;
 
             this.restart = false;
-            //GameParticipant.raising = false;
 
-            //height = 0;
-            //width = 0;
             this.winners = 0;
-            //Flop = 1;
-            //Turn = 2;
-            //River = 3;
-            //End = 4;
             this.maxLeft = 6;
             this.last = 123;
-            //this.raisedTurn = 1;
 
-            //bools.Clear();
             this.winnersChecker.Clear();
             this.ints.Clear();
             this.win.Clear();
@@ -989,7 +964,6 @@
             this.HandRank.WinningHand.Power = 0;
             this.potTextBox.Text = "0";
             this.timeForTurn = 60;
-            //this.maxUp = 10000000;
             this.turnCount = 0;
             this.player.ParticipantPanel.StatusButton.Text = string.Empty;
 
@@ -1001,22 +975,7 @@
             if (this.player.Chips <= 0)
             {
                 AddChips chipsAdder = new AddChips();
-                chipsAdder.ShowDialog();
-                if (chipsAdder.NewChips != 0)
-                {
-                    this.player.Chips = chipsAdder.NewChips;
-                    for (int bot = 0; bot < NumberOfBots; bot++)
-                    {
-                        this.gameBots[bot].Chips = chipsAdder.NewChips;
-                    }
-
-                    this.player.FoldTurn = false;
-                    this.player.Turn = true;
-                    this.raiseButton.Enabled = true;
-                    this.foldButton.Enabled = true;
-                    this.checkButton.Enabled = true;
-                    this.raiseButton.Text = "Raise";
-                }
+                this.AddMoreChips(chipsAdder);
             }
 
             this.deckOfCards.RenewUsedDeck();
@@ -1029,6 +988,22 @@
 
             await this.Shuffle();
             //await Turns();
+        }
+
+        private void AddMoreChips(AddChips chipsAdder)
+        {
+            chipsAdder.ShowDialog();
+            if (chipsAdder.NewChips != 0)
+            {
+                this.player.Chips = chipsAdder.NewChips;
+
+                this.player.FoldTurn = false;
+                this.player.Turn = true;
+                this.raiseButton.Enabled = true;
+                this.foldButton.Enabled = true;
+                this.checkButton.Enabled = true;
+                this.raiseButton.Text = "Raise";
+            }
         }
 
         void FixWinners()
@@ -1784,15 +1759,15 @@
             await this.Turns();
         }
 
+        /// <summary>
+        /// With using this method the player can add to his pocket more chips.
+        /// </summary>
+        /// <param name="sender">Command "add chips"</param>
         private void ButtonAddOnClick(object sender, EventArgs e)
         {
             if (this.addChipsTextBox.Text != string.Empty)
             {
                 this.player.Chips += int.Parse(this.addChipsTextBox.Text);
-                for (int bot = 0; bot < NumberOfBots; bot++)
-                {
-                    this.gameBots[bot].Chips += int.Parse(this.addChipsButton.Text);
-                }
             }
 
             this.player.ParticipantPanel.ChipsTextBox.Text = "Chips : " + this.player.Chips;
@@ -1806,17 +1781,11 @@
             {
                 this.bigBlindTextBox.Visible = true;
                 this.smallBlindTextBox.Visible = true;
-
-                this.bigBlindButton.Visible = true;
-                this.smallBlindButton.Visible = true;
             }
             else
             {
                 this.bigBlindTextBox.Visible = false;
                 this.smallBlindTextBox.Visible = false;
-
-                this.bigBlindButton.Visible = false;
-                this.smallBlindButton.Visible = false;
             }
         }
 
@@ -1853,7 +1822,7 @@
             {
                 this.smallBlind = int.Parse(this.smallBlindTextBox.Text);
                 this.writer.Print(
-                    "The changes have been saved ! They will become available the next hand you play. ");
+                    "The changes have been saved! They will become available the next hand you play. ");
             }
         }
 

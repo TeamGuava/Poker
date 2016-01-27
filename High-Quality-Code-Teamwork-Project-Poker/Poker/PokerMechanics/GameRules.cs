@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-
-namespace Poker.PokerMechanics
+﻿namespace Poker.PokerMechanics
 {
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
     using Poker.Contracts;
 
     public class GameRules : IGameRules
