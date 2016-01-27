@@ -28,3 +28,13 @@ D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\WorkSpace\Pok
 D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\WorkSpace\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\WorkSpace\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
 D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\WorkSpace\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
+D:\SoftUni\1. Level Fundamentals\5. High Quality code\Team Project\Git 2\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb

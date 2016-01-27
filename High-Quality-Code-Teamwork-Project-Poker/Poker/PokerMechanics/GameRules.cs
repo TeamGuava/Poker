@@ -20,6 +20,12 @@
 
         public PictureBox[] CardImages { get; set; }
 
+        /// <summary>
+        /// Executes the cheking of the game participant type and power.
+        /// </summary>
+        /// <param name="firstCard">First card of the participant.</param>
+        /// <param name="secondCard">Second card of the participant.</param>
+        /// <param name="currentGameParticipant">Participant.</param>
         public void ExecuteGameRules(
             int firstCard,
             int secondCard,
@@ -30,7 +36,7 @@
                 secondCard == 1 &&
                 this.player.ParticipantPanel.StatusButton.Text.Contains("Fold") == false)
             {
-                //int[] straight1 = new int[5];
+                // The array represents the cards in the hand and table together
                 int[] straight = new int[7];
 
                 straight[0] = this.HandRanking.Reserve[firstCard];
@@ -41,15 +47,22 @@
                 straight[5] = this.HandRanking.Reserve[15];
                 straight[6] = this.HandRanking.Reserve[16];
 
-                var a = straight.Where(o => o % 4 == 0).ToArray();
-                var b = straight.Where(o => o % 4 == 1).ToArray();
-                var c = straight.Where(o => o % 4 == 2).ToArray();
-                var d = straight.Where(o => o % 4 == 3).ToArray();
+                // Array only of Clubs
+                var clubs = straight.Where(o => o % 4 == 0).ToArray();
 
-                var st1 = a.Select(o => o / 4).Distinct().ToArray();
-                var st2 = b.Select(o => o / 4).Distinct().ToArray();
-                var st3 = c.Select(o => o / 4).Distinct().ToArray();
-                var st4 = d.Select(o => o / 4).Distinct().ToArray();
+                // Array only of Diamonds
+                var diamonds = straight.Where(o => o % 4 == 1).ToArray();
+
+                // Array only of Hearths
+                var hearths = straight.Where(o => o % 4 == 2).ToArray();
+
+                // Array only of Spades
+                var spades = straight.Where(o => o % 4 == 3).ToArray();
+
+                var st1 = clubs.Select(o => o / 4).Distinct().ToArray();
+                var st2 = diamonds.Select(o => o / 4).Distinct().ToArray();
+                var st3 = hearths.Select(o => o / 4).Distinct().ToArray();
+                var st4 = spades.Select(o => o / 4).Distinct().ToArray();
 
                 Array.Sort(straight);
                 Array.Sort(st1);
