@@ -51,19 +51,6 @@
         //private bool raising;
         //private IType winningHand;
         IDeckOfCards deckOfCards;
-        private string[] imageLocation = Directory.GetFiles(
-            "Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
-        /*string[] imageLocation ={card
-                   "Assets\\Cards\\33.png","Assets\\Cards\\22.png",
-                    "Assets\\Cards\\29.png","Assets\\Cards\\21.png",
-                    "Assets\\Cards\\36.png","Assets\\Cards\\17.png",
-                    "Assets\\Cards\\40.png","Assets\\Cards\\16.png",
-                    "Assets\\Cards\\5.png","Assets\\Cards\\47.png",
-                    "Assets\\Cards\\37.png","Assets\\Cards\\13.png",
-                    
-                    "Assets\\Cards\\12.png",
-                    "Assets\\Cards\\8.png","Assets\\Cards\\18.png",
-                    "Assets\\Cards\\15.png","Assets\\Cards\\27.png"};*/
 
         private Timer timer = new Timer();
         private Timer update = new Timer();
@@ -703,8 +690,7 @@
                 this.last = 0;
                 this.call = this.bigBlind;
                 //this.raise = 0;
-                this.imageLocation =
-                    Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
+                this.deckOfCards.RenewUsedDeck();
                 //bools.Clear();
                 this.rounds = 0;
                 this.HandRank.Type = 0;
@@ -1058,8 +1044,7 @@
                 }
             }
 
-            this.imageLocation =
-                Directory.GetFiles("Assets\\Cards", "*.png", SearchOption.TopDirectoryOnly);
+            this.deckOfCards.RenewUsedDeck();
             for (int os = 0; os < 17; os++)
             {
                 this.Rule.CardImages[os].Image = null;
