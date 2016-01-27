@@ -80,7 +80,6 @@
     <Compile Include="PokerMain.cs" />
     <Compile Include="PokerMechanics\GameRules.cs" />
     <Compile Include="PokerMechanics\HandRanking.cs" />
-    <Compile Include="ProgressBars.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Type.cs" />
     <Compile Include="Contracts\IBot.cs" />
@@ -88,9 +87,10 @@
     <Compile Include="Contracts\ICard.cs" />
     <Compile Include="Contracts\IChecker.cs" />
     <Compile Include="Contracts\IChip.cs" />
-    <Compile Include="Contracts\IFold.cs" />
+    <Compile Include="Contracts\IFolder.cs" />
     <Compile Include="Contracts\IGameParticipant.cs" />
     <Compile Include="Contracts\IRaiser.cs" />
+    <Compile Include="UI\ApplicationDrawer.cs" />
     <Compile Include="UI\ApplicationWriter.cs" />
     <EmbeddedResource Include="AddChips.resx">
       <DependentUpon>AddChips.cs</DependentUpon>

@@ -1,15 +1,10 @@
 ﻿namespace Poker.Models
 {
+    using System.Windows.Forms;
     using Poker.Contracts;
 
     public class GameParticipant : IGameParticipant
     {
-        // TODO:
-        // This field should be in other class, extracted from GameEngine later.
-        // It is used temporarily here as public (!) in order to extract game participant's 
-        // method ChooseToCheck(..) from GameEngine (to use an appropriate interface)
-        //public static bool raising;
-
         private const int StartChips = 10000;
 
         public GameParticipant()
@@ -18,7 +13,6 @@
             this.Chips = StartChips;
         }
 
-        // TODO: VALIDATION
         public int Call { get; set; }
 
         public int Raise { get; set; }
@@ -37,23 +31,23 @@
 
         public GameParticipantPanel ParticipantPanel { get; set; }
 
-        public void ChooseToCall()
-        {
-            this.RaiseTurn = false;
-            this.Turn = false;
-            this.Chips -= this.Call;
-            this.ParticipantPanel.Text = "Call " + this.Call;
-           // this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + this.call).ToString();
-        }
+        //public void ChooseToCall(TextBox potTextBox)
+        //{
+        //    this.RaiseTurn = false;
+        //    this.Turn = false;
+        //    this.Chips -= this.Call;
+        //    this.ParticipantPanel.Text = "Call " + this.Call;
+        //    potTextBox.Text = (int.Parse(potTextBox.Text) + this.Call).ToString();
+        //}
 
-        public void ChooseToRaise()
-        {
-            this.Chips -= this.Raise;
-            this.ParticipantPanel.StatusButton.Text = "Raise " + this.Raise;
-            // this.potTextBox.Text = (int.Parse(this.potTextBox.Text) + currentGameParticipant.Raise).ToString();
-            this.RaiseTurn = true;
-            this.Turn = false;
-        }
+        //public void ChooseToRaise(TextBox potTextBox)
+        //{
+        //    this.Chips -= this.Raise;
+        //    this.ParticipantPanel.StatusButton.Text = "Raise " + this.Raise;
+        //    potTextBox.Text = (int.Parse(potTextBox.Text) + this.Raise).ToString();
+        //    this.RaiseTurn = true;
+        //    this.Turn = false;
+        //}
 
         public void ChooseToFold()
         {

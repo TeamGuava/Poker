@@ -5,15 +5,15 @@
     using System.Drawing;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Windows.Forms;
 
     using Poker.Contracts;
     using Poker.Enums;
     using Poker.Models;
     using Poker.Models.Cards;
     using Poker.UI;
-    using System.Windows.Forms;
 
-    public partial class GameEngine : Form /*, IGameEngine*/
+    public partial class GameEngine : Form
     {
         #region Constants
         private const int NumberOfBots = 5;
@@ -29,9 +29,7 @@
         private readonly IList<IType> win = new List<IType>();
         private readonly IList<string> winnersChecker = new List<string>();
         private readonly IList<int> ints = new List<int>();
-        //private readonly int[] reserve = new int[17];
         private readonly Image[] deck = new Image[52];
-        //private readonly PictureBox[] cardImages = new PictureBox[52];
         private readonly Point[] cardLocations = new Point[AllCardsOnTheTable];
         #endregion
         
@@ -53,7 +51,7 @@
         private int smallBlind = 250;
         private int turnCount;
         #endregion
-
+        
         public GameEngine(IGameRules rule, IHandRanking handRank)
         {
             this.Rule = rule;
@@ -105,13 +103,11 @@
             this.checkButton.Enabled = false;
 
             this.MaximizeBox = false;
-            //bool check = false;
             Bitmap backImage = new Bitmap("Assets\\Back\\Back.png");
 
             // Shuffle the deck. // Aleksandar
             this.deckOfCards.ShuffleDeck();
 
-            // Not sure
             for (int currentCard = 0; currentCard < AllCardsOnTheTable; currentCard++)
             {
                 // Next card from the deck. // Aleksandar
@@ -350,8 +346,7 @@
                 this.restart = false;
             }
         }
-
-        
+   
         void ValidateWinner(
             IGameParticipant currentGameParticipant,
             string currentText,
@@ -361,12 +356,12 @@
             double currentGameParticipantType = currentGameParticipant.Type;
             int currentGameParticipantPower = currentGameParticipant.Power;
 
-            for (int j = 0; j <= 16; j++)
+            for (int card = 0; card < AllCardsOnTheTable; card++)
             {
                 //await Task.Delay(5);
-                if (this.Rule.CardImages[j].Visible)
+                if (this.Rule.CardImages[card].Visible)
                 {
-                    this.Rule.CardImages[j].Image = this.deck[j];
+                    this.Rule.CardImages[card].Image = this.deck[card];
                 }
             }
 
@@ -453,7 +448,6 @@
                     {
                         this.player.Chips += int.Parse(this.potTextBox.Text);
                         //await Finish(1);
-                        //pPanel.Visible = true;
                     }
 
                     for (int bot = 0; bot < NumberOfBots; bot++)
@@ -464,7 +458,6 @@
                             this.gameBots[bot].Chips += int.Parse(
                                 this.potTextBox.Text) / this.winners;
                             //await Finish(1)
-                            //gameBots[bot].Visible = true;
                         }
                     }
                 }
@@ -655,7 +648,6 @@
                 }
 
                 this.last = 0;
-                //this.call = this.bigBlind;
                 this.deckOfCards.RenewUsedDeck();
                 this.rounds = 0;
                 this.HandRank.Type = 0;
@@ -680,98 +672,7 @@
                 await this.Turns();
             }
         }
-
-        //void FixCall(Label status, ref int currentCall, ref int currentRaise, int options)
-        //{
-        //    if (rounds != 4)
-        //    {
-        //        if (options == 1)
-        //        {
-        //            if (status.Text.Contains("Raise"))
-        //            {
-        //                var changeRaise = status.Text.Substring(6);
-        //                currentRaise = int.Parse(changeRaise);
-        //            }
-        //            else if (status.Text.Contains("Call"))
-        //            {
-        //                var changeCall = status.Text.Substring(5);
-        //                currentCall = int.Parse(changeCall);
-        //            }
-        //            else if (status.Text.Contains("Check"))
-        //            {
-        //                currentRaise = 0;
-        //                currentCall = 0;
-        //            }
-        //        }
-        //        if (options == 2)
-        //        {
-        //            if (currentRaise != raise && currentRaise <= raise)
-        //            {
-        //                call = Convert.ToInt32(raise) - currentRaise;
-        //            }
-
-        //            if (currentCall != call || currentCall <= call)
-        //            {
-        //                call = call - currentCall;
-        //            }
-
-        //            if (currentRaise == raise && raise > 0)
-        //            {
-        //                call = 0;
-        //                callButton.Enabled = false;
-        //                callButton.Text = "Call button is unable.";
-        //            }
-        //        }
-        //    }
-        //}
-
-        // Temporary FixCall workaround
-        // TODO: Consolidate FixCall for player and for bot. (Process through shared interface)
-        //void FixCallPlayer(int options)
-        //{
-        //    if (this.rounds != 4)
-        //    {
-        //        if (options == 1)
-        //        {
-        //            if (this.player.ParticipantPanel.StatusButton.Text.Contains("Raise"))
-        //            {
-        //                var changeRaise = this.player.ParticipantPanel.StatusButton.Text.Substring(6);
-        //                this.player.Raise = int.Parse(changeRaise);
-        //            }
-        //            else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Call"))
-        //            {
-        //                var changeCall = this.player.ParticipantPanel.StatusButton.Text.Substring(5);
-        //                this.player.Call = int.Parse(changeCall);
-        //            }
-        //            else if (this.player.ParticipantPanel.StatusButton.Text.Contains("Check"))
-        //            {
-        //                this.player.Raise = 0;
-        //                this.player.Call = 0;
-        //            }
-        //        }
-        //        if (options == 2)
-        //        {
-        //            if (this.player.Raise != 0)
-        //            {
-        //                this.call = this.player.Raise;
-        //            }
-
-        //            if (this.player.Call != call || this.player.Call <= call)
-        //            {
-        //                this.call = this.call - this.player.Call;
-        //            }
-
-        //            if (this.player.Raise != 0)
-        //            {
-        //                this.call = 0;
-        //                this.player.Raise = 0;
-        //                this.callButton.Enabled = false;
-        //                this.callButton.Text = "Call button is unable.";
-        //            }
-        //        }
-        //    }
-        //}
-
+        
         void FixParticipantCall(IGameParticipant currentGameParticipant, int options)
         {
             if (this.rounds != 4)
@@ -910,8 +811,7 @@
             {
                 this.FixWinners();
             }
-
-            // critical
+            
             this.player.ParticipantPanel.Visible = false;
             this.player.Call = this.bigBlind;
             this.HandRank.Type = 0;
@@ -967,11 +867,11 @@
             }
 
             this.deckOfCards.RenewUsedDeck();
-            for (int os = 0; os < 17; os++)
+            for (int card = 0; card < AllCardsOnTheTable; card++)
             {
-                this.Rule.CardImages[os].Image = null;
-                this.Rule.CardImages[os].Invalidate();
-                this.Rule.CardImages[os].Visible = false;
+                this.Rule.CardImages[card].Image = null;
+                this.Rule.CardImages[card].Invalidate();
+                this.Rule.CardImages[card].Visible = false;
             }
 
             await this.Shuffle();
@@ -1008,7 +908,6 @@
             this.ValidateWinner(this.player, "Player", fixedLast);
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                // added validation
                 if (!gameBots[bot].FoldTurn)
                 {
                     this.ValidateWinner(this.gameBots[bot], $"Bot {bot + 1}", fixedLast);
@@ -1231,20 +1130,6 @@
             }
         }
 
-        //private void ChooseToFold(IGameParticipant currentGameParticipant)
-        //{
-        //    GameParticipant.raising = false;
-        //    currentGameParticipant.ParticipantPanel.StatusButton.Text = "Is Folded";
-        //    currentGameParticipant.Turn = false;
-        //    currentGameParticipant.FoldTurn = true;
-        //}
-
-        ////private void ChooseToCheck(IGameParticipant currentGameParticipant)
-        //{
-        //    currentGameParticipant.ParticipantPanel.StatusButton.Text = "Check";
-        //    currentGameParticipant.Turn = false;
-        //    GameParticipant.raising = false;
-        //}
 
         private void ChooseToCall(IGameParticipant currentGameParticipant)
         {
