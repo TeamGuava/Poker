@@ -9,6 +9,7 @@
     public class DeckOfCards : IDeckOfCards, ICardDealer
     {
         private IList<Card> listOfCards;
+        private IList<Card> listOfUsedCards;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeckOfCards" /> class.
@@ -27,17 +28,42 @@
             }
 
             this.ListOfCards = this.LoadCardsFromDirectory(directory, extention);
+            this.ListOfUsedCards = new List<Card>();
+            RenewUsedDeck();
         }
 
         /// <summary>
-        /// The ListOfCards property represents the list of cards in the deck.
+        /// The ListOfCards property represents all firstly loaded cards in the deck without adding them into play.
         /// </summary>
         /// <value>The ListOfCards property gets/sets the value of the field listOfCards.</value>
-        public IList<Card> ListOfCards
+        private IList<Card> ListOfCards
         {
             get
             {
                 return this.listOfCards;
+            }
+
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException(
+                        "No list of cards was provided.");
+                }
+
+                this.listOfCards = value;
+            }
+        }
+
+        /// <summary>
+        /// The ListOfUsedCards property represents the deck with which is being played.
+        /// </summary>
+        /// <value>The ListOfUsedCards property gets/sets the value of the field listOfUsedCards.</value>
+        public IList<Card> ListOfUsedCards
+        {
+            get
+            {
+                return this.listOfUsedCards;
             }
 
             private set
@@ -48,16 +74,10 @@
                         "No list of cards was provided.");
                 }
 
-                if (value.Count == 0)
-                {
-                    throw new ArgumentOutOfRangeException(
-                        "A deck of cards cannot have 0 cards.");
-                }
-
-                this.listOfCards = value;
+                this.listOfUsedCards = value;
             }
         }
-      
+
         /// <summary>
         /// Randomly shuffles the cards in the deck.
         /// </summary>
@@ -65,12 +85,12 @@
         {
             Random random = new Random();
 
-            for (int i = this.ListOfCards.Count; i > 0; i--)
+            for (int i = this.ListOfUsedCards.Count; i > 0; i--)
             {
                 int generatedRandomNumber = random.Next(i);
-                var k = this.ListOfCards[generatedRandomNumber];
-                this.ListOfCards[generatedRandomNumber] = this.ListOfCards[i - 1];
-                this.ListOfCards[i - 1] = k;
+                var k = this.ListOfUsedCards[generatedRandomNumber];
+                this.ListOfUsedCards[generatedRandomNumber] = this.ListOfUsedCards[i - 1];
+                this.ListOfUsedCards[i - 1] = k;
             }
         }
 
@@ -80,13 +100,13 @@
         /// <returns></returns>
         public ICard DrawOneCard()
         {
-            if (this.listOfCards.Count == 0)
+            if (this.ListOfUsedCards.Count == 0)
             {
-                throw new ArgumentOutOfRangeException("No cards are left in the deck!");
+                throw new ArgumentOutOfRangeException("No cards are left in used deck! Try renewing it.");
             }
 
-            Card drawnCard = this.listOfCards[0];
-            this.listOfCards.RemoveAt(0);
+            Card drawnCard = this.ListOfUsedCards[0];
+            this.ListOfUsedCards.RemoveAt(0);
 
             return drawnCard;
         }
@@ -138,6 +158,24 @@
             }
 
             return tempListOfCards;
+        }
+
+        /// <summary>
+        /// Resets the cards in the ListOfUsedCards and shuffles them.
+        /// </summary>
+        public void RenewUsedDeck()
+        {
+            if (ListOfUsedCards != null)
+            {
+                ListOfUsedCards.Clear();
+            }
+
+            foreach (var card in ListOfCards)
+            {
+                ListOfUsedCards.Add(card);
+            }
+
+            ShuffleDeck();
         }
     }
 }

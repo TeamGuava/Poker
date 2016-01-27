@@ -6,10 +6,12 @@
 
     public interface IDeckOfCards
     {
-        IList<Card> ListOfCards { get; }
+        IList<Card> ListOfUsedCards { get; }
 
         void ShuffleDeck();
 
         ICard DrawOneCard();
+
+        void RenewUsedDeck();
     }
 }
