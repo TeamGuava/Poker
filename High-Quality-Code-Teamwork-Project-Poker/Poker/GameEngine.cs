@@ -505,9 +505,6 @@
                     {
                         this.changed = false;
                         this.turnCount = 0;
-                        //this.raise = 0;
-                        //this.call = 0;
-                        //this.raisedTurn = 123;
                         this.rounds++;
 
                         if (!this.player.FoldTurn)
@@ -658,17 +655,13 @@
                     currentBot.ParticipantPanel.Visible = false;
                     currentBot.Call = this.bigBlind;
                     currentBot.Raise = 0;
-
-                    // Moved up (they were below the variable type)
                     currentBot.Power = 0;
                     currentBot.Type = -1;
                 }
 
                 this.last = 0;
                 //this.call = this.bigBlind;
-                //this.raise = 0;
                 this.deckOfCards.RenewUsedDeck();
-                //bools.Clear();
                 this.rounds = 0;
                 this.HandRank.Type = 0;
 
@@ -990,23 +983,7 @@
             //await Turns();
         }
 
-        private void AddMoreChips(AddChips chipsAdder)
-        {
-            chipsAdder.ShowDialog();
-            if (chipsAdder.NewChips != 0)
-            {
-                this.player.Chips = chipsAdder.NewChips;
-
-                this.player.FoldTurn = false;
-                this.player.Turn = true;
-                this.raiseButton.Enabled = true;
-                this.foldButton.Enabled = true;
-                this.checkButton.Enabled = true;
-                this.raiseButton.Text = "Raise";
-            }
-        }
-
-        void FixWinners()
+        private void FixWinners()
         {
             this.win.Clear();
             this.HandRank.WinningHand.Current = 0;
@@ -1915,6 +1892,22 @@
             this.raiseButton.Enabled = true;
             this.callButton.Enabled = true;
             this.foldButton.Enabled = true;
+        }
+
+        private void AddMoreChips(AddChips chipsAdder)
+        {
+            chipsAdder.ShowDialog();
+            if (chipsAdder.NewChips != 0)
+            {
+                this.player.Chips = chipsAdder.NewChips;
+
+                this.player.FoldTurn = false;
+                this.player.Turn = true;
+                this.raiseButton.Enabled = true;
+                this.foldButton.Enabled = true;
+                this.checkButton.Enabled = true;
+                this.raiseButton.Text = "Raise";
+            }
         }
     }
 }
