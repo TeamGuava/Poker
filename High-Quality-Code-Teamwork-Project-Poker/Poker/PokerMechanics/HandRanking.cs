@@ -15,7 +15,7 @@
 
         public List<Type> Win { get; private set; }
 
-        public int[] Reserve { get; private set; }
+        public int[] Reserve { get; set; }
 
         public IType WinningHand { get; set; }
 
@@ -1194,7 +1194,7 @@
                         currentGameParticipant.Type);
                 }
 
-                if (this.Reserve[0]/4 == 0 ||
+                if (this.Reserve[0]/4 == 0 || 
                     this.Reserve[0 + 1]/4 == 0)
                 {
                     currentGameParticipant.Type = -1;
