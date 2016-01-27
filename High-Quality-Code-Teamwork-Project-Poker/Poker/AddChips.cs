@@ -12,7 +12,6 @@
 
         public AddChips()
         {
-            FontFamily fontFamily = new FontFamily("Arial");
             this.InitializeComponent();
             this.ControlBox = false;
             this.labelMainMessage.BorderStyle = BorderStyle.FixedSingle;
