@@ -13,7 +13,7 @@
     using Poker.Models.Cards;
     using Poker.UI;
 
-    public partial class GameEngine : Form
+    public partial class GameEngine : Form, IGameEngine
     {
         #region Constants
         private const int NumberOfBots = 5;
@@ -40,13 +40,10 @@
         private int last = 123;
         int raisedTurn = 1;
         private bool restart;
-
         IDeckOfCards deckOfCards;
-
         private Timer timer = new Timer();
         private Timer update = new Timer();
         private int timeForTurn = 60;
-
         private int bigBlind = 500;
         private int smallBlind = 250;
         private int turnCount;
@@ -60,7 +57,7 @@
             this.player.Call = this.bigBlind;
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                gameBots[bot].Call = this.bigBlind;
+                this.gameBots[bot].Call = this.bigBlind;
             }
 
             this.MaximizeBox = false;
@@ -84,10 +81,8 @@
             this.timer.Tick += this.TimerTick;
             this.update.Interval = 1 * 1 * 100;
             this.update.Tick += this.UpdateTick;
-
             this.bigBlindTextBox.Visible = true;
             this.smallBlindTextBox.Visible = true;
-
             this.raiseTextBox.Text = (this.bigBlind * 2).ToString();
         }
 
@@ -227,7 +222,8 @@
             if (leftBotsWithoutMoney == this.gameBots.Length)
             {
                 DialogResult dialogResult = MessageBox.Show(
-                    "Would You Like To Play Again ?", "You Won , Congratulations ! ",
+                    "Would You Like To Play Again ?", 
+                    "You Won , Congratulations ! ",
                     MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -279,7 +275,6 @@
                 this.callButton.Enabled = false;
                 this.foldButton.Enabled = false;
                 this.timer.Stop();
-                // TODO: Maybe there is a bug here
                 this.gameBots[0].Turn = true;
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
@@ -295,10 +290,7 @@
                             this.FixParticipantCall(currentBot, 1);
                             this.FixParticipantCall(currentBot, 2);
                             this.Rule.ExecuteGameRules(firstCard, secondCard, currentBot);
-
-                            // TODO: Maybe we can remove this
                             this.writer.Print($"Bot {botIndex}'s Turn");
-
                             this.AI(firstCard, secondCard, currentBot);
                             this.turnCount++;
                             this.last = botIndex;
@@ -907,7 +899,7 @@
             this.ValidateWinner(this.player, "Player", fixedLast);
             for (int bot = 0; bot < NumberOfBots; bot++)
             {
-                if (!gameBots[bot].FoldTurn)
+                if (!this.gameBots[bot].FoldTurn)
                 {
                     this.ValidateWinner(this.gameBots[bot], $"Bot {bot + 1}", fixedLast);
                 }
@@ -1316,7 +1308,7 @@
                             if (currentGameParticipant.Raise > 0)
                             {
                                 currentGameParticipant.Raise = (int)RoundN(currentGameParticipant.Chips, n - rnd);
-                                Raised(currentGameParticipant);
+                                this.Raised(currentGameParticipant);
                             }
                             else
                             {

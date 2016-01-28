@@ -49,7 +49,7 @@
         //    this.Turn = false;
         //}
 
-        public void ChooseToFold()
+        public virtual void ChooseToFold()
         {
             this.RaiseTurn = false;
             this.ParticipantPanel.StatusButton.Text = "Is Folded";
@@ -57,7 +57,7 @@
             this.FoldTurn = true;
         }
 
-        public void ChooseToCheck()
+        public virtual void ChooseToCheck()
         {
             this.ParticipantPanel.StatusButton.Text = "Check";
             this.Turn = false;
