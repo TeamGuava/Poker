@@ -50,6 +50,7 @@
     <Compile Include="AddChips.Designer.cs">
       <DependentUpon>AddChips.cs</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IApplicationDrawer.cs" />
     <Compile Include="Contracts\ICardDealer.cs" />
     <Compile Include="Contracts\IDeckOfCards.cs" />
     <Compile Include="Contracts\IGameEngine.cs" />
@@ -58,10 +59,7 @@
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
-    <Compile Include="Core\ButtonHandler.cs" />
-    <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\PokerStages.cs" />
-    <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,7 +73,6 @@
     <Compile Include="Models\GameParticipantPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Models\GameTable.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="PokerMain.cs" />
     <Compile Include="PokerMechanics\GameRules.cs" />
@@ -86,7 +83,6 @@
     <Compile Include="Contracts\ICaller.cs" />
     <Compile Include="Contracts\ICard.cs" />
     <Compile Include="Contracts\IChecker.cs" />
-    <Compile Include="Contracts\IChip.cs" />
     <Compile Include="Contracts\IFolder.cs" />
     <Compile Include="Contracts\IGameParticipant.cs" />
     <Compile Include="Contracts\IRaiser.cs" />

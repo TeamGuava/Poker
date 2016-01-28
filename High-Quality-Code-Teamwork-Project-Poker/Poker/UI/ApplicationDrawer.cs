@@ -1,11 +1,11 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Poker.Contracts;
-
-namespace Poker.UI
+﻿namespace Poker.UI
 {
-    public class ApplicationDrawer
+    using System.Drawing;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using Poker.Contracts;
+
+    public class ApplicationDrawer : IApplicationDrawer
     {
         private const int AllCardsOnTheTable = 17;
 
@@ -47,10 +47,10 @@ namespace Poker.UI
                 this.rules.CardImages[currentCard].SizeMode = PictureBoxSizeMode.StretchImage;
                 this.rules.CardImages[currentCard].Height = 130;
                 this.rules.CardImages[currentCard].Width = 80;
-                this.rules.CardImages[currentCard].Image = backImage;
+                this.rules.CardImages[currentCard].Image = this.backImage;
                 this.rules.CardImages[currentCard].Location = cardLocations[currentCard];
                 controls.Add(this.rules.CardImages[currentCard]);
-                this.rules.CardImages[currentCard].Name = "pb" + currentCard;
+                this.rules.CardImages[currentCard].Name = "pb" + currentCard; 
 
                 Task.Delay(200);
 
@@ -125,7 +125,8 @@ namespace Poker.UI
                 // Printing the five river cards
                 if (currentCard >= 12)
                 {
-                    this.rules.CardImages[currentCard].Tag = this.handRanking.Reserve[currentCard];
+                    this.rules.CardImages[currentCard].Tag = 
+                        this.handRanking.Reserve[currentCard];
                     if (this.rules.CardImages[currentCard] != null)
                     {
                         this.rules.CardImages[currentCard].Anchor = AnchorStyles.None;
@@ -134,7 +135,9 @@ namespace Poker.UI
             }
         }
 
-        private void SetBotCards(PictureBox[] cardImages, int[] reserve, int currentCard)
+        private void SetBotCards(PictureBox[] cardImages,
+            int[] reserve,
+            int currentCard)
         {
             cardImages[currentCard].Tag = reserve[currentCard];
             cardImages[currentCard].Anchor = AnchorStyles.Bottom | AnchorStyles.Left;

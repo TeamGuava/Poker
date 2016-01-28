@@ -4,6 +4,8 @@
 
     public interface IHandRanking
     {
+        // It should not be changed rules of a popular game. 
+        // There fore this interface does not extend a number of other ones.
         List<Type> Win { get; }
 
         int[] Reserve { get; }
