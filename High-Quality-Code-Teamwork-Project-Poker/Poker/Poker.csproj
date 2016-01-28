@@ -56,9 +56,7 @@
     <Compile Include="Contracts\IPlayer.cs" />
     <Compile Include="Contracts\IType.cs" />
     <Compile Include="Contracts\IWriter.cs" />
-    <Compile Include="Enums\CardValue.cs" />
     <Compile Include="Enums\PokerStages.cs" />
-    <Compile Include="Enums\SuitSign.cs" />
     <Compile Include="GameEngine.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,7 +70,6 @@
     <Compile Include="Models\GameParticipantPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Models\GameTable.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="PokerMain.cs" />
     <Compile Include="ProgressBars.cs" />
@@ -82,7 +79,6 @@
     <Compile Include="Contracts\ICaller.cs" />
     <Compile Include="Contracts\ICard.cs" />
     <Compile Include="Contracts\IChecker.cs" />
-    <Compile Include="Contracts\IChip.cs" />
     <Compile Include="Contracts\IFold.cs" />
     <Compile Include="Contracts\IGameParticipant.cs" />
     <Compile Include="Contracts\IRaiser.cs" />
@@ -231,9 +227,7 @@
     <Content Include="Resources\Cards\9_of_hearts.png" />
     <Content Include="Resources\Cards\9_of_spades.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

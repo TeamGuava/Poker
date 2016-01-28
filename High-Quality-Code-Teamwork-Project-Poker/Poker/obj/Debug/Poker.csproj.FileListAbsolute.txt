@@ -8,3 +8,13 @@ C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
 C:\Users\asus\Documents\Visual Studio 2015\Projects\Poker.git\trunk\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe.config
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.exe
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\bin\Debug\Poker.pdb
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csprojResolveAssemblyReference.cache
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.AddChips.resources
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.GameEngine.resources
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.Properties.Resources.resources
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.csproj.GenerateResource.Cache
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.exe
+E:\masterPoker\Poker\High-Quality-Code-Teamwork-Project-Poker\Poker\obj\Debug\Poker.pdb

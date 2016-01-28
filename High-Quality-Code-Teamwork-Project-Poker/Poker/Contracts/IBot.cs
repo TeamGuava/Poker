@@ -2,8 +2,7 @@
 {
     using Poker.Models;
 
-    public interface IBot : ICaller, IRaiser, IFold, IChecker, IGameParticipant
+    public interface IBot : IGameParticipant
     {
-        //void MakeDecision();
     }
 }

@@ -4,12 +4,6 @@
 
     public abstract class GameParticipant : IGameParticipant
     {
-        // TODO:
-        // This field should be in other class, extracted from GameEngine later.
-        // It is used temporarily here as public (!) in order to extract game participant's 
-        // method ChooseToCheck(..) from GameEngine (to use an appropriate interface)
-        //public static bool raising;
-
         private const int StartChips = 10000;
 
         protected GameParticipant()

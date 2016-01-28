@@ -300,7 +300,7 @@
                 this.callButton.Enabled = false;
                 this.foldButton.Enabled = false;
                 this.timer.Stop();
-                // TODO: Maybe there is a bug here
+       
                 this.gameBots[0].Turn = true;
                 for (int bot = 0; bot < NumberOfBots; bot++)
                 {
@@ -318,7 +318,7 @@
                             this.FixParticipantCall(currentBot, 2);
                             this.Rules(firstCard, secondCard, currentBot);
 
-                            // TODO: Maybe we can remove this
+                            
                             this.writer.Print($"Bot {botIndex}'s Turn");
 
                             this.AI(firstCard, secondCard, currentBot);
