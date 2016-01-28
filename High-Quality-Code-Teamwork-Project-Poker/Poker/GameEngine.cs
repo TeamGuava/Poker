@@ -105,17 +105,16 @@
             this.MaximizeBox = false;
             Bitmap backImage = new Bitmap("Assets\\Back\\Back.png");
 
-            // Shuffle the deck. // Aleksandar
+            // Shuffle the deck.
             this.deckOfCards.ShuffleDeck();
 
             for (int currentCard = 0; currentCard < AllCardsOnTheTable; currentCard++)
             {
-                // Next card from the deck. // Aleksandar
+                // Next card from the deck.
                 ICard drawnCard = this.deckOfCards.DrawOneCard();
 
                 this.deck[currentCard] = drawnCard.Image;
 
-                // TODO: The name of the card file should not be used like this. // Aleksandar
                 this.HandRank.Reserve[currentCard] = int.Parse(drawnCard.Name) - 1;
 
                 this.Rule.CardImages[currentCard] = new PictureBox();
